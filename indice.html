@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Formulación</title>
+    <link rel="icon" href="indice.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f4f8;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Opciones del Test</h1>
+        <div class="button-container">
+            <button onclick="goTo('formInor.html')">Formulación inorgánica</button>
+            <button>Opción 2</button>
+            <button>Opción 3</button>
+            <button>Opción 4</button>
+            <button>Opción 5</button>
+            <button>Opción 6</button>
+            <button>Opción 7</button>
+            <button>Opción 8</button>
+        </div>
+    </div>
+    <script>
+        // Función para redirigir a otra página
+        function goTo(page) {
+            window.location.href = page;
+        }
+    </script>
+</body>
+</html>
