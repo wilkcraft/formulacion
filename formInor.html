@@ -65,6 +65,15 @@
             font-size: 18px;
             font-weight: bold;
         }
+        .correct-answers {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #555;
+            text-align: center;
+        }
+        .correct-answers p {
+            margin: 5px 0;
+        }
         .navigation {
             display: flex;
             justify-content: space-between;
@@ -106,6 +115,7 @@
         <input type="text" id="answer" placeholder="Escribe tu respuesta aquí" />
         <button id="check-button">Corregir</button>
         <div class="result" id="result"></div>
+        <div class="correct-answers" id="correct-answers"></div>
         <div class="navigation">
             <button id="prev-button">←</button>
             <span class="progress" id="progress"></span>
@@ -114,7 +124,6 @@
         <button class="finish-button" id="finish-button">Volver a Inicio</button>
     </div>
     <script>
-        // Lista de fórmulas y respuestas
         const formulas = [
             { formula: "HMnO<sub>4</sub>", answers: ["acido permanganico", "hidrogeno (tetraoxidomanganato)", "hidroxido trioxido manganeso"] },
             { formula: "H<sub>2</sub>SO<sub>2</sub>", answers: ["acido hiposulfuroso", "dihidrogeno (dioxido sulfato)", "dihidroxido azufre"] },
@@ -125,17 +134,22 @@
             { formula: "H<sub>2</sub>TeO<sub>3</sub>", answers: ["acido teluroso", "dihidrogeno (trioxidotelurato)", "dihidroxido oxido telurio"] }
         ];
 
-        const totalQuestions = formulas.length; // Determina el número de fórmulas disponibles
-        let selectedFormulas = formulas.sort(() => 0.5 - Math.random()); // Fórmulas aleatorias
-        let userAnswers = Array(totalQuestions).fill(""); // Respuestas del usuario
-        let answerStates = Array(totalQuestions).fill(null); // Guarda si las respuestas son correctas o no
+        const totalQuestions = formulas.length;
+        let selectedFormulas = formulas.sort(() => 0.5 - Math.random());
+        let userAnswers = Array(totalQuestions).fill("");
+        let answerStates = Array(totalQuestions).fill(null);
+        let displayedAnswers = Array(totalQuestions).fill(null); // Guarda las respuestas mostradas
         let currentIndex = 0;
 
-        // Actualizar interfaz
+        function capitalize(text) {
+            return text.charAt(0).toUpperCase() + text.slice(1);
+        }
+
         function updateUI() {
             const answerInput = document.getElementById("answer");
             const checkButton = document.getElementById("check-button");
             const result = document.getElementById("result");
+            const correctAnswers = document.getElementById("correct-answers");
             const navigation = document.querySelector(".navigation");
 
             if (currentIndex < totalQuestions) {
@@ -145,50 +159,64 @@
                 document.getElementById("formula").innerHTML = currentFormula.formula;
                 document.getElementById("progress").textContent = `${currentIndex + 1}/${totalQuestions}`;
                 answerInput.value = userAnswer || "";
-                answerInput.disabled = answerStates[currentIndex] !== null; // Bloquear si ya está respondida
-                checkButton.disabled = answerStates[currentIndex] !== null; // Bloquear botón
+                answerInput.disabled = answerStates[currentIndex] !== null;
+                checkButton.disabled = answerStates[currentIndex] !== null;
 
-                if (answerStates[currentIndex] !== null) {
-                    result.textContent = answerStates[currentIndex]
-                        ? "¡Correcto!"
-                        : "Incorrecto, ya no puedes cambiar esta respuesta.";
-                    result.style.color = answerStates[currentIndex] ? "#28a745" : "#dc3545";
-                } else {
-                    result.textContent = "";
-                }
+                result.textContent = answerStates[currentIndex] === true
+                    ? "¡Correcto!"
+                    : answerStates[currentIndex] === false
+                    ? "Incorrecto."
+                    : "";
+
+                result.style.color = answerStates[currentIndex] === true
+                    ? "#28a745"
+                    : answerStates[currentIndex] === false
+                    ? "#dc3545"
+                    : "";
+
+                // Muestra respuestas si ya se corrigió esta pregunta
+                correctAnswers.innerHTML = displayedAnswers[currentIndex] || "";
 
                 document.getElementById("finish-button").style.display = "none";
                 navigation.style.display = "flex";
             } else {
                 document.getElementById("formula").textContent = "¡Has terminado el test!";
                 result.textContent = "";
+                correctAnswers.innerHTML = "";
                 navigation.style.display = "none";
                 document.getElementById("finish-button").style.display = "block";
             }
         }
 
-        // Validar respuesta
         function checkAnswer() {
             const answerInput = document.getElementById("answer");
             const userAnswer = normalize(answerInput.value.trim());
             const validAnswers = selectedFormulas[currentIndex].answers.map(normalize);
+            const resultElement = document.getElementById("result");
+            const correctAnswers = document.getElementById("correct-answers");
 
             if (validAnswers.includes(userAnswer)) {
                 answerStates[currentIndex] = true;
-                document.getElementById("result").textContent = "¡Correcto!";
-                document.getElementById("result").style.color = "#28a745";
+                resultElement.textContent = "¡Correcto!";
+                resultElement.style.color = "#28a745";
             } else {
                 answerStates[currentIndex] = false;
-                document.getElementById("result").textContent = "Incorrecto.";
-                document.getElementById("result").style.color = "#dc3545";
+                resultElement.textContent = "Incorrecto.";
+                resultElement.style.color = "#dc3545";
             }
 
-            userAnswers[currentIndex] = answerInput.value.trim(); // Guardar respuesta
+            // Mostrar todas las respuestas correctas al verificar y guardarlas
+            const formattedAnswers = selectedFormulas[currentIndex].answers
+                .map(answer => `<p>${capitalize(answer)}</p>`)
+                .join("");
+            correctAnswers.innerHTML = formattedAnswers;
+            displayedAnswers[currentIndex] = formattedAnswers; // Guarda las respuestas mostradas
+
+            userAnswers[currentIndex] = answerInput.value.trim();
             answerInput.disabled = true;
-            document.getElementById("check-button").disabled = true; // Bloquear edición
+            document.getElementById("check-button").disabled = true;
         }
 
-        // Normalizar texto (eliminar mayúsculas, acentos, espacios extra)
         function normalize(text) {
             return text
                 .toLowerCase()
@@ -197,13 +225,12 @@
                 .replace(/\s+/g, " ");
         }
 
-        // Navegación
         document.getElementById("check-button").addEventListener("click", checkAnswer);
         document.getElementById("next-button").addEventListener("click", () => {
             if (currentIndex < totalQuestions - 1) {
                 currentIndex++;
             } else if (currentIndex === totalQuestions - 1) {
-                currentIndex++;
+                currentIndex++; // Incrementar el índice para llegar a la pantalla final
             }
             updateUI();
         });
@@ -212,6 +239,9 @@
                 currentIndex--;
             }
             updateUI();
+        });
+        document.getElementById("answer").addEventListener("input", () => {
+            document.getElementById("check-button").disabled = false;
         });
         document.getElementById("answer").addEventListener("keypress", (event) => {
             if (event.key === "Enter" && !document.getElementById("check-button").disabled) {
@@ -222,8 +252,7 @@
         document.getElementById("finish-button").addEventListener("click", () => {
             window.location.href = "indice.html";
         });
-
-        // Iniciar test
+            
         updateUI();
     </script>
 </body>
