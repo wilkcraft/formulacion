@@ -138,7 +138,7 @@
         let selectedFormulas = formulas.sort(() => 0.5 - Math.random());
         let userAnswers = Array(totalQuestions).fill("");
         let answerStates = Array(totalQuestions).fill(null);
-        let displayedAnswers = Array(totalQuestions).fill(null); // Guarda las respuestas mostradas
+        let displayedAnswers = Array(totalQuestions).fill(null); 
         let currentIndex = 0;
 
         function capitalize(text) {
@@ -174,17 +174,20 @@
                     ? "#dc3545"
                     : "";
 
-                // Muestra respuestas si ya se corrigió esta pregunta
                 correctAnswers.innerHTML = displayedAnswers[currentIndex] || "";
 
                 document.getElementById("finish-button").style.display = "none";
                 navigation.style.display = "flex";
+                answerInput.style.display = "block"; 
+                checkButton.style.display = "block";
             } else {
                 document.getElementById("formula").textContent = "¡Has terminado el test!";
                 result.textContent = "";
                 correctAnswers.innerHTML = "";
                 navigation.style.display = "none";
                 document.getElementById("finish-button").style.display = "block";
+                answerInput.style.display = "none"; // Oculta el input
+                checkButton.style.display = "none"; // Oculta el botón de corregir
             }
         }
 
@@ -205,12 +208,11 @@
                 resultElement.style.color = "#dc3545";
             }
 
-            // Mostrar todas las respuestas correctas al verificar y guardarlas
             const formattedAnswers = selectedFormulas[currentIndex].answers
                 .map(answer => `<p>${capitalize(answer)}</p>`)
                 .join("");
             correctAnswers.innerHTML = formattedAnswers;
-            displayedAnswers[currentIndex] = formattedAnswers; // Guarda las respuestas mostradas
+            displayedAnswers[currentIndex] = formattedAnswers; 
 
             userAnswers[currentIndex] = answerInput.value.trim();
             answerInput.disabled = true;
@@ -230,7 +232,7 @@
             if (currentIndex < totalQuestions - 1) {
                 currentIndex++;
             } else if (currentIndex === totalQuestions - 1) {
-                currentIndex++; // Incrementar el índice para llegar a la pantalla final
+                currentIndex++;
             }
             updateUI();
         });
