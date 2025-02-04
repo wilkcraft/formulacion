@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teoría Óxidos</title>
+    <link rel="icon" href="form.png" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f4f8;
+      }
+      .container {
+        text-align: center;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        width: 500px;
+        height: 300px;
+        justify-content: center;
+        align-items: center;
+      }
+      h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+      }
+      .green-button {
+        display: inline-block;
+        position: relative;
+        height: 3.5em;
+        padding: 0 1em;
+        border: 3px ridge #218838;
+        outline: none;
+        background-color: transparent;
+        color: black;
+        transition: 1s;
+        border-radius: 0.3em;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        white-space: nowrap;
+        margin-top: 20px;
+      }
+
+      .green-button::after {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: white;
+        transition: 0.5s;
+        transform-origin: center;
+      }
+
+      .green-button::before {
+        content: "";
+        transform-origin: center;
+        position: absolute;
+        top: 80%;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: white;
+        transition: 0.5s;
+      }
+
+      .green-button:hover::before,
+      .green-button:hover::after {
+        transform: scale(0);
+      }
+
+      .green-button:hover {
+        box-shadow: inset 0px 0px 25px #218838;
+        background-color: rgba(33, 136, 56, 0.1);
+      }
+
+      video {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <video controls autoplay loop muted>
+        <source src="oxidos.mp4" type="video/mp4">
+      </video>
+      <button class="green-button" onclick="goTo('teoFormInor.html')">
+        Ir al Indice
+      </button>
+    </div>
+    <script>
+      function goTo(page) {
+        window.location.href = page;
+      }
+    </script>
+  </body>
+</html>

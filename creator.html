@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creator</title>
+    <link rel="icon" href="index.png" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f4f8;
+      }
+      .container {
+        text-align: center;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        font-size: 24px;
+        color: #333;
+      }
+      button {
+        display: inline-block; /* Hace que el botón se ajuste al contenido */
+        position: relative;
+        height: 3.5em;
+        padding: 0 1em; /* Añade padding horizontal para que el texto no esté pegado a los bordes */
+        border: 3px ridge #149cea;
+        outline: none;
+        background-color: transparent;
+        color: black;
+        transition: 1s;
+        border-radius: 0.3em;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+      }
+
+      button::after {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: white;
+        transition: 0.5s;
+        transform-origin: center;
+      }
+
+      button::before {
+        content: "";
+        transform-origin: center;
+        position: absolute;
+        top: 80%;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: white;
+        transition: 0.5s;
+      }
+
+      button:hover::before,
+      button:hover::after {
+        transform: scale(0);
+      }
+
+      button:hover {
+        box-shadow: inset 0px 0px 25px #1479ea;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        Está web a sido creada por Miguel Vallejo Garijo para el Colegio de Fomento Miralvent
+      </h1>
+      <button id="start-button">Pulse el botón para empezar el test</button>
+    </div>
+    <script>
+      // Evento para redirigir al archivo index.html cuando se haga clic en el botón
+      document
+        .getElementById("start-button")
+        .addEventListener("click", function () {
+          window.location.href = "index.html";
+        });
+    </script>
+  </body>
+</html>
