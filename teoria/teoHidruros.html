@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teoría hidruros</title>
+    <link rel="icon" href="/media/quimic.png" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f4f8;
+      }
+      .container {
+        text-align: center;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
+      .slide {
+        display: none;
+      }
+      .slide.active {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 150px;
+        flex-direction: column;
+      }
+      .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+      }
+      .navigation button {
+        padding: 10px;
+        border-radius: 50%;
+        background-color: #28a745;
+        font-size: 16px;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+      .navigation button:hover {
+        background-color: #218838;
+      }
+      .finish-button {
+        display: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .finish-button:hover {
+        background-color: #218838;
+      }
+      red {
+        color: #cc0000ff;
+        font-weight: bold;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #121212;
+          color: #e0e0e0; /* Texto más claro */
+        }
+
+        .container {
+          background-color: #1e1e1e;
+          box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+          color: #e0e0e0; /* Título más claro */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="test-container">
+      <div class="slide active">
+        <h2>Teoría Hidruros</h2>
+      </div>
+      <div class="slide">
+        <h2>Al<red>H</red></h2>
+        <p>Para empezar se mira el último elemento y se le añade “-uro” al final</p>
+      </div>
+      <div class="slide">
+        <h2>Al<red>H</red></h2>
+        <p>En este caso sería “<red>hidruro</red>”</p>
+      </div>
+      <div class="slide">
+        <h2><red>Al</red>H</h2>
+        <p>Después se pone “de” y el nombre del elemento que esté al principio</p>
+      </div>
+      <div class="slide">
+        <h2>AlH</h2>
+        <p>Entero se llamaría “<red>hidruro de aluminio</red>”</p>
+      </div>
+      <div class="slide">
+        <h2>AlH<sub><red>4</red></sub></h2>
+        <p>Hay veces que alguna letra tiene un número, en esos casos se la añade la abreviatura del número. Ej. 2 = di; 3 = tri</p>
+      </div>
+      <div class="slide">
+        <h2>AlH<sub><red>4</red></sub></h2>
+        <p>Esto se llamaría “<red>tetra</red>hidruro de aluminio”</p>
+      </div>
+      <div class="slide">
+        <button id="finish-button" class="finish-button" onclick="location.href='teoFormInor.html'">Volver al índice</button>
+      </div>
+      <div class="navigation" id="navigation-container">
+        <button id="prev-button">←</button>
+        <button id="next-button">→</button>
+      </div>
+    </div>
+    <script>
+      let slides = document.querySelectorAll(".slide");
+      let currentIndex = 0;
+      let finishButton = document.getElementById("finish-button");
+      let nextButton = document.getElementById("next-button");
+      let prevButton = document.getElementById("prev-button");
+      let navigationContainer = document.getElementById("navigation-container");
+
+      function updateSlides() {
+        slides.forEach((slide, index) => {
+          slide.classList.toggle("active", index === currentIndex);
+        });
+        finishButton.style.display = currentIndex === slides.length - 1 ? "block" : "none";
+        navigationContainer.style.display = currentIndex === slides.length - 1 ? "flex" : "flex";
+      }
+
+      nextButton.addEventListener("click", () => {
+        if (currentIndex < slides.length - 1) {
+          currentIndex++;
+          updateSlides();
+        }
+      });
+
+      prevButton.addEventListener("click", () => {
+        if (currentIndex > 0) {
+          currentIndex--;
+          updateSlides();
+        }
+      });
+    </script>
+  </body>
+</html>
