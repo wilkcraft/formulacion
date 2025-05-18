@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulación Orgánica e Inorgánica</title>
+    <link rel="icon" href="/media/indice.png" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f4f8;
+      }
+      .container {
+        text-align: center;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: translateY(-20px);
+        animation: fadeIn 1s forwards;
+        position: relative; /* Añadido para posicionar los botones relativos al container */
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      .blue-button {
+        display: inline-block; /* Hace que el botón se ajuste al contenido */
+        position: relative;
+        height: 3.5em;
+        padding: 0 1em; /* Añade padding horizontal para que el texto no esté pegado a los bordes */
+        border: 3px ridge #149cea;
+        outline: none;
+        background-color: transparent;
+        color: black;
+        transition: 1s;
+        border-radius: 0.3em;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+        margin-top: 1px;
+      }
+
+      .blue-button::after {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: white;
+        transition: 0.5s;
+        transform-origin: center;
+      }
+
+      .blue-button::before {
+        content: "";
+        transform-origin: center;
+        position: absolute;
+        top: 80%;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: white;
+        transition: 0.5s;
+      }
+
+      .blue-button:hover::before,
+      .blue-button:hover::after {
+        transform: scale(0);
+      }
+
+      .blue-button:hover {
+        box-shadow: inset 0px 0px 25px #1479ea;
+        background-color: rgba(33, 136, 56, 0.1);
+      }
+
+      .new-button {
+        position: absolute;
+        right: -25px; /* Posicionado a la derecha del container */
+        top: 85%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: rgb(20, 20, 20);
+        border: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition-duration: 0.3s;
+        overflow: hidden;
+        color: white;
+        font-size: 16px;
+        animation: fadeIn 1s forwards;
+      }
+
+      .left-button {
+        position: absolute;
+        left: -25px; /* Posicionado a la izquierda del container */
+        top: 85%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: rgb(20, 20, 20);
+        border: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition-duration: 0.3s;
+        overflow: hidden;
+        color: white;
+        font-size: 16px;
+        animation: fadeIn 1s forwards;
+      }
+
+      /* Add proper selectors for both buttons */
+      .new-button::after {
+        content: "!";
+        display: inline-block;
+        transition: transform 0.3s ease-in-out;
+      }
+      .left-button::after {
+        content: "≡";
+        display: inline-block;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .new-button:hover::after,
+      .left-button:hover::after {
+        transform: translateY(8px);
+      }
+
+      .new-button:hover,
+      .left-button:hover {
+        transform: translateY(-50%) scale(1.2);
+        border-radius: 8px;
+        transition-duration: 0.3s;
+        background-color: #0d7ac2;
+      }
+
+      .new-button::before {
+        position: absolute;
+        top: -30px;
+        content: "New";
+        color: white;
+        transition-duration: 0.3s;
+        font-size: 2px;
+      }
+      .left-button::before {
+        position: absolute;
+        top: -30px;
+        content: "Autor";
+        color: white;
+        transition-duration: 0.3s;
+        font-size: 2px;
+      }
+
+      .new-button:hover::before,
+      .left-button:hover::before {
+        font-size: 15px;
+        opacity: 1;
+        transform: translateY(35px);
+        transition-duration: 0.3s;
+      }
+
+      .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .popup h2 {
+        margin: 0 0 10px;
+      }
+
+      .popup p {
+        margin-bottom: 20px;
+      }
+
+      .close-popup {
+        position: relative;
+        left: 42%;
+        border: none;
+        background-color: rgba(180, 83, 107, 0.11);
+        border-radius: 5px;
+        transition: background 0.5s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: rgb(187, 229, 236);
+        background-color: rgb(19, 22, 24);
+        padding: 10px 20px;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+
+      .close-popup:hover {
+        background-color: rgb(211, 21, 21);
+      }
+
+      .close-popup:active {
+        background-color: rgb(130, 0, 0);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #121212;
+          color: #e0e0e0; /* Texto más claro */
+        }
+
+        .container {
+          background-color: #1e1e1e;
+          box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+          color: #e0e0e0; /* Título más claro */
+        }
+
+        .blue-button {
+          color: #e0e0e0;
+          border: 3px ridge #42a5f5;
+        }
+
+        .blue-button::after,
+        .blue-button::before {
+          background-color: #1e1e1e; /* Mismo color que el fondo del container */
+        }
+
+        .blue-button:hover {
+          box-shadow: inset 0px 0px 25px #42a5f5;
+          background-color: rgba(33, 136, 56, 0.2);
+        }
+
+        .new-button, .left-button {
+          background-color: #333;
+          color: #e0e0e0;
+        }
+
+        .popup {
+          background-color: #2c2c2c;
+          color: #f0f0f0;
+        }
+
+        .close-popup {
+          background-color: #444;
+          color: #f0f0f0;
+        }
+
+        .close-popup:hover {
+          background-color: #d11515;
+        }
+
+        .close-popup:active {
+          background-color: #820000;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Formulación Orgánica e Inorgánica</h1>
+      <h1>y Reactividad Química</h1>
+      <button class="blue-button" onclick="goTo('indiceTest.html')">
+        Empezar
+      </button>
+      <button class="new-button" onclick="openPopup()"></button>
+      <button class="left-button" onclick="openAutor()"></button>
+    </div>
+    <div class="popup" id="popup">
+      <h2>Actualizaciones</h2>
+      <p>Se han añadido las teorías de las Aminas, amidas y nitrilos, y la de Reactividad Química</p>
+      <p>Se han añadido 5 preguntas más a los Hidróxidos</p>
+      <button class="close-popup" onclick="closePopup()">Cerrar</button>
+    </div>
+    <div class="popup" id="autor">
+      <h2>Esta web ha sido creada por Miguel Vallejo Garijo</h2>
+      <p>Con ayuda de D. Jorge Abal Fernandez</p>
+      <p>Para el Colegio de Fomento Miralvent</p>
+      <button class="close-popup" onclick="closeAutor()">Cerrar</button>
+    </div>
+    <script>
+      function goTo(page) {
+        window.location.href = page;
+      }
+      function openPopup() {
+        document.getElementById("popup").style.display = "block";
+      }
+      function closePopup() {
+        document.getElementById("popup").style.display = "none";
+      }
+      function openAutor() {
+        document.getElementById("autor").style.display = "block";
+      }
+      function closeAutor() {
+        document.getElementById("autor").style.display = "none";
+      }
+    </script>
+  </body>
+</html>
