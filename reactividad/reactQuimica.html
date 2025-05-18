@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index Formulación Orgánica</title>
+    <link rel="icon" href="/media/form.png" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f4f8;
+      }
+      .container {
+        text-align: center;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+      }
+      .btn {
+        transition: all 0.3s ease-in-out;
+        font-family: "Dosis", sans-serif;
+        width: auto;
+        height: 40px;
+        border-radius: 5px;
+        background-image: linear-gradient(
+          135deg,
+          #149cea 0%,
+          #0d7ac2 100%
+        ); /* Nuevo gradiente */
+        outline: none;
+        cursor: pointer;
+        border: none;
+        font-size: 14px;
+        color: white;
+        margin: 10px; /* Añade margen entre los botones */
+        padding: 0 20px;
+      }
+
+      .btn:hover {
+        transform: translateY(3px);
+        box-shadow: none;
+      }
+
+      .btn:active {
+        opacity: 0.5;
+      }
+
+      .green-button {
+        display: inline-block; /* Hace que el botón se ajuste al contenido */
+        position: relative;
+        height: 3.5em;
+        padding: 0 1em; /* Añade padding horizontal para que el texto no esté pegado a los bordes */
+        border: 3px ridge #218838;
+        outline: none;
+        background-color: transparent;
+        color: black;
+        transition: 1s;
+        border-radius: 0.3em;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+        margin-top: 1px;
+      }
+
+      .green-button::after {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: white;
+        transition: 0.5s;
+        transform-origin: center;
+      }
+
+      .green-button::before {
+        content: "";
+        transform-origin: center;
+        position: absolute;
+        top: 80%;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: white;
+        transition: 0.5s;
+      }
+
+      .green-button:hover::before,
+      .green-button:hover::after {
+        transform: scale(0);
+      }
+
+      .green-button:hover {
+        box-shadow: inset 0px 0px 25px #218838;
+        background-color: rgba(33, 136, 56, 0.1);
+      }
+
+      .button-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #121212;
+          color: #e0e0e0; /* Texto más claro */
+        }
+
+        .container {
+          background-color: #1e1e1e;
+          box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+          color: #e0e0e0; /* Título más claro */
+        }
+
+        .green-button {
+          display: inline-block; /* Hace que el botón se ajuste al contenido */
+          position: relative;
+          height: 3.5em;
+          padding: 0 1em; /* Añade padding horizontal para que el texto no esté pegado a los bordes */
+          border: 3px ridge #218838;
+          outline: none;
+          background-color: transparent;
+          color: #e0e0e0;
+          transition: 1s;
+          border-radius: 0.3em;
+          font-size: 16px;
+          font-weight: bold;
+          cursor: pointer;
+          white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+          margin-top: 1px;
+        }
+
+        .green-button::after {
+          content: "";
+          position: absolute;
+          top: -10px;
+          left: 3%;
+          width: 95%;
+          height: 40%;
+          background-color: #1e1e1e;
+          transition: 0.5s;
+          transform-origin: center;
+        }
+
+        .green-button::before {
+          content: "";
+          transform-origin: center;
+          position: absolute;
+          top: 80%;
+          left: 3%;
+          width: 95%;
+          height: 40%;
+          background-color: #1e1e1e;
+          transition: 0.5s;
+        }
+
+        .green-button:hover::before,
+        .green-button:hover::after {
+          transform: scale(0);
+        }
+
+        .green-button:hover {
+          box-shadow: inset 0px 0px 25px #218838;
+          background-color: rgba(33, 136, 56, 0.1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Opciones del Test</h1>
+      <div class="button-container">
+        <button class="btn" onclick="goTo('ejerReactQuimica.html')">
+          Test
+        </button>
+        <button class="btn" onclick="goTo('/teoria/teoReactQuimica.html')">
+          Teoría
+        </button>
+      </div>
+      <button class="green-button" onclick="goTo('/indiceTest.html')">
+        Ir al Indice
+      </button>
+    </div>
+    <script>
+      // Función para redirigir a otra página
+      function goTo(page) {
+        window.location.href = page;
+      }
+    </script>
+  </body>
+</html>
