@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aldehídos y cetonas</title>
+    <link rel="icon" href="/media/quimic.png" />
+    <style>
+      /* Añade estos estilos al bloque <style> existente */
+      input[type="text"] {
+        width: calc(100% - 20px);
+        max-width: 300px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: block; /* Hace que el input ocupe su propia línea */
+        margin: 0 auto 20px auto; /* Centra el input y añade margen abajo */
+      }
+
+      button#check-button {
+        margin: 0 auto; /* Centra el botón */
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: block; /* Hace que el botón ocupe su propia línea */
+      }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f4f8;
+      }
+      .container {
+        text-align: center;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
+      h1 {
+        font-size: 24px;
+        color: #333;
+      }
+      .formula {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 20px 0;
+      }
+      input[type="text"] {
+        width: calc(100% - 20px);
+        max-width: 300px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      input[disabled] {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+      }
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .result {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .correct-answers {
+        margin-top: 10px;
+        font-size: 16px;
+        color: #555;
+        text-align: center;
+      }
+      .correct-answers p {
+        margin: 5px 0;
+      }
+      .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+      }
+      .navigation button {
+        padding: 10px;
+        border-radius: 50%;
+        background-color: #28a745;
+        font-size: 16px;
+      }
+      .navigation button:hover {
+        background-color: #218838;
+      }
+      .progress {
+        font-size: 16px;
+        margin: 0 10px;
+      }
+      .finish-button {
+        display: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .finish-button:hover {
+        background-color: #218838;
+      }
+      .timer {
+        font-size: 16px;
+        color: #555;
+        margin-top: 10px;
+      }
+      .all-answers-button {
+        display: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #ffc107;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .all-answers-button:hover {
+        background-color: #e0a800;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #121212;
+          color: #e0e0e0; /* Texto más claro */
+        }
+
+        .container {
+          background-color: #1e1e1e;
+          box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+          color: #e0e0e0; /* Título más claro */
+        }
+        #all-answers-container {
+          background-color: #121212 !important;
+          color: #e0e0e0 !important;
+        }
+
+        #all-answers-container .container,
+        #all-answers-container div,
+        #all-answers-container li {
+          background-color: #1e1e1e !important;
+          border: 1px solid #3c3c3c !important;
+          color: #e0e0e0 !important;
+        }
+
+        #back-to-test-button {
+          background-color: #007bff !important;
+          color: #fff !important;
+          border: none !important;
+        }
+
+        #back-to-test-button:hover {
+          background-color: #0056b3 !important;
+        }
+
+        #all-answers-container strong,
+        #all-answers-container h2,
+        #all-answers-container p,
+        #all-answers-container span {
+          color: #e0e0e0 !important;
+        }
+
+        #all-answers-container input[type="text"],
+        #all-answers-container input[type="button"],
+        #all-answers-container button {
+          background-color: #2c2c2c !important;
+          color: #e0e0e0 !important;
+          border: 1px solid #555 !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="test-container">
+      <h1>Aldehídos y cetonas</h1>
+      <div class="timer" id="timer">Tiempo: 0:00</div>
+      <div class="formula" id="formula"></div>
+      <input type="text" id="answer" placeholder="Escribe tu respuesta aquí" />
+      <button id="check-button">Corregir</button>
+      <div class="result" id="result"></div>
+      <div class="correct-answers" id="correct-answers"></div>
+      <div class="navigation" id="navigation">
+        <button id="prev-button">←</button>
+        <span class="progress" id="progress"></span>
+        <button id="next-button">→</button>
+      </div>
+      <button class="finish-button" id="finish-button">Volver a Inicio</button>
+      <button class="all-answers-button" id="all-answers-button">
+        Ver todas las respuestas
+      </button>
+    </div>
+    <div id="all-answers-container" style="display: none"></div>
+    <script>
+      const formulas = [
+        {
+          formula:
+            "CH<sub>3</sub>-CH<sub>2</sub>-CH<sub>2</sub>-CO-CH<sub>2</sub>-CH<sub>3</sub>",
+          answers: ["etilpropilcetona"],
+        },
+        {
+          formula:
+            "CH<sub>3</sub>-CH<sub>2</sub>-CO-CH<sub>2</sub>-CH<sub>3</sub>",
+          answers: ["dietilcetona"],
+        },
+        {
+          formula: "CH<sub>3</sub>-CO-CH<sub>2</sub>-CH<sub>3</sub>",
+          answers: ["etilmetilcetona"],
+        },
+        {
+          formula:
+            "CH<sub>3</sub>-CH<sub>2</sub>-CH<sub>2</sub>-CH<sub>2</sub>-CO-CH<sub>3</sub>",
+          answers: ["butilmetilcetona"],
+        },
+        {
+          formula:
+            "CH<sub>3</sub>-CH<sub>2</sub>-CO-CH<sub>2</sub>-CH<sub>2</sub>-CH<sub>3</sub>",
+          answers: ["etilpropilcetona"],
+        },
+        { formula: "CH<sub>3</sub>-CH<sub>2</sub>-CHO", answers: ["propanal"] },
+        {
+          formula: "CHO-CH<sub>2</sub>-CH<sub>2</sub>-CH<sub>3</sub>",
+          answers: ["butanal"],
+        },
+        { formula: "HCHO", answers: ["metanal"] },
+        { formula: "CHO-CH<sub>3</sub>", answers: ["etanal"] },
+        {
+          formula:
+            "CH<sub>3</sub>-CH<sub>2</sub>-CH<sub>2</sub>-CH<sub>2</sub>-CH<sub>2</sub>-CHO",
+          answers: ["hexanal"],
+        },
+      ];
+
+      const totalQuestions = formulas.length;
+      let selectedFormulas = formulas
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 10);
+      let userAnswers = Array(totalQuestions).fill("");
+      let answerStates = Array(totalQuestions).fill(null);
+      let displayedAnswers = Array(totalQuestions).fill("");
+      let currentIndex = 0;
+      let timerInterval;
+      let secondsElapsed = 0;
+
+      function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secondsLeft = seconds % 60;
+        return `${minutes}:${secondsLeft.toString().padStart(2, "0")}`;
+      }
+
+      function startTimer() {
+        timerInterval = setInterval(() => {
+          secondsElapsed++;
+          document.getElementById("timer").textContent = `Tiempo: ${formatTime(
+            secondsElapsed
+          )}`;
+        }, 1000);
+      }
+
+      function stopTimer() {
+        clearInterval(timerInterval);
+      }
+
+      function updateUI() {
+        const answerInput = document.getElementById("answer");
+        const checkButton = document.getElementById("check-button");
+        const result = document.getElementById("result");
+        const correctAnswers = document.getElementById("correct-answers");
+        const finishButton = document.getElementById("finish-button");
+        const allAnswersButton = document.getElementById("all-answers-button");
+        const navigation = document.getElementById("navigation");
+        const progress = document.getElementById("progress");
+
+        if (currentIndex < 10) {
+          // Mostramos la pregunta normal
+          const currentFormula = selectedFormulas[currentIndex];
+          const userAnswer = userAnswers[currentIndex];
+
+          document.getElementById("formula").innerHTML = currentFormula.formula;
+          progress.textContent = `${currentIndex + 1}/10`;
+          answerInput.value = userAnswer || "";
+          answerInput.disabled = answerStates[currentIndex] !== null;
+          checkButton.disabled = answerStates[currentIndex] !== null;
+
+          // Asegurarse de que los elementos son visibles
+          answerInput.style.display = "block";
+          checkButton.style.display = "block";
+
+          if (answerStates[currentIndex] === true) {
+            result.textContent = "¡Correcto!";
+            result.style.color = "#28a745";
+            correctAnswers.innerHTML = displayedAnswers[currentIndex];
+          } else if (answerStates[currentIndex] === false) {
+            result.textContent = "Incorrecto.";
+            result.style.color = "#dc3545";
+            correctAnswers.innerHTML = displayedAnswers[currentIndex];
+          } else {
+            result.textContent = "";
+            result.style.color = "";
+            correctAnswers.innerHTML = "";
+          }
+
+          navigation.style.display = "flex";
+          finishButton.style.display = "none";
+          allAnswersButton.style.display = "none";
+        } else {
+          stopTimer();
+
+          const correctCount = answerStates.filter(
+            (state) => state === true
+          ).length;
+
+          document.getElementById(
+            "formula"
+          ).innerHTML = `¡Has terminado el test!<br><br>
+      <span style="font-size: 18px;">Respuestas correctas: ${correctCount}/10</span>`;
+
+          result.textContent = "";
+          correctAnswers.innerHTML = "";
+          answerInput.style.display = "none";
+          checkButton.style.display = "none";
+          navigation.style.display = "none";
+
+          finishButton.style.display = "block";
+          allAnswersButton.style.display = "block";
+        }
+      }
+
+      function checkAnswer() {
+        const answerInput = document.getElementById("answer");
+        const userAnswer = normalize(answerInput.value.trim());
+        const validAnswers =
+          selectedFormulas[currentIndex].answers.map(normalize);
+        const correctAnswersElement =
+          document.getElementById("correct-answers");
+
+        answerStates[currentIndex] = validAnswers.includes(userAnswer);
+        document.getElementById("result").textContent = answerStates[
+          currentIndex
+        ]
+          ? "¡Correcto!"
+          : "Incorrecto.";
+        document.getElementById("result").style.color = answerStates[
+          currentIndex
+        ]
+          ? "#28a745"
+          : "#dc3545";
+
+        const answersHTML = selectedFormulas[currentIndex].answers
+          .map((answer) => `<p>${answer}</p>`)
+          .join("");
+        correctAnswersElement.innerHTML = `<h3>Respuestas correctas:</h3>${answersHTML}`;
+        displayedAnswers[
+          currentIndex
+        ] = `<h3>Respuestas correctas:</h3>${answersHTML}`;
+
+        userAnswers[currentIndex] = answerInput.value.trim();
+        answerInput.disabled = true;
+        document.getElementById("check-button").disabled = true;
+      }
+
+      function normalize(text) {
+        return text
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/\s+/g, " ");
+      }
+
+      function showAllAnswers() {
+        const answersContainer = document.getElementById(
+          "all-answers-container"
+        );
+        answersContainer.innerHTML = `
+      <div class="container">
+          <h2 style="margin-bottom: 20px;">Todas las Respuestas</h2>
+          <div style="display: flex; overflow-x: auto; gap: 20px; padding: 10px;">
+              ${selectedFormulas
+                .map(
+                  (formula, index) => `
+                  <div style="min-width: 250px; border: 1px solid #ccc; padding: 15px; border-radius: 10px; background-color: #f9f9f9; flex-shrink: 0;">
+                      <strong>${index + 1}. ${formula.formula}</strong>
+                      <p style="margin-top: 10px;">Respuestas:</p>
+                      <ul style="list-style: none; padding: 0;">
+                          ${formula.answers
+                            .map(
+                              (answer) =>
+                                `<li style="margin-bottom: 5px; padding: 5px; background-color: #e9ecef; border-radius: 5px;">${answer}</li>`
+                            )
+                            .join("")}
+                      </ul>
+                  </div>
+              `
+                )
+                .join("")}
+          </div>
+          <button id="back-to-test-button" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer;">Volver al Test</button>
+      </div>
+  `;
+
+        // Ocultamos el contenedor del test y mostramos las respuestas
+        document.getElementById("test-container").style.display = "none";
+        answersContainer.style.display = "block";
+
+        // Evento para volver al test sin perder el progreso
+        document
+          .getElementById("back-to-test-button")
+          .addEventListener("click", () => {
+            answersContainer.style.display = "none";
+            document.getElementById("test-container").style.display = "block";
+          });
+      }
+
+      document
+        .getElementById("check-button")
+        .addEventListener("click", checkAnswer);
+      document.getElementById("next-button").addEventListener("click", () => {
+        if (currentIndex < 9) {
+          currentIndex++;
+          updateUI();
+        } else {
+          // Estamos en la pregunta 10 (índice 9) y queremos ir a la pantalla final
+          currentIndex = 10; // Establecemos el índice a un valor mayor que el número de preguntas
+          updateUI(); // Esto mostrará la pantalla final
+        }
+      });
+      document.getElementById("prev-button").addEventListener("click", () => {
+        if (currentIndex > 0) {
+          currentIndex--;
+        }
+        updateUI();
+      });
+      document.getElementById("finish-button").addEventListener("click", () => {
+        window.location.href = "formOr.html";
+      });
+      document
+        .getElementById("all-answers-button")
+        .addEventListener("click", showAllAnswers);
+
+      startTimer();
+      updateUI();
+    </script>
+  </body>
+</html>
