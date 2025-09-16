@@ -235,6 +235,91 @@
       .close-popup:active {
         background-color: rgb(130, 0, 0);
       }
+
+      .error-button {
+        position: absolute;
+        bottom: -35px;
+        left: 45%;
+        transform: translateX(-50%); /* solo corrige el eje horizontal */
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #333;
+        border: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition-duration: 0.3s;
+        overflow: hidden;
+        color: white;
+        font-size: 16px;
+        animation: fadeIn 1s forwards;
+      }
+
+      .error-button::after {
+        content: "⚠️";
+        display: inline-block;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .error-button:hover::after {
+        transform: translateY(8px);
+      }
+
+      .error-button:hover {
+        transform: translateY(-50%) scale(1.2);
+        border-radius: 8px;
+        transition-duration: 0.3s;
+        background-color: #e24c4b;
+      }
+
+      .error-button::before {
+        position: absolute;
+        top: -30px;
+        content: "Error";
+        color: white;
+        transition-duration: 0.3s;
+        font-size: 2px;
+      }
+
+      .error-button:hover::before {
+        font-size: 15px;
+        opacity: 1;
+        transform: translateY(35px);
+        transition-duration: 0.3s;
+      }
+
+      .button-group {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        gap: 20px; /* Espacio entre los botones */
+        margin-top: 15px;
+      }
+
+      .button-group .close-popup {
+        left: auto; /* Quitamos el desplazamiento que usabas */
+        position: relative;
+      }
+
+      /* Botón Enviar (verde en hover) */
+      .button-group .close-popup:first-child:hover {
+        background-color: #28a745;
+      }
+
+      input[type="text"],
+      #errorMsg {
+        width: calc(100% - 20px);
+        max-width: 300px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: block; /* Hace que el input ocupe su propia línea */
+        margin: 0 auto 20px auto; /* Centra el input y añade margen abajo */
+      }
+
       @media (prefers-color-scheme: dark) {
         body {
           background-color: #121212;
@@ -265,7 +350,8 @@
           background-color: rgba(33, 136, 56, 0.2);
         }
 
-        .new-button, .left-button {
+        .new-button,
+        .left-button {
           background-color: #333;
           color: #e0e0e0;
         }
@@ -299,10 +385,14 @@
       </button>
       <button class="new-button" onclick="openPopup()"></button>
       <button class="left-button" onclick="openAutor()"></button>
+      <button class="error-button" onclick="openErrorForm()"></button>
     </div>
     <div class="popup" id="popup">
       <h2>Actualizaciones</h2>
-      <p>Se han añadido las teorías de las Aminas, amidas y nitrilos, y la de Reactividad Química</p>
+      <p>
+        Se han añadido las teorías de las Aminas, amidas y nitrilos, y la de
+        Reactividad Química
+      </p>
       <p>Se han añadido 5 preguntas más a los Hidróxidos</p>
       <button class="close-popup" onclick="closePopup()">Cerrar</button>
     </div>
@@ -312,6 +402,20 @@
       <p>Para el Colegio de Fomento Miralvent</p>
       <button class="close-popup" onclick="closeAutor()">Cerrar</button>
     </div>
+    <div class="popup" id="errorForm">
+      <h2>Reportar un error</h2>
+      <input type="text" id="username" placeholder="Tu nombre" />
+      <textarea
+        id="errorMsg"
+        placeholder="Describe el error..."
+        rows="4"
+      ></textarea>
+      <div class="button-group">
+        <button class="close-popup" onclick="sendError()">Enviar</button>
+        <button class="close-popup" onclick="closeErrorForm()">Cerrar</button>
+      </div>
+    </div>
+
     <script>
       function goTo(page) {
         window.location.href = page;
@@ -328,6 +432,78 @@
       function closeAutor() {
         document.getElementById("autor").style.display = "none";
       }
+    </script>
+
+    <!-- 🚨 Script del reporte de errores -->
+    <script>
+      const TELEGRAM_BOT_TOKEN =
+        "8021709931:AAFuw9LxKeA7H1BMspY8h6PRP_yPmx8NMj8";
+      const TELEGRAM_CHAT_ID = "8337395780";
+
+      function openErrorForm() {
+        document.getElementById("errorForm").style.display = "block";
+      }
+
+      function closeErrorForm() {
+        document.getElementById("errorForm").style.display = "none";
+      }
+
+      function sendError() {
+        const name = document.getElementById("username").value;
+        const error = document.getElementById("errorMsg").value;
+
+        if (!name || !error) {
+          alert("Por favor, completa todos los campos.");
+          return;
+        }
+
+        // Obtener fecha y hora actuales
+        const now = new Date();
+        const fecha = now.toLocaleDateString("es-ES", {
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+        });
+        const hora = now.toLocaleTimeString("es-ES", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+
+        // Mensaje con saltos de línea (Telegram los interpreta como párrafos)
+        const message =
+          `🚨 Nuevo reporte de error\n\n` +
+          `👤 Usuario: ${name}\n` +
+          `📅⏰ Día: ${fecha}  |  Hora: ${hora}\n\n` +
+          `⚠️ Error: ${error}\n`;
+
+        fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: message,
+            parse_mode: "HTML", // permite formato básico
+          }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              alert("✅ Error reportado con éxito");
+              closeErrorForm();
+            } else {
+              alert("❌ No se pudo enviar el reporte");
+            }
+          })
+          .catch((err) => {
+            alert("⚠️ Error al conectar con Telegram");
+            console.error(err);
+          });
+      }
+
+      window.addEventListener("load", () => {
+        document.getElementById("username").value = "";
+        document.getElementById("errorMsg").value = "";
+      });
     </script>
   </body>
 </html>
