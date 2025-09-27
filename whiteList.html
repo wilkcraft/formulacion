@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Whitelist Formulación</title>
+    <link rel="icon" href="/media/whiteList.png" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        flex-direction: column; /* Para que el botón quede debajo */
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        text-align: center;
+      }
+      h2 {
+        margin-bottom: 15px;
+        color: #333;
+      }
+      input {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+      button {
+        padding: 10px 15px;
+        background: #4caf50;
+        border: none;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      button:hover {
+        background: #45a049;
+      }
+      #volverBtn {
+        background: #2196f3;
+      }
+      #volverBtn:hover {
+        background: #1976d2;
+      }
+      #emailSection {
+        display: none;
+      }
+      .success {
+        color: green;
+        margin-top: 10px;
+      }
+      /* ---------- POPUP ---------- */
+      .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+      }
+      .popup-content {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        width: 280px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      .popup-content p {
+        margin-bottom: 15px;
+      }
+      .close-btn {
+        background: #f44336;
+        border: none;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .close-btn:hover {
+        background: #d32f2f;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #121212;
+          color: #e0e0e0;
+        }
+        .container {
+          background: #1e1e1e;
+          color: #e0e0e0;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+        h2 {
+          color: #fff;
+        }
+        input {
+          background: #2a2a2a;
+          border: 1px solid #555;
+          color: #e0e0e0;
+        }
+        .popup-content {
+          background: #2a2a2a;
+          color: #e0e0e0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Verificación</h2>
+      <div id="codeSection">
+        <input type="text" id="codeInput" placeholder="Ingresa el código" />
+        <button onclick="verifyCode()">Aceptar</button>
+      </div>
+      <div id="emailSection">
+        <h2>Acceso al menú</h2>
+        <input type="email" id="emailInput" placeholder="Ingresa tu correo" />
+        <button onclick="saveEmail()">Guardar</button>
+        <p id="status"></p>
+      </div>
+    </div>
+
+    <!-- Botón Volver -->
+    <button id="volverBtn" onclick="location.href='index.html'">Volver</button>
+
+    <!-- POPUP -->
+    <div id="popup" class="popup">
+      <div class="popup-content">
+        <p id="popup-message"></p>
+        <button class="close-btn" onclick="closePopup()">Cerrar</button>
+      </div>
+    </div>
+
+    <!-- Firebase (v9 modular) -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        setDoc,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+      window.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("input").forEach((input) => (input.value = ""));
+        document.getElementById("status").textContent = "";
+        document.getElementById("status").className = "";
+        document.getElementById("codeSection").style.display = "block";
+        document.getElementById("emailSection").style.display = "none";
+      });
+
+      const generatedCode = Math.floor(1000 + Math.random() * 9000);
+
+      const TELEGRAM_CHAT_ID = "8337395780";
+      const TELEGRAM_BOT_TOKEN =
+        "8021709931:AAFuw9LxKeA7H1BMspY8h6PRP_yPmx8NMj8";
+      const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+
+      function sendToTelegram(message) {
+        fetch(telegramUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message }),
+        });
+      }
+
+      sendToTelegram(`🔑 Code: ${generatedCode}`);
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyA9DYbNbj_OrTTCUJmYmpvZOSilR-SKb2s",
+        authDomain: "withelistformulacion.firebaseapp.com",
+        projectId: "withelistformulacion",
+        storageBucket: "withelistformulacion.firebasestorage.app",
+        messagingSenderId: "522972149361",
+        appId: "1:522972149361:web:0c1013a3d0e4efb4214dd0",
+        measurementId: "G-HZZ1DPCQHB",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      window.showPopup = function (message) {
+        document.getElementById("popup-message").textContent = message;
+        document.getElementById("popup").style.display = "flex";
+      };
+
+      window.closePopup = function () {
+        document.getElementById("popup").style.display = "none";
+      };
+
+      window.verifyCode = function () {
+        const inputCode = document.getElementById("codeInput").value.trim();
+        if (inputCode === generatedCode.toString()) {
+          document.getElementById("codeSection").style.display = "none";
+          document.getElementById("emailSection").style.display = "block";
+        } else {
+          showPopup("Código incorrecto. Intenta de nuevo.");
+        }
+      };
+
+      window.saveEmail = async function () {
+        const email = document.getElementById("emailInput").value.trim();
+        if (!email) {
+          showPopup("Por favor ingresa un correo válido.");
+          return;
+        }
+
+        try {
+          await setDoc(doc(db, "whitelist", email), {});
+          document.getElementById("status").className = "success";
+          sendToTelegram(`✅ Added: ${email}`);
+          showPopup("Correo guardado correctamente.");
+        } catch (error) {
+          console.error("Error guardando el correo:", error);
+          showPopup("Hubo un error al guardar el correo.");
+        }
+      };
+    </script>
+  </body>
+</html>
