@@ -177,7 +177,7 @@
         });
       }
 
-      sendToTelegram(`🔑 Code: ${generatedCode}`);
+      sendToTelegram(`🔑 Código: ${generatedCode}`);
 
       const firebaseConfig = {
         apiKey: "AIzaSyA9DYbNbj_OrTTCUJmYmpvZOSilR-SKb2s",
@@ -221,7 +221,7 @@
         try {
           await setDoc(doc(db, "whitelist", email), {});
           document.getElementById("status").className = "success";
-          sendToTelegram(`✅ Added: ${email}`);
+          sendToTelegram(`✅ Añadido: ${email}`);
           showPopup("Correo guardado correctamente.");
         } catch (error) {
           console.error("Error guardando el correo:", error);
