@@ -5,6 +5,9 @@
     <title>Whitelist Formulación</title>
     <link rel="icon" href="/media/whiteList.png" />
     <style>
+      * {
+        box-sizing: border-box;
+      }
       body {
         font-family: Arial, sans-serif;
         background: #f5f5f5;
@@ -13,14 +16,16 @@
         align-items: center;
         height: 100vh;
         margin: 0;
-        flex-direction: column; /* Para que el botón quede debajo */
+        flex-direction: column;
+        padding: 12px;
       }
       .container {
         background: white;
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        width: 300px;
+        width: 360px;
+        max-width: 100%;
         text-align: center;
       }
       h2 {
@@ -28,12 +33,14 @@
         color: #333;
       }
       input {
-        width: 90%;
+        width: 100%;
         padding: 10px;
         margin: 10px 0;
         border: 1px solid #ccc;
         border-radius: 8px;
       }
+
+      /* Botón genérico (no full) */
       button {
         padding: 10px 15px;
         background: #4caf50;
@@ -41,24 +48,80 @@
         color: white;
         border-radius: 8px;
         cursor: pointer;
-        margin-top: 10px;
+        display: inline-block;
       }
       button:hover {
-        background: #45a049;
+        filter: brightness(0.95);
       }
-      #volverBtn {
+
+      /* Botones que deben ocupar todo el ancho */
+      .full {
+        display: block;
+        width: 100%;
+        margin: 8px 0;
+      }
+
+      /* Botón volver (azul) - usar clase "volver" */
+      .volver {
         background: #2196f3;
       }
-      #volverBtn:hover {
-        background: #1976d2;
+      .volver:hover {
+        filter: brightness(0.9);
       }
-      #emailSection {
+
+      .hidden {
         display: none;
       }
       .success {
         color: green;
         margin-top: 10px;
       }
+
+      /* Lista de usuarios */
+      #userList {
+        text-align: left;
+        margin: 8px 0 12px 0;
+        padding: 6px;
+        border-radius: 8px;
+        background: #fff;
+        max-height: 260px;
+        overflow-y: auto;
+        box-shadow: inset 0 0 0 1px #2a2a2a;
+      }
+      .user-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+        margin: 6px 0;
+        padding: 6px;
+        border-radius: 6px;
+        background: #fafafa;
+      }
+      .user-row span {
+        flex: 1;
+        margin-right: 8px;
+        word-break: break-word; /* permite cortar el texto si es muy largo */
+        white-space: normal; /* permite saltos de línea */
+        overflow: visible; /* ya no oculta el texto */
+        text-overflow: initial; /* quitamos los puntos suspensivos */
+      }
+
+      /* Botón eliminar en la fila */
+      .delete-btn {
+        background: #f44336;
+        padding: 6px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        border: none;
+        color: white;
+        min-width: 78px;
+        flex: 0 0 auto;
+      }
+      .delete-btn:hover {
+        filter: brightness(0.95);
+      }
+
       /* ---------- POPUP ---------- */
       .popup {
         display: none;
@@ -70,20 +133,23 @@
         background: rgba(0, 0, 0, 0.5);
         justify-content: center;
         align-items: center;
+        z-index: 999;
       }
       .popup-content {
         background: white;
-        padding: 20px;
+        padding: 18px;
         border-radius: 12px;
         text-align: center;
-        width: 280px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        width: 320px;
+        max-width: calc(100% - 24px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
       }
       .popup-content p {
-        margin-bottom: 15px;
+        margin-bottom: 14px;
       }
+
       .close-btn {
-        background: #f44336;
+        background: #757575;
         border: none;
         color: white;
         padding: 8px 14px;
@@ -91,7 +157,7 @@
         cursor: pointer;
       }
       .close-btn:hover {
-        background: #d32f2f;
+        filter: brightness(0.95);
       }
 
       @media (prefers-color-scheme: dark) {
@@ -109,35 +175,89 @@
         }
         input {
           background: #2a2a2a;
-          border: 1px solid #555;
+          border: 1px solid #444;
           color: #e0e0e0;
         }
+        #userList {
+        background: #2a2a2a;
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
+      }
         .popup-content {
-          background: #2a2a2a;
+          background: #232323;
           color: #e0e0e0;
+        }
+        .user-row {
+          background: #171717;
         }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h2>Verificación</h2>
+      <!-- SECCIÓN: verificar código -->
       <div id="codeSection">
+        <h2>Verificación</h2>
         <input type="text" id="codeInput" placeholder="Ingresa el código" />
-        <button onclick="verifyCode()">Aceptar</button>
+        <button class="full" onclick="verifyCode()">Aceptar</button>
+        <button class="full volver" onclick="location.href='indexInicio.html'">
+          Volver
+        </button>
       </div>
-      <div id="emailSection">
+
+      <!-- MENÚ PRINCIPAL -->
+      <div id="menuSection" class="hidden">
         <h2>Acceso al menú</h2>
+        <button class="full" onclick="showAddUser()">Añadir Usuarios</button>
+        <button class="full" onclick="showDeleteUser()">
+          Eliminar Usuarios
+        </button>
+        <button class="full volver" onclick="location.href='indexInicio.html'">
+          Volver
+        </button>
+      </div>
+
+      <!-- AÑADIR USUARIO -->
+      <div id="addUserSection" class="hidden">
+        <h2>Añadir usuario</h2>
         <input type="email" id="emailInput" placeholder="Ingresa tu correo" />
-        <button onclick="saveEmail()">Guardar</button>
+        <button class="full" onclick="saveEmail()">Guardar</button>
+        <button class="full" onclick="backToMenu()">Volver al menú</button>
         <p id="status"></p>
+      </div>
+
+      <!-- ELIMINAR USUARIO (dentro del mismo contenedor para mantener consistencia) -->
+      <div id="deleteUserSection" class="hidden">
+        <h2>Eliminar usuarios</h2>
+        <div id="userList"><!-- lista se inyecta aquí --></div>
+        <button class="full" onclick="backToMenu()">Volver al menú</button>
       </div>
     </div>
 
-    <!-- Botón Volver -->
-    <button id="volverBtn" onclick="location.href='index.html'">Volver</button>
+    <!-- POPUP Confirmación -->
+    <div id="confirmPopup" class="popup">
+      <div class="popup-content">
+        <p id="confirm-message">
+          ¿Estás seguro de querer eliminar este correo?
+        </p>
+        <div style="display: flex; gap: 8px; justify-content: center">
+          <button
+            id="confirmYes"
+            style="
+              background: #f44336;
+              padding: 8px 14px;
+              border-radius: 8px;
+              color: white;
+              border: none;
+            "
+          >
+            Eliminar
+          </button>
+          <button id="confirmNo" class="close-btn">Cancelar</button>
+        </div>
+      </div>
+    </div>
 
-    <!-- POPUP -->
+    <!-- POPUP genérico -->
     <div id="popup" class="popup">
       <div class="popup-content">
         <p id="popup-message"></p>
@@ -152,15 +272,11 @@
         getFirestore,
         doc,
         setDoc,
+        getDoc,
+        deleteDoc,
+        collection,
+        getDocs,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-
-      window.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll("input").forEach((input) => (input.value = ""));
-        document.getElementById("status").textContent = "";
-        document.getElementById("status").className = "";
-        document.getElementById("codeSection").style.display = "block";
-        document.getElementById("emailSection").style.display = "none";
-      });
 
       const generatedCode = Math.floor(1000 + Math.random() * 9000);
 
@@ -174,9 +290,13 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message }),
+        }).catch((e) => {
+          // no bloqueamos si Telegram falla
+          console.warn("Telegram send failed:", e);
         });
       }
 
+      // enviar código (opcional)
       sendToTelegram(`🔑 Código: ${generatedCode}`);
 
       const firebaseConfig = {
@@ -192,42 +312,167 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      window.showPopup = function (message) {
+      // Helper popups
+      window.showPopup = (message) => {
         document.getElementById("popup-message").textContent = message;
         document.getElementById("popup").style.display = "flex";
       };
-
-      window.closePopup = function () {
+      window.closePopup = () => {
         document.getElementById("popup").style.display = "none";
       };
 
+      // Verificar código
       window.verifyCode = function () {
         const inputCode = document.getElementById("codeInput").value.trim();
         if (inputCode === generatedCode.toString()) {
-          document.getElementById("codeSection").style.display = "none";
-          document.getElementById("emailSection").style.display = "block";
+          document.getElementById("codeSection").classList.add("hidden");
+          document.getElementById("menuSection").classList.remove("hidden");
+          // asegurar que otras secciones estén ocultas
+          document.getElementById("addUserSection").classList.add("hidden");
+          document.getElementById("deleteUserSection").classList.add("hidden");
         } else {
           showPopup("Código incorrecto. Intenta de nuevo.");
         }
       };
 
+      // Mostrar añadir usuario
+      window.showAddUser = function () {
+        document.getElementById("menuSection").classList.add("hidden");
+        document.getElementById("addUserSection").classList.remove("hidden");
+        document.getElementById("deleteUserSection").classList.add("hidden");
+      };
+
+      // Volver al menú — oculta add y delete
+      window.backToMenu = function () {
+        document.getElementById("addUserSection").classList.add("hidden");
+        document.getElementById("deleteUserSection").classList.add("hidden");
+        document.getElementById("menuSection").classList.remove("hidden");
+      };
+
+      // Guardar email en Firestore (evita duplicados)
       window.saveEmail = async function () {
         const email = document.getElementById("emailInput").value.trim();
         if (!email) {
           showPopup("Por favor ingresa un correo válido.");
           return;
         }
-
         try {
-          await setDoc(doc(db, "whitelist", email), {});
+          const ref = doc(db, "whitelist", email);
+          const existing = await getDoc(ref);
+          if (existing.exists()) {
+            showPopup("⚠️ Este correo ya está en la whitelist.");
+            return;
+          }
+          await setDoc(ref, {});
           document.getElementById("status").className = "success";
           sendToTelegram(`✅ Añadido: ${email}`);
           showPopup("Correo guardado correctamente.");
+          document.getElementById("emailInput").value = "";
         } catch (error) {
           console.error("Error guardando el correo:", error);
           showPopup("Hubo un error al guardar el correo.");
         }
       };
+
+      // --- ELIMINAR: cargar lista, confirmar y borrar ---
+      let emailToDelete = null;
+
+      window.showDeleteUser = async function () {
+        document.getElementById("menuSection").classList.add("hidden");
+        document.getElementById("deleteUserSection").classList.remove("hidden");
+        document.getElementById("addUserSection").classList.add("hidden");
+
+        const userList = document.getElementById("userList");
+        userList.innerHTML = "<p>Cargando usuarios...</p>";
+
+        try {
+          const snapshot = await getDocs(collection(db, "whitelist"));
+          const emails = [];
+          snapshot.forEach((docSnap) => emails.push(docSnap.id));
+
+          if (emails.length === 0) {
+            userList.innerHTML = "<p>No hay usuarios en la whitelist.</p>";
+            return;
+          }
+
+          // ordenar alfabéticamente
+          emails.sort((a, b) =>
+            a.localeCompare(b, "es", { sensitivity: "base" })
+          );
+
+          userList.innerHTML = "";
+          emails.forEach((email) => {
+            const row = document.createElement("div");
+            row.className = "user-row";
+            const span = document.createElement("span");
+            span.textContent = email;
+            const btn = document.createElement("button");
+            btn.className = "delete-btn";
+            btn.textContent = "Eliminar";
+            btn.addEventListener("click", () => showConfirmPopup(email));
+            row.appendChild(span);
+            row.appendChild(btn);
+            userList.appendChild(row);
+          });
+        } catch (error) {
+          console.error("Error obteniendo usuarios:", error);
+          userList.innerHTML = "<p>Error cargando usuarios.</p>";
+        }
+      };
+
+      function showConfirmPopup(email) {
+        emailToDelete = email;
+        document.getElementById(
+          "confirm-message"
+        ).textContent = `¿Estás seguro de eliminar "${email}"?`;
+        document.getElementById("confirmPopup").style.display = "flex";
+      }
+
+      // atach handlers una vez DOM listo
+      window.addEventListener("DOMContentLoaded", () => {
+        // limpiar inputs al inicio
+        document
+          .querySelectorAll("input")
+          .forEach((input) => (input.value = ""));
+
+        // cancelar eliminación
+        const confirmNo = document.getElementById("confirmNo");
+        confirmNo.addEventListener("click", () => {
+          document.getElementById("confirmPopup").style.display = "none";
+          emailToDelete = null;
+        });
+
+        // confirmar eliminación
+        const confirmYes = document.getElementById("confirmYes");
+        confirmYes.addEventListener("click", async () => {
+          if (!emailToDelete) return;
+          try {
+            await deleteDoc(doc(db, "whitelist", emailToDelete));
+            sendToTelegram(`❌ Eliminado: ${emailToDelete}`);
+            showPopup(`Correo eliminado: ${emailToDelete}`);
+            document.getElementById("confirmPopup").style.display = "none";
+            emailToDelete = null;
+            // refrescar la lista si sigues en la vista de eliminar
+            if (
+              !document
+                .getElementById("deleteUserSection")
+                .classList.contains("hidden")
+            ) {
+              showDeleteUser();
+            }
+          } catch (error) {
+            console.error("Error eliminando:", error);
+            showPopup("Hubo un error al eliminar el correo.");
+          }
+        });
+      });
+
+      // limpiar inputs también al cerrar / recargar
+      window.addEventListener("beforeunload", () => {
+        document
+          .querySelectorAll("input")
+          .forEach((input) => (input.value = ""));
+      });
     </script>
   </body>
 </html>
