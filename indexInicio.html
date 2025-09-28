@@ -430,7 +430,7 @@
     </div>
     <div class="popup" id="errorForm">
       <h2>Reportar un error</h2>
-      <input type="text" id="username" placeholder="Tu correo electrónico" />
+      <input type="text" id="username" placeholder="Ingresa un correo" />
       <textarea
         id="errorMsg"
         placeholder="Describe el error..."
@@ -447,7 +447,7 @@
       <h2>Ayuda</h2>
       <p>Si quieres poder reportar un error escribe tu correo y pulsa enviar</p>
       <p>Se intentará añadir el correo lo antes posible</p>
-      <input type="text" id="helpEmail" placeholder="Tu correo electrónico" />
+      <input type="text" id="helpEmail" placeholder="Ingresa un correo" />
       <div class="button-group">
         <button class="close-popup" onclick="sendHelpEmail()">Enviar</button>
         <button class="close-popup" onclick="closeHelpPopup()">Cerrar</button>
@@ -540,7 +540,7 @@
         if (!email || !error)
           return showMessage("Campos incompletos", "Completa todos los campos");
         if (!isEmailValid(email))
-          return showMessage("Correo inválido", "Introduce un correo válido");
+          return showMessage("Correo inválido", "Introduce un correo verificado \n Para verficar un correo pulsa el botón de ?");
 
         const allowed = await isWhitelisted(email);
         if (!allowed)
