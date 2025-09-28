@@ -179,9 +179,9 @@
           color: #e0e0e0;
         }
         #userList {
-        background: #2a2a2a;
-        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
-      }
+          background: #2a2a2a;
+          box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
+        }
         .popup-content {
           background: #232323;
           color: #e0e0e0;
@@ -198,66 +198,32 @@
       <div id="codeSection">
         <h2>Verificación</h2>
         <input type="text" id="codeInput" placeholder="Ingresa el código" />
-        <button class="full" onclick="verifyCode()">Aceptar</button>
-        <button class="full volver" onclick="location.href='indexInicio.html'">
+        <button class="volver" onclick="verifyCode()">Aceptar</button>
+        <button class="volver" onclick="location.href='indexInicio.html'">
           Volver
         </button>
       </div>
 
-      <!-- MENÚ PRINCIPAL -->
-      <div id="menuSection" class="hidden">
-        <h2>Acceso al menú</h2>
-        <button class="full" onclick="showAddUser()">Añadir Usuarios</button>
-        <button class="full" onclick="showDeleteUser()">
-          Eliminar Usuarios
-        </button>
-        <button class="full volver" onclick="location.href='indexInicio.html'">
-          Volver
-        </button>
-      </div>
+      <!-- SECCIÓN: gestión (añadir + eliminar) -->
+      <div id="manageSection" style="display: none">
+        <h2>Gestión de usuarios</h2>
 
-      <!-- AÑADIR USUARIO -->
-      <div id="addUserSection" class="hidden">
-        <h2>Añadir usuario</h2>
-        <input type="email" id="emailInput" placeholder="Ingresa tu correo" />
-        <button class="full" onclick="saveEmail()">Guardar</button>
-        <button class="full" onclick="backToMenu()">Volver al menú</button>
-        <p id="status"></p>
-      </div>
-
-      <!-- ELIMINAR USUARIO (dentro del mismo contenedor para mantener consistencia) -->
-      <div id="deleteUserSection" class="hidden">
-        <h2>Eliminar usuarios</h2>
-        <div id="userList"><!-- lista se inyecta aquí --></div>
-        <button class="full" onclick="backToMenu()">Volver al menú</button>
-      </div>
-    </div>
-
-    <!-- POPUP Confirmación -->
-    <div id="confirmPopup" class="popup">
-      <div class="popup-content">
-        <p id="confirm-message">
-          ¿Estás seguro de querer eliminar este correo?
-        </p>
-        <div style="display: flex; gap: 8px; justify-content: center">
-          <button
-            id="confirmYes"
-            style="
-              background: #f44336;
-              padding: 8px 14px;
-              border-radius: 8px;
-              color: white;
-              border: none;
-            "
-          >
-            Eliminar
-          </button>
-          <button id="confirmNo" class="close-btn">Cancelar</button>
+        <!-- Input + botón añadir -->
+        <div class="add-row">
+          <input type="email" id="emailInput" placeholder="Ingresa un correo" />
+          <button onclick="saveEmail()">Añadir</button>
         </div>
+
+        <!-- Lista de usuarios -->
+        <div id="userList"><p>Cargando usuarios...</p></div>
+
+        <button class="volver" onclick="location.href='indexInicio.html'">
+          Volver
+        </button>
       </div>
     </div>
 
-    <!-- POPUP genérico -->
+    <!-- POPUP -->
     <div id="popup" class="popup">
       <div class="popup-content">
         <p id="popup-message"></p>
@@ -265,7 +231,17 @@
       </div>
     </div>
 
-    <!-- Firebase (v9 modular) -->
+    <!-- POPUP CONFIRMACIÓN -->
+    <div id="confirmPopup" class="popup">
+      <div class="popup-content">
+        <p id="confirm-message"></p>
+        <div style="display: flex; gap: 10px; justify-content: center">
+          <button onclick="confirmYes()">Sí</button>
+          <button class="close-btn" onclick="closeConfirm()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
       import {
@@ -280,24 +256,18 @@
 
       const generatedCode = Math.floor(1000 + Math.random() * 9000);
 
+      // 🔔 OPCIONAL: enviar código por Telegram como antes
       const TELEGRAM_CHAT_ID = "8337395780";
       const TELEGRAM_BOT_TOKEN =
         "8021709931:AAFuw9LxKeA7H1BMspY8h6PRP_yPmx8NMj8";
-      const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-
-      function sendToTelegram(message) {
-        fetch(telegramUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message }),
-        }).catch((e) => {
-          // no bloqueamos si Telegram falla
-          console.warn("Telegram send failed:", e);
-        });
-      }
-
-      // enviar código (opcional)
-      sendToTelegram(`🔑 Código: ${generatedCode}`);
+      fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: `🔑 Código: ${generatedCode}`,
+        }),
+      }).catch(() => {});
 
       const firebaseConfig = {
         apiKey: "AIzaSyA9DYbNbj_OrTTCUJmYmpvZOSilR-SKb2s",
@@ -306,15 +276,13 @@
         storageBucket: "withelistformulacion.firebasestorage.app",
         messagingSenderId: "522972149361",
         appId: "1:522972149361:web:0c1013a3d0e4efb4214dd0",
-        measurementId: "G-HZZ1DPCQHB",
       };
-
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      // Helper popups
-      window.showPopup = (message) => {
-        document.getElementById("popup-message").textContent = message;
+      // Popup helpers
+      window.showPopup = (msg) => {
+        document.getElementById("popup-message").textContent = msg;
         document.getElementById("popup").style.display = "flex";
       };
       window.closePopup = () => {
@@ -322,152 +290,97 @@
       };
 
       // Verificar código
-      window.verifyCode = function () {
+      window.verifyCode = () => {
         const inputCode = document.getElementById("codeInput").value.trim();
         if (inputCode === generatedCode.toString()) {
-          document.getElementById("codeSection").classList.add("hidden");
-          document.getElementById("menuSection").classList.remove("hidden");
-          // asegurar que otras secciones estén ocultas
-          document.getElementById("addUserSection").classList.add("hidden");
-          document.getElementById("deleteUserSection").classList.add("hidden");
+          document.getElementById("codeSection").style.display = "none";
+          document.getElementById("manageSection").style.display = "block";
+          loadUsers();
         } else {
           showPopup("Código incorrecto. Intenta de nuevo.");
         }
       };
 
-      // Mostrar añadir usuario
-      window.showAddUser = function () {
-        document.getElementById("menuSection").classList.add("hidden");
-        document.getElementById("addUserSection").classList.remove("hidden");
-        document.getElementById("deleteUserSection").classList.add("hidden");
-      };
-
-      // Volver al menú — oculta add y delete
-      window.backToMenu = function () {
-        document.getElementById("addUserSection").classList.add("hidden");
-        document.getElementById("deleteUserSection").classList.add("hidden");
-        document.getElementById("menuSection").classList.remove("hidden");
-      };
-
-      // Guardar email en Firestore (evita duplicados)
-      window.saveEmail = async function () {
-        const email = document.getElementById("emailInput").value.trim();
-        if (!email) {
-          showPopup("Por favor ingresa un correo válido.");
-          return;
-        }
+      // Guardar email
+      window.saveEmail = async () => {
+        let email = document
+          .getElementById("emailInput")
+          .value.trim()
+          .toLowerCase(); // 🔹 forzar minúsculas
+        if (!email) return showPopup("Introduce un correo válido.");
         try {
           const ref = doc(db, "whitelist", email);
-          const existing = await getDoc(ref);
-          if (existing.exists()) {
-            showPopup("⚠️ Este correo ya está en la whitelist.");
-            return;
+          if ((await getDoc(ref)).exists()) {
+            return showPopup("⚠️ Ese correo ya existe.");
           }
           await setDoc(ref, {});
-          document.getElementById("status").className = "success";
-          sendToTelegram(`✅ Añadido: ${email}`);
-          showPopup("Correo guardado correctamente.");
           document.getElementById("emailInput").value = "";
-        } catch (error) {
-          console.error("Error guardando el correo:", error);
-          showPopup("Hubo un error al guardar el correo.");
+          showPopup("Correo añadido correctamente.");
+          loadUsers();
+        } catch (err) {
+          console.error(err);
+          showPopup("Error al guardar el correo.");
         }
       };
 
-      // --- ELIMINAR: cargar lista, confirmar y borrar ---
-      let emailToDelete = null;
+      // Popup confirmación
+      let confirmCallback = null;
+      window.showConfirm = (msg, callback) => {
+        document.getElementById("confirm-message").textContent = msg;
+        document.getElementById("confirmPopup").style.display = "flex";
+        confirmCallback = callback;
+      };
+      window.closeConfirm = () => {
+        document.getElementById("confirmPopup").style.display = "none";
+        confirmCallback = null;
+      };
+      window.confirmYes = () => {
+        if (confirmCallback) confirmCallback();
+        closeConfirm();
+      };
 
-      window.showDeleteUser = async function () {
-        document.getElementById("menuSection").classList.add("hidden");
-        document.getElementById("deleteUserSection").classList.remove("hidden");
-        document.getElementById("addUserSection").classList.add("hidden");
+      // Eliminar correo
+      async function deleteEmail(email) {
+        showConfirm(`¿Eliminar ${email}?`, async () => {
+          try {
+            await deleteDoc(doc(db, "whitelist", email));
+            showPopup("Correo eliminado.");
+            loadUsers();
+          } catch (err) {
+            console.error(err);
+            showPopup("Error al eliminar.");
+          }
+        });
+      }
+      window.deleteEmail = deleteEmail;
 
+      // Cargar lista
+      async function loadUsers() {
         const userList = document.getElementById("userList");
         userList.innerHTML = "<p>Cargando usuarios...</p>";
-
         try {
-          const snapshot = await getDocs(collection(db, "whitelist"));
+          const snap = await getDocs(collection(db, "whitelist"));
           const emails = [];
-          snapshot.forEach((docSnap) => emails.push(docSnap.id));
-
+          snap.forEach((d) => emails.push(d.id));
           if (emails.length === 0) {
-            userList.innerHTML = "<p>No hay usuarios en la whitelist.</p>";
+            userList.innerHTML = "<p>No hay usuarios.</p>";
             return;
           }
-
-          // ordenar alfabéticamente
-          emails.sort((a, b) =>
-            a.localeCompare(b, "es", { sensitivity: "base" })
-          );
-
+          emails.sort();
           userList.innerHTML = "";
           emails.forEach((email) => {
             const row = document.createElement("div");
             row.className = "user-row";
-            const span = document.createElement("span");
-            span.textContent = email;
-            const btn = document.createElement("button");
-            btn.className = "delete-btn";
-            btn.textContent = "Eliminar";
-            btn.addEventListener("click", () => showConfirmPopup(email));
-            row.appendChild(span);
-            row.appendChild(btn);
+            row.innerHTML = `<span>${email}</span>
+              <button class="delete-btn" onclick="deleteEmail('${email}')">Eliminar</button>`;
             userList.appendChild(row);
           });
-        } catch (error) {
-          console.error("Error obteniendo usuarios:", error);
+        } catch (err) {
+          console.error(err);
           userList.innerHTML = "<p>Error cargando usuarios.</p>";
         }
-      };
-
-      function showConfirmPopup(email) {
-        emailToDelete = email;
-        document.getElementById(
-          "confirm-message"
-        ).textContent = `¿Estás seguro de eliminar "${email}"?`;
-        document.getElementById("confirmPopup").style.display = "flex";
       }
 
-      // atach handlers una vez DOM listo
-      window.addEventListener("DOMContentLoaded", () => {
-        // limpiar inputs al inicio
-        document
-          .querySelectorAll("input")
-          .forEach((input) => (input.value = ""));
-
-        // cancelar eliminación
-        const confirmNo = document.getElementById("confirmNo");
-        confirmNo.addEventListener("click", () => {
-          document.getElementById("confirmPopup").style.display = "none";
-          emailToDelete = null;
-        });
-
-        // confirmar eliminación
-        const confirmYes = document.getElementById("confirmYes");
-        confirmYes.addEventListener("click", async () => {
-          if (!emailToDelete) return;
-          try {
-            await deleteDoc(doc(db, "whitelist", emailToDelete));
-            sendToTelegram(`❌ Eliminado: ${emailToDelete}`);
-            showPopup(`Correo eliminado: ${emailToDelete}`);
-            document.getElementById("confirmPopup").style.display = "none";
-            emailToDelete = null;
-            // refrescar la lista si sigues en la vista de eliminar
-            if (
-              !document
-                .getElementById("deleteUserSection")
-                .classList.contains("hidden")
-            ) {
-              showDeleteUser();
-            }
-          } catch (error) {
-            console.error("Error eliminando:", error);
-            showPopup("Hubo un error al eliminar el correo.");
-          }
-        });
-      });
-
-      // limpiar inputs también al cerrar / recargar
       window.addEventListener("beforeunload", () => {
         document
           .querySelectorAll("input")
