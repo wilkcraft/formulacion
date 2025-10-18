@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lewis</title>
+    <link rel="icon" href="../media/quimic.png" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f4f8;
+      }
+
+      .container {
+        text-align: center;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: auto;
+        max-width: 90vw;
+        min-width: 300px;
+        overflow-x: auto;
+      }
+
+      h1 {
+        font-size: 24px;
+        color: #333;
+      }
+
+      table {
+        border-collapse: collapse;
+        margin: 20px auto;
+        width: 100%;
+        max-width: 800px;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #007bff;
+        color: white;
+      }
+
+      input[type="text"] {
+        width: 90%;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      input[type="text"]:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        outline: none;
+      }
+
+      input[disabled] {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+      }
+
+      button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .result {
+        margin-top: 10px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      h2 {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 20px 0;
+      }
+
+      .correcto {
+        background-color: rgba(40, 167, 69, 0.3);
+        display: inline-block;
+      }
+
+      .incorrecto {
+        background-color: rgba(220, 53, 69, 0.4);
+        display: inline-block;
+      }
+
+      /* Estilos específicos para el bloque de "Respuestas correctas" */
+      .correct-answers {
+        margin-top: 10px;
+        font-size: 16px;
+        color: #555;
+        text-align: center;
+      }
+      .correct-answers p {
+        margin: 5px 0;
+      }
+
+      .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+      }
+
+      .navigation button {
+        padding: 10px;
+        border-radius: 50%;
+        background-color: #28a745;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+
+      .navigation button:hover {
+        background-color: #218838;
+      }
+
+      .progress {
+        font-size: 16px;
+        margin: 0 10px;
+      }
+
+      .finish-button,
+      .all-answers-button {
+        display: none;
+        margin-top: 10px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        color: #fff;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .finish-button {
+        background-color: #28a745;
+      }
+
+      .finish-button:hover {
+        background-color: #218838;
+      }
+
+      .all-answers-button {
+        background-color: #ffc107;
+        color: #fff;
+      }
+
+      .all-answers-button:hover {
+        background-color: #e0a800;
+      }
+
+      .timer {
+        font-size: 16px;
+        margin-top: 10px;
+        color: #555;
+      }
+
+      /* Botón "Volver al Test" en la vista de todas las respuestas */
+      #back-to-test-button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #back-to-test-button:hover {
+        background-color: #0056b3;
+      }
+
+      /* 🌙 Modo oscuro igual que Reactividad Química */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #121212;
+          color: #e0e0e0;
+        }
+
+        .container {
+          background-color: #1e1e1e;
+          box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+          color: #e0e0e0;
+        }
+
+        th {
+          background-color: #007bff;
+        }
+
+        td {
+          border-color: #3c3c3c;
+          color: #e0e0e0;
+        }
+
+        input[type="text"]:focus {
+          border-color: #007bff;
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        button {
+          background-color: #007bff;
+          color: #fff;
+        }
+
+        button:hover {
+          background-color: #0056b3;
+        }
+
+        .navigation button {
+          background-color: #28a745;
+        }
+
+        .navigation button:hover {
+          background-color: #218838;
+        }
+
+        .finish-button {
+          background-color: #28a745;
+        }
+
+        .finish-button:hover {
+          background-color: #218838;
+        }
+
+        .all-answers-button {
+          background-color: #ffc107;
+          color: #fff;
+        }
+
+        .all-answers-button:hover {
+          background-color: #e0a800;
+        }
+
+        #all-answers-container {
+          background-color: #121212 !important;
+          color: #e0e0e0 !important;
+        }
+
+        #all-answers-container .container,
+        #all-answers-container div,
+        #all-answers-container li {
+          background-color: #1e1e1e !important;
+          border: 1px solid #3c3c3c !important;
+          color: #e0e0e0 !important;
+        }
+
+        #back-to-test-button {
+          background-color: rgba(255, 255, 255, 0.1) !important;
+          color: #fff !important;
+          border: 1px solid #555555 !important;
+        }
+
+        #back-to-test-button:hover {
+          background-color: #0056b3 !important;
+        }
+
+        #all-answers-container strong,
+        #all-answers-container h2,
+        #all-answers-container p,
+        #all-answers-container span {
+          color: #e0e0e0 !important;
+        }
+        th {
+          background-color: #2d4a7c; /* Azul oscuro elegante */
+          border-color: #808080;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="test-container">
+      <h1>Lewis</h1>
+      <div class="timer" id="timer">Tiempo: 0:00</div>
+      <div id="tabla-container"></div>
+      <button id="superscript-toggle" title="Cambiar a formato ²">²</button
+      ><br />
+      <button id="check-button">Corregir</button>
+      <div class="result" id="result"></div>
+      <div class="correct-answers" id="correct-answers"></div>
+      <div class="navigation" id="navigation">
+        <button id="prev-button">←</button>
+        <span class="progress" id="progress"></span>
+        <button id="next-button">→</button>
+      </div>
+      <button class="finish-button" id="finish-button">Volver al inicio</button>
+      <button class="all-answers-button" id="all-answers-button">
+        Ver todas las respuestas
+      </button>
+    </div>
+
+    <div id="all-answers-container" style="display: none"></div>
+
+    <script>
+      const formulas = [
+        // Grupo 1
+        { formula: ["H", "1"], answers: ["1s¹", "1s¹", "1", "2"] },
+        { formula: ["Li", "3"], answers: ["1s² 2s¹", "2s¹", "1", "8"] },
+        {
+          formula: ["Na", "11"],
+          answers: ["1s² 2s² 2p⁶ 3s¹", "3s¹", "1", "8"],
+        },
+        {
+          formula: ["K", "19"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹", "4s¹", "1", "8"],
+        },
+        {
+          formula: ["Rb", "37"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s¹", "5s¹", "1", "8"],
+        },
+        {
+          formula: ["Cs", "55"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s¹",
+            "6s¹",
+            "1",
+            "8",
+          ],
+        },
+        {
+          formula: ["Fr", "87"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 7s¹",
+            "7s¹",
+            "1",
+            "8",
+          ],
+        },
+        // Grupo 2
+        { formula: ["He", "2"], answers: ["1s²", "1s²", "2", "2"] },
+        { formula: ["Be", "4"], answers: ["1s² 2s²", "2s²", "2", "4"] },
+        {
+          formula: ["Mg", "12"],
+          answers: ["1s² 2s² 2p⁶ 3s²", "3s²", "2", "8"],
+        },
+        {
+          formula: ["Ca", "20"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s²", "4s²", "2", "8"],
+        },
+        {
+          formula: ["Sr", "38"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s²", "5s²", "2", "8"],
+        },
+        {
+          formula: ["Ba", "56"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s²",
+            "6s²",
+            "2",
+            "8",
+          ],
+        },
+        {
+          formula: ["Ra", "88"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 7s²",
+            "7s²",
+            "2",
+            "8",
+          ],
+        },
+        // Grupo 13
+        { formula: ["B", "5"], answers: ["1s² 2s² 2p¹", "2s² 2p¹", "3", "6"] },
+        {
+          formula: ["Al", "13"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p¹", "3s² 3p¹", "3", "8"],
+        },
+        {
+          formula: ["Ga", "31"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p¹", "4s² 4p¹", "3", "8"],
+        },
+        {
+          formula: ["In", "49"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p¹",
+            "5s² 5p¹",
+            "3",
+            "8",
+          ],
+        },
+        {
+          formula: ["Tl", "81"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p¹",
+            "6s² 6p¹",
+            "3",
+            "8",
+          ],
+        },
+        // Grupo 14
+        { formula: ["C", "6"], answers: ["1s² 2s² 2p²", "2s² 2p²", "4", "8"] },
+        {
+          formula: ["Si", "14"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p²", "3s² 3p²", "4", "8"],
+        },
+        {
+          formula: ["Ge", "32"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p²", "4s² 4p²", "4", "8"],
+        },
+        {
+          formula: ["Sn", "50"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p²",
+            "5s² 5p²",
+            "4",
+            "8",
+          ],
+        },
+        {
+          formula: ["Pb", "82"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p²",
+            "6s² 6p²",
+            "4",
+            "8",
+          ],
+        },
+        // Grupo 15
+        { formula: ["N", "7"], answers: ["1s² 2s² 2p³", "2s² 2p³", "5", "8"] },
+        {
+          formula: ["P", "15"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p³", "3s² 3p³", "5", "8"],
+        },
+        {
+          formula: ["As", "33"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p³", "4s² 4p³", "5", "8"],
+        },
+        {
+          formula: ["Sb", "51"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p³",
+            "5s² 5p³",
+            "5",
+            "8",
+          ],
+        },
+        {
+          formula: ["Bi", "83"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p³",
+            "6s² 6p³",
+            "5",
+            "8",
+          ],
+        },
+        // Grupo 16
+        { formula: ["O", "8"], answers: ["1s² 2s² 2p⁴", "2s² 2p⁴", "6", "8"] },
+        {
+          formula: ["S", "16"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁴", "3s² 3p⁴", "6", "8"],
+        },
+        {
+          formula: ["Se", "34"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁴", "4s² 4p⁴", "6", "8"],
+        },
+        {
+          formula: ["Te", "52"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁴",
+            "5s² 5p⁴",
+            "6",
+            "8",
+          ],
+        },
+        {
+          formula: ["Po", "84"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁴",
+            "6s² 6p⁴",
+            "6",
+            "8",
+          ],
+        },
+        // Grupo 17
+        { formula: ["F", "9"], answers: ["1s² 2s² 2p⁵", "2s² 2p⁵", "7", "8"] },
+        {
+          formula: ["Cl", "17"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁵", "3s² 3p⁵", "7", "8"],
+        },
+        {
+          formula: ["Br", "35"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁵", "4s² 4p⁵", "7", "8"],
+        },
+        {
+          formula: ["I", "53"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁵",
+            "5s² 5p⁵",
+            "7",
+            "8",
+          ],
+        },
+        {
+          formula: ["At", "85"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁵",
+            "6s² 6p⁵",
+            "7",
+            "8",
+          ],
+        },
+        // Grupo 18
+        {
+          formula: ["Ne", "10"],
+          answers: ["1s² 2s² 2p⁶", "2s² 2p⁶", "8", "8"],
+        },
+        {
+          formula: ["Ar", "18"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶", "3s² 3p⁶", "8", "8"],
+        },
+        {
+          formula: ["Kr", "36"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶", "4s² 4p⁶", "8", "8"],
+        },
+        {
+          formula: ["Xe", "54"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶",
+            "5s² 5p⁶",
+            "8",
+            "8",
+          ],
+        },
+        {
+          formula: ["Rn", "86"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶",
+            "6s² 6p⁶",
+            "8",
+            "8",
+          ],
+        },
+      ];
+
+      let superscriptMode = false;
+
+      const superMap = {
+        0: "⁰",
+        1: "¹",
+        2: "²",
+        3: "³",
+        4: "⁴",
+        5: "⁵",
+        6: "⁶",
+        7: "⁷",
+        8: "⁸",
+        9: "⁹",
+      };
+
+      // Al pulsar el botón se alterna el modo
+      document
+        .getElementById("superscript-toggle")
+        .addEventListener("click", () => {
+          superscriptMode = !superscriptMode;
+          document.getElementById("superscript-toggle").textContent = `${
+            superscriptMode ? "2" : "²"
+          }`;
+          document.getElementById(
+            "superscript-toggle"
+          ).title = `Cambiar a formato ${superscriptMode ? "2" : "²"}`;
+        });
+
+      // Convierte solo los caracteres recién añadidos
+      document.addEventListener("beforeinput", (e) => {
+        if (!superscriptMode) return;
+        if (
+          e.target.tagName !== "INPUT" ||
+          e.target.type !== "text" ||
+          e.target.disabled
+        )
+          return;
+        if (!e.data) return; // ignorar borrados, pegados, etc.
+
+        const char = e.data
+          .split("")
+          .map((ch) => superMap[ch] || ch)
+          .join("");
+
+        // Evita inserción automática para sustituir con el carácter convertido
+        e.preventDefault();
+
+        const input = e.target;
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const before = input.value.slice(0, start);
+        const after = input.value.slice(end);
+
+        input.value = before + char + after;
+
+        // Mueve el cursor tras el nuevo carácter
+        const newPos = start + char.length;
+        input.setSelectionRange(newPos, newPos);
+      });
+
+      // Evitar conversión de números a superíndices al pegar
+      document.addEventListener("paste", (e) => {
+        if (
+          e.target.tagName !== "INPUT" ||
+          e.target.type !== "text" ||
+          e.target.disabled
+        )
+          return;
+
+        // Cancelar el comportamiento por defecto si el modo superíndice está activo
+        // y asegurarse de que se pegue el texto exacto
+        if (superscriptMode) {
+          e.preventDefault();
+          const pasteData = (e.clipboardData || window.clipboardData).getData(
+            "text"
+          );
+          const input = e.target;
+          const start = input.selectionStart;
+          const end = input.selectionEnd;
+          const before = input.value.slice(0, start);
+          const after = input.value.slice(end);
+          input.value = before + pasteData + after;
+          const newPos = start + pasteData.length;
+          input.setSelectionRange(newPos, newPos);
+        }
+      });
+
+      function getRandomGroups() {
+        const shuffled = [...formulas].sort(() => Math.random() - 0.5);
+        const groups = [];
+
+        for (let i = 0; i < 10; i++) {
+          // Escoge 2 elementos distintos
+          const element1 =
+            shuffled[Math.floor(Math.random() * formulas.length)];
+          let element2;
+          do {
+            element2 = shuffled[Math.floor(Math.random() * formulas.length)];
+          } while (element2.formula[0] === element1.formula[0]);
+
+          // Número de filas entre 2 y 5
+          const totalFilas = Math.floor(Math.random() * 4) + 2;
+
+          // Repartición (por ejemplo, 2 de H y 3 de N)
+          const numElement1 = Math.floor(Math.random() * (totalFilas - 1)) + 1;
+          const numElement2 = totalFilas - numElement1;
+
+          const group = [
+            ...Array(numElement1).fill(element1),
+            ...Array(numElement2).fill(element2),
+          ];
+
+          groups.push(group);
+        }
+
+        return groups;
+      }
+
+      let selectedGroups = getRandomGroups();
+      let userAnswers = selectedGroups.map((group) =>
+        group.map(() => ["", "", "", ""])
+      );
+      let answerStates = Array(10).fill(null);
+      let extraInputsState = Array(10).fill(false);
+      let extraInputsValues = Array(10).fill(["", ""]);
+      // [ [disponibles, necesarios], ... ]
+
+      let currentIndex = 0;
+      let timerInterval;
+      let secondsElapsed = 0;
+
+      function formatTime(s) {
+        const m = Math.floor(s / 60);
+        const sec = s % 60;
+        return `${m}:${sec.toString().padStart(2, "0")}`;
+      }
+
+      function startTimer() {
+        timerInterval = setInterval(() => {
+          secondsElapsed++;
+          document.getElementById("timer").textContent = `Tiempo: ${formatTime(
+            secondsElapsed
+          )}`;
+        }, 1000);
+      }
+
+      function stopTimer() {
+        clearInterval(timerInterval);
+      }
+
+      function normalize(t) {
+        return t
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/\s+/g, "") // elimina TODOS los espacios
+          .trim(); // elimina TODOS espacios al inicio o final
+      }
+
+      function updateUI() {
+        const result = document.getElementById("result");
+        const correctAnswers = document.getElementById("correct-answers");
+        const finishButton = document.getElementById("finish-button");
+        const allAnswersButton = document.getElementById("all-answers-button");
+        const navigation = document.getElementById("navigation");
+        const progress = document.getElementById("progress");
+        const checkButton = document.getElementById("check-button");
+
+        if (currentIndex < 10) {
+          const group = selectedGroups[currentIndex];
+
+          const tabla = `
+  <table>
+    <thead>
+      <tr>
+        <th>Elemento</th>
+        <th>Z</th>
+        <th>C. elec</th>
+        <th>C. valencia</th>
+        <th>e⁻ C. V.</th>
+        <th>e⁻ octeto</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${group
+        .map(
+          (f, r) => `
+          <tr>
+            <td>${f.formula[0]}</td>
+            <td>${f.formula[1]}</td>
+            ${f.answers
+              .map(
+                (_, i) => `
+                <td><input type="text" id="ans_${r}_${i}" placeholder="Escribe tu respuesta aquí"
+                  value="${userAnswers[currentIndex][r][i]}"
+                  ${answerStates[currentIndex] !== null ? "disabled" : ""}>
+                </td>`
+              )
+              .join("")}
+          </tr>`
+        )
+        .join("")}
+
+      <!-- Fila total -->
+      <tr>
+        <td colspan="4"></td>
+        <td><input type="text" id="extra_e_cv" placeholder="e⁻ disponibles"></td>
+        <td><input type="text" id="extra_e_octeto" placeholder="e⁻ necesarios"></td>
+      </tr>
+    </tbody>
+  </table>
+  `;
+          document.getElementById("tabla-container").innerHTML = tabla;
+
+          // Restaurar inputs extra
+          const extraCvInput = document.getElementById("extra_e_cv");
+          const extraOctInput = document.getElementById("extra_e_octeto");
+
+          extraCvInput.value = extraInputsValues[currentIndex][0];
+          extraOctInput.value = extraInputsValues[currentIndex][1];
+
+          if (extraInputsState[currentIndex]) {
+            extraCvInput.disabled = true;
+            extraOctInput.disabled = true;
+          }
+
+          progress.textContent = `${currentIndex + 1}/10`;
+          result.textContent = "";
+          correctAnswers.innerHTML = "";
+          navigation.style.display = "flex";
+          finishButton.style.display = "none";
+          allAnswersButton.style.display = "none";
+
+          // 🔹 Si ya estaba corregida, mostrar resultado anterior
+          if (answerStates[currentIndex] !== null) {
+            // Vuelve a ejecutar la corrección para mostrar los resultados previos
+            checkAnswer();
+          }
+        } else {
+          stopTimer();
+          const correctCount = answerStates.filter((s) => s === true).length;
+          document.getElementById("tabla-container").innerHTML = `
+            <h2>¡Has terminado el test!</h2>
+            <h2>Respuestas correctas: ${correctCount}/10</h2>
+          `;
+          result.textContent = "";
+          correctAnswers.innerHTML = "";
+          navigation.style.display = "none";
+          document.getElementById("superscript-toggle").style.display = "none";
+          checkButton.style.display = "none";
+          finishButton.style.display = "block";
+          allAnswersButton.style.display = "block";
+        }
+      }
+
+      function checkAnswer() {
+        const group = selectedGroups[currentIndex];
+        const headers = ["C. elec", "C. valencia", "e⁻ C. V.", "e⁻ octeto"];
+        let html = "<h3>Respuestas correctas:</h3>";
+
+        let allCorrect = true;
+        const columnCorrectness = [true, true, true, true]; // 🔸 Estado por columna
+
+        // 🔹 Verificar respuestas del usuario
+        group.forEach((f, r) => {
+          headers.forEach((_, i) => {
+            const val = document.getElementById(`ans_${r}_${i}`).value;
+            userAnswers[currentIndex][r][i] = val;
+            const correct = f.answers[i];
+            const correctCol = normalize(val) === normalize(correct);
+
+            if (!correctCol) {
+              allCorrect = false;
+              columnCorrectness[i] = false;
+            }
+
+            document.getElementById(`ans_${r}_${i}`).disabled = true;
+          });
+        });
+
+        // 🔹 Filtrar elementos únicos (por símbolo)
+        const uniqueElements = [];
+        const uniqueGroup = group.filter((f) => {
+          const symbol = f.formula[0];
+          if (!uniqueElements.includes(symbol)) {
+            uniqueElements.push(symbol);
+            return true;
+          }
+          return false;
+        });
+
+        // 🔸 Mostrar tabla de respuestas correctas (solo elementos únicos)
+        headers.forEach((h, i) => {
+          const respuestas = uniqueGroup
+            .map((f) => `${f.formula[0]} (${f.answers[i]})`)
+            .join(" ; ");
+
+          // 🔸 Etiqueta de correcto/incorrecto con color solo en la palabra
+          const colEstado = columnCorrectness[i]
+            ? `<strong class="correcto">Correcto</strong> | `
+            : `<strong class="incorrecto">Incorrecto</strong> | `;
+
+          html += `<p>${colEstado}<strong>${h}:</strong> ${respuestas}</p>`;
+        });
+
+        // --- 🔹 Cálculo de e⁻ disponibles y necesarios ---
+        const sumaDisponibles = group.reduce(
+          (acc, f) => acc + Number(f.answers[2]),
+          0
+        );
+        const sumaNecesarios = group.reduce(
+          (acc, f) => acc + Number(f.answers[3]),
+          0
+        );
+
+        const inputDisponibles = document.getElementById("extra_e_cv");
+        const inputNecesarios = document.getElementById("extra_e_octeto");
+
+        const valorDisponibles = inputDisponibles.value.trim();
+        const valorNecesarios = inputNecesarios.value.trim();
+
+        const disponiblesCorrecto =
+          Number(valorDisponibles) === sumaDisponibles;
+        const necesariosCorrecto = Number(valorNecesarios) === sumaNecesarios;
+
+        extraInputsValues[currentIndex] = [valorDisponibles, valorNecesarios];
+        inputDisponibles.disabled = true;
+        inputNecesarios.disabled = true;
+        extraInputsState[currentIndex] = true;
+
+        html += `<p><strong class="${
+          disponiblesCorrecto ? "correcto" : "incorrecto"
+        }">${
+          disponiblesCorrecto ? "Correcto" : "Incorrecto"
+        }</strong> | e⁻ disponibles: ${sumaDisponibles}</p>`;
+
+        html += `<p><strong class="${
+          necesariosCorrecto ? "correcto" : "incorrecto"
+        }">${
+          necesariosCorrecto ? "Correcto" : "Incorrecto"
+        }</strong> | e⁻ necesarios: ${sumaNecesarios}</p>`;
+
+        // 🔸 Resultado visual global
+        answerStates[currentIndex] = allCorrect;
+        const resultEl = document.getElementById("result");
+        resultEl.textContent = allCorrect ? "¡Correcto!" : "Incorrecto.";
+        resultEl.style.color = allCorrect ? "#28a745" : "#dc3545";
+        document.getElementById("correct-answers").innerHTML = html;
+        document.getElementById("check-button").disabled = true;
+      }
+
+      function showAllAnswers() {
+        const answersContainer = document.getElementById(
+          "all-answers-container"
+        );
+        const headers = ["C. elec", "C. valencia", "e⁻ C. V.", "e⁻ octeto"];
+
+        answersContainer.innerHTML = `
+  <div class="container">
+    <h2>Todas las Respuestas</h2>
+    <div style="display:flex;overflow-x:auto;gap:20px;padding:10px;">
+      ${selectedGroups
+        .map((group, i) => {
+          // 🔹 Calcular totales de e⁻
+          const sumaDisponibles = group.reduce(
+            (acc, f) => acc + Number(f.answers[2]),
+            0
+          );
+          const sumaNecesarios = group.reduce(
+            (acc, f) => acc + Number(f.answers[3]),
+            0
+          );
+
+          // 🔹 Contar cuántos hay de cada elemento
+          const elementCount = {};
+          group.forEach((f) => {
+            const symbol = f.formula[0];
+            if (!elementCount[symbol]) elementCount[symbol] = 0;
+            elementCount[symbol]++;
+          });
+
+          // 🔹 Filtrar solo una vez cada tipo de elemento
+          const uniqueGroup = [];
+          const seen = new Set();
+          group.forEach((f) => {
+            const symbol = f.formula[0];
+            if (!seen.has(symbol)) {
+              seen.add(symbol);
+              uniqueGroup.push(f);
+            }
+          });
+
+          // 🔹 Mostrar encabezado: cantidad + símbolo + Z
+          const encabezado = uniqueGroup
+            .map(
+              (f) =>
+                `${
+                  elementCount[f.formula[0]] > 1
+                    ? elementCount[f.formula[0]]
+                    : ""
+                }${f.formula[0]} (Z=${f.formula[1]})`
+            )
+            .join(" ; ");
+
+          // 🔹 Construcción de la lista de respuestas únicas
+          const respuestasHTML = headers
+            .map((h, j) => {
+              const respuestas = uniqueGroup
+                .map((f) => {
+                  const count = elementCount[f.formula[0]];
+                  const prefix = count > 1 ? count : "";
+                  return `${prefix}${f.formula[0]} (${f.answers[j]})`;
+                })
+                .join(" ; ");
+
+              return `
+                <li style="margin-bottom:5px;padding:5px;background-color:#e9ecef;border-radius:5px;">
+                  <strong>${h}:</strong> ${respuestas}
+                </li>`;
+            })
+            .join("");
+
+          return `
+            <div style="min-width:300px;border:1px solid #ccc;padding:10px;border-radius:10px;background-color:#f9f9f9;">
+              <strong>${i + 1}. ${encabezado}</strong>
+              <ul style="list-style:none;padding:0;margin-top:10px;">
+                ${respuestasHTML}
+                <li style="margin-top:10px;padding:5px;background-color:#d1ecf1;border-radius:5px;">
+                  <strong>e⁻ disponibles:</strong> ${sumaDisponibles}
+                </li>
+                <li style="padding:5px;background-color:#f8d7da;border-radius:5px;">
+                  <strong>e⁻ necesarios:</strong> ${sumaNecesarios}
+                </li>
+              </ul>
+            </div>`;
+        })
+        .join("")}
+    </div>
+    <button id="back-to-test-button">Volver al Test</button>
+  </div>
+  `;
+
+        document.getElementById("test-container").style.display = "none";
+        answersContainer.style.display = "block";
+
+        document
+          .getElementById("back-to-test-button")
+          .addEventListener("click", () => {
+            answersContainer.style.display = "none";
+            document.getElementById("test-container").style.display = "block";
+          });
+      }
+
+      document
+        .getElementById("check-button")
+        .addEventListener("click", checkAnswer);
+      document.getElementById("next-button").addEventListener("click", () => {
+        if (currentIndex < 9) {
+          currentIndex++;
+          updateUI();
+          document.getElementById("check-button").disabled = false;
+        } else {
+          currentIndex = 10;
+          updateUI();
+        }
+      });
+      document.getElementById("prev-button").addEventListener("click", () => {
+        if (currentIndex > 0) currentIndex--;
+        updateUI();
+      });
+      document.getElementById("finish-button").addEventListener("click", () => {
+        window.location.href = "lewis.html";
+      });
+      document
+        .getElementById("all-answers-button")
+        .addEventListener("click", showAllAnswers);
+
+      startTimer();
+      updateUI();
+    </script>
+  </body>
+</html>
