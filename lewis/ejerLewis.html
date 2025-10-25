@@ -3,18 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lewis</title>
+    <title>¿Quién es Quién?</title>
     <link rel="icon" href="../media/quimic.png" />
     <style>
       body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
+        height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
         background-color: #f0f4f8;
+        overflow: hidden; /* Evita scroll global */
       }
 
       .container {
@@ -23,10 +24,25 @@
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        width: auto;
-        max-width: 90vw;
-        min-width: 300px;
+        width: 90vw;
+        max-width: 1000px;
+        max-height: 90vh;
+        overflow-y: auto;
         overflow-x: auto;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      #test-container.final-view {
+        width: 400px !important;
+        max-width: 400px !important;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
       }
 
       h1 {
@@ -39,13 +55,17 @@
         margin: 20px auto;
         width: 100%;
         max-width: 800px;
+        min-width: 400px;
+        overflow-x: auto;
+        display: block;
       }
 
       th,
       td {
         border: 1px solid #ccc;
-        padding: 10px;
+        padding: 8px;
         text-align: center;
+        font-size: 14px;
       }
 
       th {
@@ -157,6 +177,9 @@
         font-size: 16px;
         border: none;
         cursor: pointer;
+        display: block; /* Asegura que ocupen todo el ancho disponible si quieres */
+        margin-left: 0; /* Pegados al borde izquierdo */
+        margin-right: auto;
       }
 
       .finish-button {
@@ -196,6 +219,139 @@
       }
       #back-to-test-button:hover {
         background-color: #0056b3;
+      }
+
+      /* 🔹 Indicador de scroll */
+      #scroll-indicator {
+        position: fixed;
+        bottom: 35px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        color: #004085; /* azul fuerte para modo claro */
+        font-size: 16px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.65); /* 🔸 Fondo translúcido */
+        backdrop-filter: blur(8px);
+        padding: 8px 14px;
+        border-radius: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        display: none;
+        z-index: 999;
+        animation: fadeIn 0.6s ease-in-out;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      #scroll-indicator .arrow {
+        width: 22px;
+        height: 22px;
+        border-left: 4px solid #004085;
+        border-bottom: 4px solid #004085;
+        transform: rotate(-45deg);
+        margin: 0 auto 15px; /* 🔹 antes era 6px → ahora 10px para subir la flecha */
+        animation: arrowBounce 1.2s infinite;
+      }
+
+      @keyframes arrowBounce {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-45deg);
+        }
+        50% {
+          transform: translateY(8px) rotate(-45deg);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* 🔹 Mejoras para móviles */
+      @media (max-width: 768px) {
+        html,
+        body {
+          height: 100dvh; /* altura segura en móviles */
+          overflow: hidden;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .container {
+          width: 95vw;
+          max-width: 95vw;
+          height: auto;
+          max-height: 85dvh;
+          padding: 12px;
+          overflow-y: auto;
+          overflow-x: auto;
+          margin: 0 auto;
+
+          /* 🔹 El truco para centrar incluso con scroll */
+          position: relative;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        table {
+          width: 100%;
+          min-width: unset;
+          display: block;
+          overflow-x: auto;
+          font-size: 12px;
+        }
+
+        th,
+        td {
+          padding: 5px;
+          font-size: 12px;
+        }
+
+        input[type="text"] {
+          width: 80%;
+          padding: 5px;
+          font-size: 12px; /* 🔸 inputs más pequeños */
+        }
+
+        h1 {
+          font-size: 18px;
+          margin-bottom: 10px;
+        }
+
+        button {
+          font-size: 13px;
+          padding: 7px 12px;
+        }
+
+        .navigation {
+          flex-direction: row;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .progress {
+          font-size: 13px;
+        }
+      }
+
+      /* 🔹 Scrollbar elegante */
+      .container::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      .container::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 8px;
+      }
+
+      .container::-webkit-scrollbar-thumb:hover {
+        background-color: #555;
       }
 
       /* 🌙 Modo oscuro igual que Reactividad Química */
@@ -295,16 +451,28 @@
           background-color: #2d4a7c; /* Azul oscuro elegante */
           border-color: #808080;
         }
+
+        #scroll-indicator {
+          background: rgba(0, 0, 0, 0.8);
+          color: #ffffff;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        #scroll-indicator .arrow {
+          border-left-color: #ffffff;
+          border-bottom-color: #ffffff;
+        }
       }
     </style>
   </head>
   <body>
     <div class="container" id="test-container">
-      <h1>Lewis</h1>
+      <h1>¿Quién es Quién?</h1>
       <div class="timer" id="timer">Tiempo: 0:00</div>
       <div id="tabla-container"></div>
-      <button id="superscript-toggle" title="Cambiar a formato ²">²</button
-      ><br />
+      <button id="superscript-toggle" title="Cambiar a formato ²">²</button>
+      <button id="see-table">Ocultar Tabla</button>
+      <br />
       <button id="check-button">Corregir</button>
       <div class="result" id="result"></div>
       <div class="correct-answers" id="correct-answers"></div>
@@ -317,6 +485,10 @@
       <button class="all-answers-button" id="all-answers-button">
         Ver todas las respuestas
       </button>
+    </div>
+    <div id="scroll-indicator">
+      <div class="arrow"></div>
+      <span>Desliza hacia abajo</span>
     </div>
 
     <div id="all-answers-container" style="display: none"></div>
@@ -563,6 +735,7 @@
       ];
 
       let superscriptMode = false;
+      let seeMode = false;
 
       const superMap = {
         0: "⁰",
@@ -589,6 +762,25 @@
             "superscript-toggle"
           ).title = `Cambiar a formato ${superscriptMode ? "2" : "²"}`;
         });
+
+      // Al pulsar el botón se alterna el oculto
+      document.getElementById("see-table").addEventListener("click", () => {
+        seeMode = !seeMode;
+
+        const tablaContainer = document.getElementById("tabla-container");
+        const seeTableBtn = document.getElementById("see-table");
+        const superscriptBtn = document.getElementById("superscript-toggle");
+
+        if (seeMode) {
+          tablaContainer.style.display = "none";
+          seeTableBtn.textContent = "Ver Tabla";
+          superscriptBtn.style.display = "none";
+        } else {
+          tablaContainer.style.display = "block";
+          seeTableBtn.textContent = "Ocultar Tabla";
+          superscriptBtn.style.display = "inline-block";
+        }
+      });
 
       // Convierte solo los caracteres recién añadidos
       document.addEventListener("beforeinput", (e) => {
@@ -654,26 +846,17 @@
         const groups = [];
 
         for (let i = 0; i < 10; i++) {
-          // Escoge 2 elementos distintos
-          const element1 =
-            shuffled[Math.floor(Math.random() * formulas.length)];
-          let element2;
-          do {
-            element2 = shuffled[Math.floor(Math.random() * formulas.length)];
-          } while (element2.formula[0] === element1.formula[0]);
+          // 🔹 Escoge entre 2 y 5 elementos distintos
+          const numFormulas = Math.floor(Math.random() * 4) + 2; // 2 a 5
+          const uniqueSet = new Set();
 
-          // Número de filas entre 2 y 5
-          const totalFilas = Math.floor(Math.random() * 4) + 2;
+          while (uniqueSet.size < numFormulas) {
+            const randomElement =
+              shuffled[Math.floor(Math.random() * formulas.length)];
+            uniqueSet.add(randomElement);
+          }
 
-          // Repartición (por ejemplo, 2 de H y 3 de N)
-          const numElement1 = Math.floor(Math.random() * (totalFilas - 1)) + 1;
-          const numElement2 = totalFilas - numElement1;
-
-          const group = [
-            ...Array(numElement1).fill(element1),
-            ...Array(numElement2).fill(element2),
-          ];
-
+          const group = Array.from(uniqueSet);
           groups.push(group);
         }
 
@@ -682,12 +865,9 @@
 
       let selectedGroups = getRandomGroups();
       let userAnswers = selectedGroups.map((group) =>
-        group.map(() => ["", "", "", ""])
+        group.map(() => ["", "", "", "", ""])
       );
       let answerStates = Array(10).fill(null);
-      let extraInputsState = Array(10).fill(false);
-      let extraInputsValues = Array(10).fill(["", ""]);
-      // [ [disponibles, necesarios], ... ]
 
       let currentIndex = 0;
       let timerInterval;
@@ -737,8 +917,8 @@
   <table>
     <thead>
       <tr>
-        <th>Elemento</th>
         <th>Z</th>
+        <th>Símbolo</th>
         <th>C. elec</th>
         <th>C. valencia</th>
         <th>e⁻ C. V.</th>
@@ -750,43 +930,30 @@
         .map(
           (f, r) => `
           <tr>
-            <td>${f.formula[0]}</td>
-            <td>${f.formula[1]}</td>
-            ${f.answers
-              .map(
-                (_, i) => `
-                <td><input type="text" id="ans_${r}_${i}" placeholder="Escribe tu respuesta aquí"
-                  value="${userAnswers[currentIndex][r][i]}"
-                  ${answerStates[currentIndex] !== null ? "disabled" : ""}>
-                </td>`
-              )
-              .join("")}
-          </tr>`
+  <td>${f.formula[1]}</td>
+  <td>
+    <input type="text" id="ans_${r}_elem" placeholder="Escribe tu respuesta aquí"
+      value="${userAnswers[currentIndex][r][0]}"
+      ${answerStates[currentIndex] !== null ? "disabled" : ""}>
+  </td>
+  ${f.answers
+    .map(
+      (_, i) => `
+      <td><input type="text" id="ans_${r}_${
+        i + 1
+      }" placeholder="Escribe tu respuesta aquí"
+        value="${userAnswers[currentIndex][r][i + 1]}"
+        ${answerStates[currentIndex] !== null ? "disabled" : ""}>
+      </td>`
+    )
+    .join("")}
+</tr>`
         )
         .join("")}
-
-      <!-- Fila total -->
-      <tr>
-        <td colspan="4"></td>
-        <td><input type="text" id="extra_e_cv" placeholder="e⁻ disponibles"></td>
-        <td><input type="text" id="extra_e_octeto" placeholder="e⁻ necesarios"></td>
-      </tr>
     </tbody>
   </table>
   `;
           document.getElementById("tabla-container").innerHTML = tabla;
-
-          // Restaurar inputs extra
-          const extraCvInput = document.getElementById("extra_e_cv");
-          const extraOctInput = document.getElementById("extra_e_octeto");
-
-          extraCvInput.value = extraInputsValues[currentIndex][0];
-          extraOctInput.value = extraInputsValues[currentIndex][1];
-
-          if (extraInputsState[currentIndex]) {
-            extraCvInput.disabled = true;
-            extraOctInput.disabled = true;
-          }
 
           progress.textContent = `${currentIndex + 1}/10`;
           result.textContent = "";
@@ -800,8 +967,27 @@
             // Vuelve a ejecutar la corrección para mostrar los resultados previos
             checkAnswer();
           }
+
+          // 🔹 Controlar visibilidad de tabla y texto del botón al cambiar de pregunta
+          const tablaContainer = document.getElementById("tabla-container");
+          const seeTableBtn = document.getElementById("see-table");
+          const superscriptBtn = document.getElementById("superscript-toggle");
+
+          if (answerStates[currentIndex] !== null) {
+            // Si ya está corregida → tabla oculta y botón dice "Ver tabla"
+            tablaContainer.style.display = "none";
+            seeTableBtn.textContent = "Ver Tabla";
+            superscriptBtn.style.display = "none";
+          } else {
+            // Si no está corregida → tabla visible y botón dice "Ocultar tabla"
+            tablaContainer.style.display = "block";
+            seeTableBtn.textContent = "Ocultar Tabla";
+            superscriptBtn.style.display = "inline-block";
+            seeMode = false;
+          }
         } else {
           stopTimer();
+          document.getElementById("tabla-container").style.display = "block";
           const correctCount = answerStates.filter((s) => s === true).length;
           document.getElementById("tabla-container").innerHTML = `
             <h2>¡Has terminado el test!</h2>
@@ -811,105 +997,98 @@
           correctAnswers.innerHTML = "";
           navigation.style.display = "none";
           document.getElementById("superscript-toggle").style.display = "none";
+          document.getElementById("see-table").style.display = "none";
           checkButton.style.display = "none";
           finishButton.style.display = "block";
           allAnswersButton.style.display = "block";
+          document.getElementById("test-container").classList.add("final-view");
         }
       }
 
       function checkAnswer() {
+        // 🔸 Ocultar la tabla y el botón de superíndices al corregir
+        seeMode = true;
+
+        const tablaContainer = document.getElementById("tabla-container");
+        const seeTableBtn = document.getElementById("see-table");
+        const superscriptBtn = document.getElementById("superscript-toggle");
+
+        tablaContainer.style.display = "none";
+        seeTableBtn.textContent = "Ver Tabla";
+        superscriptBtn.style.display = "none";
+
         const group = selectedGroups[currentIndex];
         const headers = ["C. elec", "C. valencia", "e⁻ C. V.", "e⁻ octeto"];
         let html = "<h3>Respuestas correctas:</h3>";
 
         let allCorrect = true;
-        const columnCorrectness = [true, true, true, true]; // 🔸 Estado por columna
+        const columnCorrectness = [true, true, true, true, true]; // índice 0 = símbolo
 
         // 🔹 Verificar respuestas del usuario
         group.forEach((f, r) => {
+          const valElem = document.getElementById(`ans_${r}_elem`).value.trim();
+          userAnswers[currentIndex][r][0] = valElem;
+          const elemCorrect = valElem === f.formula[0];
+          if (!elemCorrect) {
+            allCorrect = false;
+            columnCorrectness[0] = false;
+          }
+          document.getElementById(`ans_${r}_elem`).disabled = true;
+
           headers.forEach((_, i) => {
-            const val = document.getElementById(`ans_${r}_${i}`).value;
-            userAnswers[currentIndex][r][i] = val;
-            const correct = f.answers[i];
-            const correctCol = normalize(val) === normalize(correct);
-
-            if (!correctCol) {
+            const input = document.getElementById(`ans_${r}_${i + 1}`);
+            const val = input.value;
+            userAnswers[currentIndex][r][i + 1] = val;
+            const correct = normalize(val) === normalize(f.answers[i]);
+            if (!correct) {
               allCorrect = false;
-              columnCorrectness[i] = false;
+              columnCorrectness[i + 1] = false;
             }
-
-            document.getElementById(`ans_${r}_${i}`).disabled = true;
+            input.disabled = true; // 🔒 Desactiva el campo
           });
         });
 
-        // 🔹 Filtrar elementos únicos (por símbolo)
+        // 🔹 Filtrar símbolos únicos (por símbolo)
         const uniqueElements = [];
         const uniqueGroup = group.filter((f) => {
-          const symbol = f.formula[0];
-          if (!uniqueElements.includes(symbol)) {
-            uniqueElements.push(symbol);
+          if (!uniqueElements.includes(f.formula[0])) {
+            uniqueElements.push(f.formula[0]);
             return true;
           }
           return false;
         });
 
-        // 🔸 Mostrar tabla de respuestas correctas (solo elementos únicos)
+        // 🔸 Mostrar resultados
+        html += `<p>${
+          columnCorrectness[0]
+            ? '<strong class="correcto">Correcto</strong>'
+            : '<strong class="incorrecto">Incorrecto</strong>'
+        } | <strong>Símbolo:</strong> ${uniqueGroup
+          .map((f) => f.formula[0])
+          .join(" ; ")}</p>`;
+
         headers.forEach((h, i) => {
           const respuestas = uniqueGroup
             .map((f) => `${f.formula[0]} (${f.answers[i]})`)
             .join(" ; ");
-
-          // 🔸 Etiqueta de correcto/incorrecto con color solo en la palabra
-          const colEstado = columnCorrectness[i]
-            ? `<strong class="correcto">Correcto</strong> | `
-            : `<strong class="incorrecto">Incorrecto</strong> | `;
-
-          html += `<p>${colEstado}<strong>${h}:</strong> ${respuestas}</p>`;
+          html += `<p>${
+            columnCorrectness[i + 1]
+              ? '<strong class="correcto">Correcto</strong>'
+              : '<strong class="incorrecto">Incorrecto</strong>'
+          } | <strong>${h}:</strong> ${respuestas}</p>`;
         });
 
-        // --- 🔹 Cálculo de e⁻ disponibles y necesarios ---
-        const sumaDisponibles = group.reduce(
-          (acc, f) => acc + Number(f.answers[2]),
-          0
-        );
-        const sumaNecesarios = group.reduce(
-          (acc, f) => acc + Number(f.answers[3]),
-          0
-        );
-
-        const inputDisponibles = document.getElementById("extra_e_cv");
-        const inputNecesarios = document.getElementById("extra_e_octeto");
-
-        const valorDisponibles = inputDisponibles.value.trim();
-        const valorNecesarios = inputNecesarios.value.trim();
-
-        const disponiblesCorrecto =
-          Number(valorDisponibles) === sumaDisponibles;
-        const necesariosCorrecto = Number(valorNecesarios) === sumaNecesarios;
-
-        extraInputsValues[currentIndex] = [valorDisponibles, valorNecesarios];
-        inputDisponibles.disabled = true;
-        inputNecesarios.disabled = true;
-        extraInputsState[currentIndex] = true;
-
-        html += `<p><strong class="${
-          disponiblesCorrecto ? "correcto" : "incorrecto"
-        }">${
-          disponiblesCorrecto ? "Correcto" : "Incorrecto"
-        }</strong> | e⁻ disponibles: ${sumaDisponibles}</p>`;
-
-        html += `<p><strong class="${
-          necesariosCorrecto ? "correcto" : "incorrecto"
-        }">${
-          necesariosCorrecto ? "Correcto" : "Incorrecto"
-        }</strong> | e⁻ necesarios: ${sumaNecesarios}</p>`;
-
-        // 🔸 Resultado visual global
+        // 🔸 Mostrar resultados en pantalla
         answerStates[currentIndex] = allCorrect;
         const resultEl = document.getElementById("result");
         resultEl.textContent = allCorrect ? "¡Correcto!" : "Incorrecto.";
         resultEl.style.color = allCorrect ? "#28a745" : "#dc3545";
-        document.getElementById("correct-answers").innerHTML = html;
+
+        const correctContainer = document.getElementById("correct-answers");
+        correctContainer.innerHTML = html;
+        correctContainer.style.display = "block"; // 🔹 Asegura que sea visible
+
+        // 🔸 Deshabilitar botón
         document.getElementById("check-button").disabled = true;
       }
 
@@ -925,56 +1104,29 @@
     <div style="display:flex;overflow-x:auto;gap:20px;padding:10px;">
       ${selectedGroups
         .map((group, i) => {
-          // 🔹 Calcular totales de e⁻
-          const sumaDisponibles = group.reduce(
-            (acc, f) => acc + Number(f.answers[2]),
-            0
-          );
-          const sumaNecesarios = group.reduce(
-            (acc, f) => acc + Number(f.answers[3]),
-            0
-          );
-
-          // 🔹 Contar cuántos hay de cada elemento
-          const elementCount = {};
-          group.forEach((f) => {
-            const symbol = f.formula[0];
-            if (!elementCount[symbol]) elementCount[symbol] = 0;
-            elementCount[symbol]++;
-          });
-
-          // 🔹 Filtrar solo una vez cada tipo de elemento
+          // 🔹 Filtrar símbolos únicos
           const uniqueGroup = [];
           const seen = new Set();
           group.forEach((f) => {
-            const symbol = f.formula[0];
-            if (!seen.has(symbol)) {
-              seen.add(symbol);
+            if (!seen.has(f.formula[0])) {
+              seen.add(f.formula[0]);
               uniqueGroup.push(f);
             }
           });
 
-          // 🔹 Mostrar encabezado: cantidad + símbolo + Z
-          const encabezado = uniqueGroup
-            .map(
-              (f) =>
-                `${
-                  elementCount[f.formula[0]] > 1
-                    ? elementCount[f.formula[0]]
-                    : ""
-                }${f.formula[0]} (Z=${f.formula[1]})`
-            )
-            .join(" ; ");
+          // 🔹 Crear título como "1. 54 ; 51"
+          const titulo = `${i + 1}. Z: ${uniqueGroup
+            .map((f) => f.formula[1])
+            .join(" ; ")}`;
+
+          // 🔹 Símbolos como "Xe ; Sb"
+          const simbolos = uniqueGroup.map((f) => f.formula[0]).join(" ; ");
 
           // 🔹 Construcción de la lista de respuestas únicas
           const respuestasHTML = headers
             .map((h, j) => {
               const respuestas = uniqueGroup
-                .map((f) => {
-                  const count = elementCount[f.formula[0]];
-                  const prefix = count > 1 ? count : "";
-                  return `${prefix}${f.formula[0]} (${f.answers[j]})`;
-                })
+                .map((f) => `${f.formula[0]} (${f.answers[j]})`)
                 .join(" ; ");
 
               return `
@@ -986,15 +1138,12 @@
 
           return `
             <div style="min-width:300px;border:1px solid #ccc;padding:10px;border-radius:10px;background-color:#f9f9f9;">
-              <strong>${i + 1}. ${encabezado}</strong>
+              <strong>${titulo}</strong>
               <ul style="list-style:none;padding:0;margin-top:10px;">
+                <li style="margin-bottom:5px;padding:5px;background-color:#e9ecef;border-radius:5px;">
+                  <strong>Símbolo:</strong> ${simbolos}
+                </li>
                 ${respuestasHTML}
-                <li style="margin-top:10px;padding:5px;background-color:#d1ecf1;border-radius:5px;">
-                  <strong>e⁻ disponibles:</strong> ${sumaDisponibles}
-                </li>
-                <li style="padding:5px;background-color:#f8d7da;border-radius:5px;">
-                  <strong>e⁻ necesarios:</strong> ${sumaNecesarios}
-                </li>
               </ul>
             </div>`;
         })
@@ -1038,6 +1187,31 @@
       document
         .getElementById("all-answers-button")
         .addEventListener("click", showAllAnswers);
+
+      // 🔹 Mostrar indicador de scroll cuando hay más contenido
+      const container = document.querySelector(".container");
+      const scrollIndicator = document.getElementById("scroll-indicator");
+
+      function checkScroll() {
+        const canScroll = container.scrollHeight > container.clientHeight + 10;
+        const isAtBottom =
+          container.scrollTop + container.clientHeight >=
+          container.scrollHeight - 10;
+
+        if (canScroll && !isAtBottom) {
+          scrollIndicator.style.display = "block";
+        } else {
+          scrollIndicator.style.display = "none";
+        }
+      }
+
+      // Detectar scroll y cambios de tamaño
+      container.addEventListener("scroll", checkScroll);
+      window.addEventListener("resize", checkScroll);
+      window.addEventListener("load", checkScroll);
+
+      // Revisar periódicamente por si el contenido cambia dinámicamente
+      setInterval(checkScroll, 800);
 
       startTimer();
       updateUI();
