@@ -73,6 +73,22 @@
         color: white;
       }
 
+      /* 🔹 Ajuste de ancho de columnas */
+      th:nth-child(5),
+      td:nth-child(5) {
+        width: 90px; /* Columna "e⁻ C. V." más estrecha */
+      }
+
+      /* 🔹 Inputs más pequeños en la columna "e⁻ C. V." */
+      td:nth-child(5) input[type="text"] {
+        width: 85px; /* más estrecho que el 90% general */
+      }
+
+      th:nth-child(6),
+      td:nth-child(6) {
+        width: 120px; /* Columna "Cat. química" más ancha */
+      }
+
       input[type="text"] {
         width: 90%;
         padding: 8px;
@@ -89,6 +105,36 @@
       }
 
       input[disabled] {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+      }
+
+      /* 🔹 Estilos para los menús desplegables (select) */
+      select {
+        width: 90%;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        appearance: none; /* Oculta la flecha nativa en algunos navegadores */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' fill='%23777' height='18' viewBox='0 0 24 24' width='18'><path d='M7 10l5 5 5-5z'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 14px;
+      }
+
+      select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        outline: none;
+      }
+
+      select[disabled] {
         background-color: #e9ecef;
         cursor: not-allowed;
       }
@@ -312,6 +358,27 @@
           font-size: 12px;
         }
 
+        /* 🔹 Ajuste de ancho de columnas */
+        th:nth-child(5),
+        td:nth-child(5) {
+          width: 40px; /* Columna "e⁻ C. V." más estrecha */
+        }
+
+        /* 🔹 Inputs más pequeños en la columna "e⁻ C. V." */
+        td:nth-child(5) input[type="text"] {
+          width: 35px; /* más estrecho que el 90% general */
+        }
+
+        th:nth-child(6),
+        td:nth-child(6) {
+          width: 60px; /* Columna "Cat. química" más ancha */
+        }
+
+        td:nth-child(6) select {
+          padding: 5px;
+          font-size: 12px;
+        }
+
         input[type="text"] {
           width: 80%;
           padding: 5px;
@@ -380,6 +447,11 @@
         }
 
         input[type="text"]:focus {
+          border-color: #007bff;
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        select:focus {
           border-color: #007bff;
           box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
@@ -496,19 +568,24 @@
     <script>
       const formulas = [
         // Grupo 1
-        { formula: ["H", "1"], answers: ["1s¹", "1s¹", "1", "2"] },
-        { formula: ["Li", "3"], answers: ["1s² 2s¹", "2s¹", "1", "8"] },
+        { formula: ["H", "1"], answers: ["1s¹", "1s¹", "1", "No Metal"] },
+        { formula: ["Li", "3"], answers: ["1s² 2s¹", "2s¹", "1", "Metal"] },
         {
           formula: ["Na", "11"],
-          answers: ["1s² 2s² 2p⁶ 3s¹", "3s¹", "1", "8"],
+          answers: ["1s² 2s² 2p⁶ 3s¹", "3s¹", "1", "Metal"],
         },
         {
           formula: ["K", "19"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹", "4s¹", "1", "8"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹", "4s¹", "1", "Metal"],
         },
         {
           formula: ["Rb", "37"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s¹", "5s¹", "1", "8"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s¹",
+            "5s¹",
+            "1",
+            "Metal",
+          ],
         },
         {
           formula: ["Cs", "55"],
@@ -516,7 +593,7 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s¹",
             "6s¹",
             "1",
-            "8",
+            "Metal",
           ],
         },
         {
@@ -525,23 +602,28 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 7s¹",
             "7s¹",
             "1",
-            "8",
+            "Metal",
           ],
         },
         // Grupo 2
-        { formula: ["He", "2"], answers: ["1s²", "1s²", "2", "2"] },
-        { formula: ["Be", "4"], answers: ["1s² 2s²", "2s²", "2", "4"] },
+        { formula: ["He", "2"], answers: ["1s²", "1s²", "2", "No Metal"] },
+        { formula: ["Be", "4"], answers: ["1s² 2s²", "2s²", "2", "Metal"] },
         {
           formula: ["Mg", "12"],
-          answers: ["1s² 2s² 2p⁶ 3s²", "3s²", "2", "8"],
+          answers: ["1s² 2s² 2p⁶ 3s²", "3s²", "2", "Metal"],
         },
         {
           formula: ["Ca", "20"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s²", "4s²", "2", "8"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s²", "4s²", "2", "Metal"],
         },
         {
           formula: ["Sr", "38"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s²", "5s²", "2", "8"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s²",
+            "5s²",
+            "2",
+            "Metal",
+          ],
         },
         {
           formula: ["Ba", "56"],
@@ -549,7 +631,7 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s²",
             "6s²",
             "2",
-            "8",
+            "Metal",
           ],
         },
         {
@@ -558,18 +640,26 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 7s²",
             "7s²",
             "2",
-            "8",
+            "Metal",
           ],
         },
         // Grupo 13
-        { formula: ["B", "5"], answers: ["1s² 2s² 2p¹", "2s² 2p¹", "3", "6"] },
+        {
+          formula: ["B", "5"],
+          answers: ["1s² 2s² 2p¹", "2s² 2p¹", "3", "Semimetal"],
+        },
         {
           formula: ["Al", "13"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p¹", "3s² 3p¹", "3", "8"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p¹", "3s² 3p¹", "3", "Metal"],
         },
         {
           formula: ["Ga", "31"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p¹", "4s² 4p¹", "3", "8"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p¹",
+            "4s² 4p¹",
+            "3",
+            "Metal",
+          ],
         },
         {
           formula: ["In", "49"],
@@ -577,7 +667,7 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p¹",
             "5s² 5p¹",
             "3",
-            "8",
+            "Metal",
           ],
         },
         {
@@ -586,18 +676,26 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p¹",
             "6s² 6p¹",
             "3",
-            "8",
+            "Metal",
           ],
         },
         // Grupo 14
-        { formula: ["C", "6"], answers: ["1s² 2s² 2p²", "2s² 2p²", "4", "8"] },
+        {
+          formula: ["C", "6"],
+          answers: ["1s² 2s² 2p²", "2s² 2p²", "4", "No Metal"],
+        },
         {
           formula: ["Si", "14"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p²", "3s² 3p²", "4", "8"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p²", "3s² 3p²", "4", "Semimetal"],
         },
         {
           formula: ["Ge", "32"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p²", "4s² 4p²", "4", "8"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p²",
+            "4s² 4p²",
+            "4",
+            "Semimetal",
+          ],
         },
         {
           formula: ["Sn", "50"],
@@ -605,7 +703,7 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p²",
             "5s² 5p²",
             "4",
-            "8",
+            "Metal",
           ],
         },
         {
@@ -614,18 +712,26 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p²",
             "6s² 6p²",
             "4",
-            "8",
+            "Metal",
           ],
         },
         // Grupo 15
-        { formula: ["N", "7"], answers: ["1s² 2s² 2p³", "2s² 2p³", "5", "8"] },
+        {
+          formula: ["N", "7"],
+          answers: ["1s² 2s² 2p³", "2s² 2p³", "5", "No Metal"],
+        },
         {
           formula: ["P", "15"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p³", "3s² 3p³", "5", "8"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p³", "3s² 3p³", "5", "No Metal"],
         },
         {
           formula: ["As", "33"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p³", "4s² 4p³", "5", "8"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p³",
+            "4s² 4p³",
+            "5",
+            "Semimetal",
+          ],
         },
         {
           formula: ["Sb", "51"],
@@ -633,7 +739,7 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p³",
             "5s² 5p³",
             "5",
-            "8",
+            "Semimetal",
           ],
         },
         {
@@ -642,18 +748,26 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p³",
             "6s² 6p³",
             "5",
-            "8",
+            "Metal",
           ],
         },
         // Grupo 16
-        { formula: ["O", "8"], answers: ["1s² 2s² 2p⁴", "2s² 2p⁴", "6", "8"] },
+        {
+          formula: ["O", "8"],
+          answers: ["1s² 2s² 2p⁴", "2s² 2p⁴", "6", "No Metal"],
+        },
         {
           formula: ["S", "16"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p⁴", "3s² 3p⁴", "6", "8"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁴", "3s² 3p⁴", "6", "No Metal"],
         },
         {
           formula: ["Se", "34"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁴", "4s² 4p⁴", "6", "8"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁴",
+            "4s² 4p⁴",
+            "6",
+            "No Metal",
+          ],
         },
         {
           formula: ["Te", "52"],
@@ -661,7 +775,7 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁴",
             "5s² 5p⁴",
             "6",
-            "8",
+            "Semimetal",
           ],
         },
         {
@@ -670,18 +784,26 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁴",
             "6s² 6p⁴",
             "6",
-            "8",
+            "Metal",
           ],
         },
         // Grupo 17
-        { formula: ["F", "9"], answers: ["1s² 2s² 2p⁵", "2s² 2p⁵", "7", "8"] },
+        {
+          formula: ["F", "9"],
+          answers: ["1s² 2s² 2p⁵", "2s² 2p⁵", "7", "No Metal"],
+        },
         {
           formula: ["Cl", "17"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p⁵", "3s² 3p⁵", "7", "8"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁵", "3s² 3p⁵", "7", "No Metal"],
         },
         {
           formula: ["Br", "35"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁵", "4s² 4p⁵", "7", "8"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁵",
+            "4s² 4p⁵",
+            "7",
+            "No Metal",
+          ],
         },
         {
           formula: ["I", "53"],
@@ -689,7 +811,7 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁵",
             "5s² 5p⁵",
             "7",
-            "8",
+            "No Metal",
           ],
         },
         {
@@ -698,21 +820,26 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁵",
             "6s² 6p⁵",
             "7",
-            "8",
+            "Semimetal",
           ],
         },
         // Grupo 18
         {
           formula: ["Ne", "10"],
-          answers: ["1s² 2s² 2p⁶", "2s² 2p⁶", "8", "8"],
+          answers: ["1s² 2s² 2p⁶", "2s² 2p⁶", "8", "No Metal"],
         },
         {
           formula: ["Ar", "18"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶", "3s² 3p⁶", "8", "8"],
+          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶", "3s² 3p⁶", "8", "No Metal"],
         },
         {
           formula: ["Kr", "36"],
-          answers: ["1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶", "4s² 4p⁶", "8", "8"],
+          answers: [
+            "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶",
+            "4s² 4p⁶",
+            "8",
+            "No Metal",
+          ],
         },
         {
           formula: ["Xe", "54"],
@@ -720,7 +847,7 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶",
             "5s² 5p⁶",
             "8",
-            "8",
+            "No Metal",
           ],
         },
         {
@@ -729,7 +856,7 @@
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶",
             "6s² 6p⁶",
             "8",
-            "8",
+            "No Metal",
           ],
         },
       ];
@@ -919,10 +1046,10 @@
       <tr>
         <th>Z</th>
         <th>Símbolo</th>
-        <th>C. elec</th>
+        <th>Conf. elec</th>
         <th>C. valencia</th>
         <th>e⁻ C. V.</th>
-        <th>e⁻ octeto</th>
+        <th>Cat. química</th>
       </tr>
     </thead>
     <tbody>
@@ -932,20 +1059,41 @@
           <tr>
   <td>${f.formula[1]}</td>
   <td>
-    <input type="text" id="ans_${r}_elem" placeholder="Escribe tu respuesta aquí"
+    <input type="text" id="ans_${r}_elem" placeholder="Símbolo"
       value="${userAnswers[currentIndex][r][0]}"
       ${answerStates[currentIndex] !== null ? "disabled" : ""}>
   </td>
   ${f.answers
-    .map(
-      (_, i) => `
-      <td><input type="text" id="ans_${r}_${
-        i + 1
-      }" placeholder="Escribe tu respuesta aquí"
-        value="${userAnswers[currentIndex][r][i + 1]}"
-        ${answerStates[currentIndex] !== null ? "disabled" : ""}>
-      </td>`
-    )
+    .map((_, i) => {
+      if (i === 3) {
+        // 🔹 Reemplazar el input de "Cat. química" con un <select>
+        const savedValue = userAnswers[currentIndex][r][i + 1];
+        return `
+        <td>
+          <select id="ans_${r}_${i + 1}" ${
+          answerStates[currentIndex] !== null ? "disabled" : ""
+        }>
+            <option value="">Selecciona</option>
+            <option value="Metal" ${
+              savedValue === "Metal" ? "selected" : ""
+            }>Metal</option>
+            <option value="No Metal" ${
+              savedValue === "No Metal" ? "selected" : ""
+            }>No Metal</option>
+            <option value="Semimetal" ${
+              savedValue === "Semimetal" ? "selected" : ""
+            }>Semimetal</option>
+          </select>
+        </td>`;
+      } else {
+        return `
+        <td><input type="text" id="ans_${r}_${i + 1}" 
+          placeholder="Respuesta"
+          value="${userAnswers[currentIndex][r][i + 1]}"
+          ${answerStates[currentIndex] !== null ? "disabled" : ""}>
+        </td>`;
+      }
+    })
     .join("")}
 </tr>`
         )
@@ -962,24 +1110,19 @@
           finishButton.style.display = "none";
           allAnswersButton.style.display = "none";
 
-          // 🔹 Si ya estaba corregida, mostrar resultado anterior
           if (answerStates[currentIndex] !== null) {
-            // Vuelve a ejecutar la corrección para mostrar los resultados previos
             checkAnswer();
           }
 
-          // 🔹 Controlar visibilidad de tabla y texto del botón al cambiar de pregunta
           const tablaContainer = document.getElementById("tabla-container");
           const seeTableBtn = document.getElementById("see-table");
           const superscriptBtn = document.getElementById("superscript-toggle");
 
           if (answerStates[currentIndex] !== null) {
-            // Si ya está corregida → tabla oculta y botón dice "Ver tabla"
             tablaContainer.style.display = "none";
             seeTableBtn.textContent = "Ver Tabla";
             superscriptBtn.style.display = "none";
           } else {
-            // Si no está corregida → tabla visible y botón dice "Ocultar tabla"
             tablaContainer.style.display = "block";
             seeTableBtn.textContent = "Ocultar Tabla";
             superscriptBtn.style.display = "inline-block";
@@ -990,9 +1133,9 @@
           document.getElementById("tabla-container").style.display = "block";
           const correctCount = answerStates.filter((s) => s === true).length;
           document.getElementById("tabla-container").innerHTML = `
-            <h2>¡Has terminado el test!</h2>
-            <h2>Respuestas correctas: ${correctCount}/10</h2>
-          `;
+      <h2>¡Has terminado el test!</h2>
+      <h2>Respuestas correctas: ${correctCount}/10</h2>
+    `;
           result.textContent = "";
           correctAnswers.innerHTML = "";
           navigation.style.display = "none";
@@ -1018,7 +1161,12 @@
         superscriptBtn.style.display = "none";
 
         const group = selectedGroups[currentIndex];
-        const headers = ["C. elec", "C. valencia", "e⁻ C. V.", "e⁻ octeto"];
+        const headers = [
+          "Conf. elec",
+          "C. valencia",
+          "e⁻ C. V.",
+          "Cat. química",
+        ];
         let html = "<h3>Respuestas correctas:</h3>";
 
         let allCorrect = true;
@@ -1096,12 +1244,17 @@
         const answersContainer = document.getElementById(
           "all-answers-container"
         );
-        const headers = ["C. elec", "C. valencia", "e⁻ C. V.", "e⁻ octeto"];
+        const headers = [
+          "Conf. elec",
+          "C. valencia",
+          "e⁻ C. V.",
+          "Cat. química",
+        ];
 
         answersContainer.innerHTML = `
   <div class="container">
     <h2>Todas las Respuestas</h2>
-    <div style="display:flex;overflow-x:auto;gap:20px;padding:10px;">
+    <div style="display:flex;overflow-x:auto;gap:20px;padding:10px;justify-content:flex-start;align-items:flex-start;width:100%;">
       ${selectedGroups
         .map((group, i) => {
           // 🔹 Filtrar símbolos únicos
