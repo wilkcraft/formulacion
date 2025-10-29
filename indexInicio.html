@@ -211,25 +211,24 @@
       }
 
       .close-popup {
-        position: relative;
-        left: 42%;
-        border: none;
-        background-color: rgba(180, 83, 107, 0.11);
-        border-radius: 5px;
-        transition: background 0.5s;
-        display: flex;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 14px;
-        color: rgb(187, 229, 236);
-        background-color: rgb(19, 22, 24);
+        margin: 0 auto; /* centra horizontalmente */
+        border: none;
         padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        background-color: #f1f1f1;
         border-radius: 3px;
         cursor: pointer;
+        transition: background 0.25s;
       }
 
       .close-popup:hover {
-        background-color: rgb(211, 21, 21);
+        background-color: #d32f2f;
+        color: white;
       }
 
       .close-popup:active {
@@ -244,7 +243,7 @@
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        background-color: #333;
+        background-color: rgb(20, 20, 20);
         border: none;
         font-weight: 600;
         display: flex;
@@ -273,6 +272,7 @@
         border-radius: 8px;
         transition-duration: 0.3s;
         background-color: #e24c4b;
+        color: white;
       }
 
       .error-button::before {
@@ -299,13 +299,15 @@
       }
 
       .button-group .close-popup {
-        left: auto; /* Quitamos el desplazamiento que usabas */
+        margin: 0; /* mantiene los botones del grupo alineados en fila */
+        left: auto; /* conserva tu override previo */
         position: relative;
       }
 
       /* Botón Enviar (verde en hover) */
       .button-group .close-popup:first-child:hover {
         background-color: #28a745;
+        color: white;
       }
 
       input[type="text"],
@@ -320,7 +322,35 @@
         margin: 0 auto 20px auto; /* Centra el input y añade margen abajo */
       }
 
+      .help-button {
+        display: block;
+        margin: -10px auto 15px auto; /* justo debajo del input */
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: none;
+        background-color: #333;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      .help-button:hover {
+        background-color: #00bcd4; /* celeste */
+        color: white;
+      }
+
       @media (prefers-color-scheme: dark) {
+        .error-button {
+          background-color: #333;
+        }
+        .help-button {
+          background-color: #333;
+          color: white;
+        }
+        .help-button:hover {
+          background-color: #0d7ac2;
+        }
         body {
           background-color: #121212;
           color: #e0e0e0; /* Texto más claro */
@@ -408,16 +438,34 @@
     </div>
     <div class="popup" id="errorForm">
       <h2>Reportar un error</h2>
-      <input type="text" id="username" placeholder="Tu nombre" />
+      <input type="text" id="username" placeholder="Tu correo electrónico" />
       <textarea
         id="errorMsg"
         placeholder="Describe el error..."
         rows="4"
       ></textarea>
+      <button class="help-button" onclick="openHelpPopup()">?</button>
       <div class="button-group">
         <button class="close-popup" onclick="sendError()">Enviar</button>
         <button class="close-popup" onclick="closeErrorForm()">Cerrar</button>
       </div>
+    </div>
+
+    <div class="popup" id="helpPopup">
+      <h2>Ayuda</h2>
+      <p>Si quieres poder reportar un error escribe tu correo y pulsa enviar</p>
+      <p>Se intentará añadir el correo lo antes posible</p>
+      <input type="text" id="helpEmail" placeholder="Tu correo electrónico" />
+      <div class="button-group">
+        <button class="close-popup" onclick="sendHelpEmail()">Enviar</button>
+        <button class="close-popup" onclick="closeHelpPopup()">Cerrar</button>
+      </div>
+    </div>
+
+    <div class="popup" id="messagePopup">
+      <h2 id="messageTitle"></h2>
+      <p id="messageText"></p>
+      <button class="close-popup" onclick="closeMessagePopup()">Cerrar</button>
     </div>
 
     <script>
@@ -436,76 +484,169 @@
       function closeAutor() {
         document.getElementById("autor").style.display = "none";
       }
+      function openErrorForm() {
+        document.getElementById("errorForm").style.display = "block";
+      }
+      function closeErrorForm() {
+        document.getElementById("errorForm").style.display = "none";
+      }
+      function openHelpPopup() {
+        document.getElementById("helpPopup").style.display = "block";
+      }
+      function closeHelpPopup() {
+        document.getElementById("helpPopup").style.display = "none";
+      }
     </script>
 
-    <!-- 🚨 Script del reporte de errores -->
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
     <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyA9DYbNbj_OrTTCUJmYmpvZOSilR-SKb2s",
+        authDomain: "withelistformulacion.firebaseapp.com",
+        projectId: "withelistformulacion",
+        storageBucket: "withelistformulacion.firebasestorage.app",
+        messagingSenderId: "522972149361",
+        appId: "1:522972149361:web:0c1013a3d0e4efb4214dd0",
+        measurementId: "G-HZZ1DPCQHB",
+      };
+
+      const app = firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
       const TELEGRAM_BOT_TOKEN =
         "8021709931:AAFuw9LxKeA7H1BMspY8h6PRP_yPmx8NMj8";
       const TELEGRAM_CHAT_ID = "8337395780";
 
-      function openErrorForm() {
-        document.getElementById("errorForm").style.display = "block";
+      function isEmailValid(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
       }
 
-      function closeErrorForm() {
-        document.getElementById("errorForm").style.display = "none";
+      async function isWhitelisted(email) {
+        const docRef = db.collection("whitelist").doc(email.toLowerCase());
+        const docSnap = await docRef.get();
+        return docSnap.exists;
       }
 
-      function sendError() {
-        const name = document.getElementById("username").value;
-        const error = document.getElementById("errorMsg").value;
+      function showMessage(title, message) {
+        document.getElementById("messageTitle").innerText = title;
+        document.getElementById("messageText").innerText = message;
+        document.getElementById("messagePopup").style.display = "block";
+      }
 
-        if (!name || !error) {
-          alert("Por favor, completa todos los campos.");
-          return;
-        }
+      function closeMessagePopup() {
+        document.getElementById("messagePopup").style.display = "none";
+      }
 
-        // Obtener fecha y hora actuales
+      async function sendError() {
+        const email = document.getElementById("username").value.trim();
+        const error = document.getElementById("errorMsg").value.trim();
+
+        if (!email || !error)
+          return showMessage("Campos incompletos", "Completa todos los campos");
+        if (!isEmailValid(email))
+          return showMessage("Correo inválido", "Introduce un correo válido");
+
+        const allowed = await isWhitelisted(email);
+        if (!allowed)
+          return showMessage(
+            "Acceso denegado",
+            "❌ Tu correo NO está autorizado"
+          );
+
         const now = new Date();
-        const fecha = now.toLocaleDateString("es-ES", {
-          year: "numeric",
-          month: "numeric",
-          day: "numeric",
-        });
-        const hora = now.toLocaleTimeString("es-ES", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        });
+        const fecha = now.toLocaleDateString("es-ES");
+        const hora = now.toLocaleTimeString("es-ES");
 
-        // Mensaje con saltos de línea (Telegram los interpreta como párrafos)
         const message =
           `🚨 Nuevo reporte de error\n\n` +
-          `👤 Usuario: ${name}\n` +
+          `👤 Usuario: ${email}\n` +
           `📅⏰ Día: ${fecha}  |  Hora: ${hora}\n\n` +
           `⚠️ Error: ${error}\n`;
 
-        fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: TELEGRAM_CHAT_ID,
-            text: message,
-            parse_mode: "HTML", // permite formato básico
-          }),
-        })
-          .then((response) => {
-            if (response.ok) {
-              closeErrorForm();
-            } else {
-              alert("❌ No se pudo enviar el reporte");
+        try {
+          const response = await fetch(
+            `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: "HTML",
+              }),
             }
-          })
-          .catch((err) => {
-            alert("⚠️ Error al conectar con Telegram");
-            console.error(err);
-          });
+          );
+
+          if (response.ok) {
+            showMessage("Éxito", "✅ Reporte enviado con éxito.");
+            document.getElementById("errorForm").style.display = "none";
+          } else {
+            showMessage("Error", "❌ Error al enviar el reporte a Telegram.");
+          }
+        } catch (err) {
+          console.error(err);
+          showMessage("Error", "⚠️ No se pudo conectar con Telegram.");
+        }
+      }
+
+      async function sendHelpEmail() {
+        const email = document.getElementById("helpEmail").value.trim();
+
+        if (!email) {
+          return showMessage(
+            "Campo vacío",
+            "Por favor, introduce tu correo electrónico."
+          );
+        }
+        if (!isEmailValid(email)) {
+          return showMessage("Correo inválido", "Introduce un correo válido.");
+        }
+
+        const now = new Date();
+        const fecha = now.toLocaleDateString("es-ES");
+        const hora = now.toLocaleTimeString("es-ES");
+
+        const message =
+          `📩 Solicitud de acceso\n\n` +
+          `👤 Usuario: ${email}\n` +
+          `📅⏰ Día: ${fecha}  |  Hora: ${hora}\n\n`;
+
+        try {
+          const response = await fetch(
+            `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: "HTML",
+              }),
+            }
+          );
+
+          if (response.ok) {
+            showMessage("Éxito", "✅ Solicitud enviada con éxito.");
+            document.getElementById("helpPopup").style.display = "none";
+          } else {
+            showMessage("Error", "❌ Error al enviar la solicitud a Telegram.");
+          }
+        } catch (err) {
+          console.error(err);
+          showMessage("Error", "⚠️ No se pudo conectar con Telegram.");
+        }
+
+        document.getElementById("helpEmail").value = "";
       }
 
       window.addEventListener("load", () => {
         document.getElementById("username").value = "";
         document.getElementById("errorMsg").value = "";
+        document.getElementById("helpEmail").value = "";
       });
     </script>
   </body>
