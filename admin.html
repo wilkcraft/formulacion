@@ -24,8 +24,7 @@
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        width: 360px;
-        max-width: 100%;
+        width: 100vh;
         text-align: center;
       }
       h2 {
@@ -38,6 +37,10 @@
         margin: 10px 0;
         border: 1px solid #ccc;
         border-radius: 8px;
+      }
+
+      textarea {
+        border: 1px solid #ccc;
       }
 
       /* Botón genérico (no full) */
@@ -75,6 +78,18 @@
       .success {
         color: green;
         margin-top: 10px;
+      }
+
+      /* Lista de novedades */
+      #novedadesList {
+        text-align: left;
+        margin: 8px 0 12px 0;
+        padding: 6px;
+        border-radius: 8px;
+        background: #fff;
+        max-height: 260px;
+        overflow-y: auto;
+        box-shadow: inset 0 0 0 1px #2a2a2a;
       }
 
       /* Lista de usuarios */
@@ -173,12 +188,14 @@
         h2 {
           color: #fff;
         }
-        input {
+        input,
+        textarea {
           background: #2a2a2a;
           border: 1px solid #444;
           color: #e0e0e0;
         }
-        #userList {
+        #userList,
+        #novedadesList {
           background: #2a2a2a;
           box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
         }
@@ -204,22 +221,50 @@
         </button>
       </div>
 
-      <!-- SECCIÓN: gestión (añadir + eliminar) -->
+      <!-- SECCIÓN: menú principal tras verificar código -->
+      <div id="menuSection" style="display: none">
+        <h2>Panel de administración</h2>
+
+        <button class="full" onclick="openWhitelist()">Whitelist</button>
+        <button class="full" onclick="openNovedades()">Novedades</button>
+
+        <button class="volver full" onclick="location.href='indexInicio.html'">
+          Volver
+        </button>
+      </div>
+
+      <!-- SECCIÓN: gestión whitelist -->
       <div id="manageSection" style="display: none">
         <h2>Gestión de usuarios</h2>
 
-        <!-- Input + botón añadir -->
         <div class="add-row">
           <input type="email" id="emailInput" placeholder="Ingresa un correo" />
           <button onclick="saveEmail()">Añadir</button>
         </div>
 
-        <!-- Lista de usuarios -->
         <div id="userList"><p>Cargando usuarios...</p></div>
 
-        <button class="volver" onclick="location.href='indexInicio.html'">
-          Volver
-        </button>
+        <button class="volver full" onclick="backToMenu()">Volver</button>
+      </div>
+
+      <!-- SECCIÓN: gestión novedades -->
+      <div id="novedadesSection" style="display: none">
+        <h2>Gestión de novedades</h2>
+
+        <textarea
+          id="novedadTexto"
+          placeholder="Escribe una novedad..."
+          rows="3"
+          style="width: 100%; padding: 10px; border-radius: 8px"
+        ></textarea>
+
+        <button class="full" onclick="addNovedad()">Añadir novedad</button>
+
+        <div id="novedadesList">
+          <p>Cargando...</p>
+        </div>
+
+        <button class="volver full" onclick="backToMenu()">Volver</button>
       </div>
     </div>
 
@@ -238,6 +283,33 @@
         <div style="display: flex; gap: 10px; justify-content: center">
           <button onclick="confirmYes()">Sí</button>
           <button class="close-btn" onclick="closeConfirm()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POPUP EDITAR NOVEDAD -->
+    <div id="editPopup" class="popup">
+      <div class="popup-content">
+        <h3>Editar novedad</h3>
+
+        <input id="editFecha" placeholder="DD_MM_YYYY" />
+
+        <textarea
+          id="editTexto"
+          rows="4"
+          style="width: 100%; margin-top: 10px"
+        ></textarea>
+
+        <div
+          style="
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+          "
+        >
+          <button onclick="saveEdit()">Guardar</button>
+          <button class="close-btn" onclick="closeEdit()">Cancelar</button>
         </div>
       </div>
     </div>
@@ -294,8 +366,7 @@
         const inputCode = document.getElementById("codeInput").value.trim();
         if (inputCode === generatedCode.toString()) {
           document.getElementById("codeSection").style.display = "none";
-          document.getElementById("manageSection").style.display = "block";
-          loadUsers();
+          document.getElementById("menuSection").style.display = "block";
         } else {
           showPopup("Código incorrecto. Intenta de nuevo.");
         }
@@ -386,6 +457,143 @@
           .querySelectorAll("input")
           .forEach((input) => (input.value = ""));
       });
+
+      window.openWhitelist = () => {
+        document.getElementById("menuSection").style.display = "none";
+        document.getElementById("manageSection").style.display = "block";
+        loadUsers();
+      };
+
+      window.openNovedades = () => {
+        document.getElementById("menuSection").style.display = "none";
+        document.getElementById("novedadesSection").style.display = "block";
+        loadNovedades();
+      };
+
+      window.backToMenu = () => {
+        document.getElementById("manageSection").style.display = "none";
+        document.getElementById("novedadesSection").style.display = "none";
+        document.getElementById("menuSection").style.display = "block";
+      };
+
+      async function loadNovedades() {
+        const list = document.getElementById("novedadesList");
+        list.innerHTML = "<p>Cargando...</p>";
+
+        const snap = await getDocs(collection(db, "novedades"));
+
+        let arr = [];
+
+        snap.forEach((docu) => {
+          const id = docu.id;
+          const text = docu.data().text;
+
+          const [d, m, y] = id.split("_").slice(0, 3).map(Number);
+          const fecha = new Date(y, m - 1, d);
+
+          arr.push({ id, text, fecha });
+        });
+
+        arr.sort((a, b) => b.fecha - a.fecha);
+
+        if (arr.length === 0) {
+          list.innerHTML = "<p>No hay novedades.</p>";
+          return;
+        }
+
+        list.innerHTML = "";
+
+        arr.forEach((n) => {
+          const row = document.createElement("div");
+          row.className = "user-row";
+          row.innerHTML = `
+      <span>${n.id.replaceAll("_", "/")} - ${n.text}</span>
+      <button onclick="editNovedad('${n.id}','${encodeURIComponent(
+            n.text
+          )}')">Editar</button>
+      <button class="delete-btn" onclick="deleteNovedad('${
+        n.id
+      }')">Eliminar</button>
+    `;
+          list.appendChild(row);
+        });
+      }
+
+      let editOldId = null;
+
+      window.editNovedad = (id, text) => {
+        editOldId = id;
+
+        document.getElementById("editFecha").value = id;
+        document.getElementById("editTexto").value = decodeURIComponent(text);
+
+        document.getElementById("editPopup").style.display = "flex";
+      };
+
+      window.closeEdit = () => {
+        document.getElementById("editPopup").style.display = "none";
+      };
+
+      window.saveEdit = async () => {
+        const nuevaFecha = document.getElementById("editFecha").value.trim();
+        const nuevoTexto = document.getElementById("editTexto").value.trim();
+
+        if (!nuevaFecha || !nuevoTexto)
+          return showPopup("Completa todos los campos");
+
+        // si cambia la fecha verificamos si existe
+        if (nuevaFecha !== editOldId) {
+          const existe = await getDoc(doc(db, "novedades", nuevaFecha));
+          if (existe.exists())
+            return showPopup("Ya hay una novedad en ese día.");
+        }
+
+        await deleteDoc(doc(db, "novedades", editOldId));
+        await setDoc(doc(db, "novedades", nuevaFecha), { text: nuevoTexto });
+
+        closeEdit();
+        loadNovedades();
+        showPopup("Cambios guardados.");
+      };
+
+      window.addNovedad = async () => {
+        const texto = document.getElementById("novedadTexto").value.trim();
+        if (!texto) return showPopup("Escribe una novedad.");
+
+        const hoy = new Date();
+        const d = String(hoy.getDate()).padStart(2, "0");
+        const m = String(hoy.getMonth() + 1).padStart(2, "0");
+        const y = hoy.getFullYear();
+        const id = `${d}_${m}_${y}`;
+
+        const existe = await getDoc(doc(db, "novedades", id));
+        if (existe.exists())
+          return showPopup("Ya hay una novedad en este día.");
+
+        await setDoc(doc(db, "novedades", id), { text: texto });
+
+        document.getElementById("novedadTexto").value = "";
+        showPopup("Novedad guardada correctamente.");
+        loadNovedades();
+      };
+
+      window.deleteNovedad = async (id) => {
+        showConfirm(
+          `¿Eliminar la novedad ${id.replaceAll("_", "/")}?`,
+          async () => {
+            await deleteDoc(doc(db, "novedades", id));
+            showPopup("Novedad eliminada.");
+            loadNovedades();
+          }
+        );
+      };
+
+      matchMedia("(prefers-color-scheme: dark)").addEventListener(
+        "change",
+        () => {
+          location.reload();
+        }
+      );
     </script>
   </body>
 </html>
