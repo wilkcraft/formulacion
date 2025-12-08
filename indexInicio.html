@@ -194,12 +194,16 @@
         position: fixed;
         top: 50%;
         left: 50%;
+        max-height: 70vh;
+        max-width: 100vh;
+        flex-direction: column;
         transform: translate(-50%, -50%);
         background-color: white;
         padding: 20px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
         border-radius: 8px;
         text-align: center;
+        gap: 10px;
       }
 
       .popup h2 {
@@ -208,6 +212,30 @@
 
       .popup p {
         margin-bottom: 20px;
+      }
+
+      /* Hace que el título no se mueva */
+      .popup-header {
+        position: sticky;
+        top: 0;
+        background: inherit;
+        padding-bottom: 10px;
+        z-index: 5;
+      }
+
+      /* Contenedor desplazable */
+      .popup-content {
+        max-height: 50vh; /* Ajusta la altura de la zona scroll */
+        overflow-y: auto;
+        padding-right: 5px;
+      }
+
+      /* Mantiene el botón siempre visible */
+      .popup .close-popup {
+        position: sticky;
+        bottom: 0;
+        margin-top: 10px;
+        z-index: 5;
       }
 
       .close-popup {
@@ -419,17 +447,13 @@
       <button class="error-button" onclick="openErrorForm()"></button>
     </div>
     <div class="popup" id="popup">
-      <h2>Actualizaciones</h2>
-      <p>
-        18/10/2025 | Se ha añadido un apartado nuevo de ¿Quién es Quién?, con su
-        Test y su Teoría
-      </p>
-      <p>
-        28/09/2025 | Se ha añadido un botón para reportar lo errores que
-        encuentres
-      </p>
+      <h2 class="popup-header">Novedades</h2>
+      <div class="popup-content" id="novedadesContainer">
+        <!-- Aquí se cargarán automáticamente -->
+      </div>
       <button class="close-popup" onclick="closePopup()">Cerrar</button>
     </div>
+
     <div class="popup" id="autor">
       <h2>Esta web ha sido creada por Miguel Vallejo Garijo</h2>
       <p>Con ayuda de D. Jorge Abal Fernandez</p>
@@ -471,9 +495,6 @@
     <script>
       function goTo(page) {
         window.location.href = page;
-      }
-      function openPopup() {
-        document.getElementById("popup").style.display = "block";
       }
       function closePopup() {
         document.getElementById("popup").style.display = "none";
@@ -648,6 +669,51 @@
         document.getElementById("errorMsg").value = "";
         document.getElementById("helpEmail").value = "";
       });
+
+      firebase.initializeApp(firebaseConfig);
+      async function cargarNovedades() {
+        const contenedor = document.getElementById("novedadesContainer");
+        contenedor.innerHTML = "<p>Cargando...</p>";
+
+        try {
+          const snapshot = await db.collection("novedades").get();
+
+          let novedades = [];
+
+          snapshot.forEach((doc) => {
+            const fechaID = doc.id;
+            const texto = doc.data().text;
+
+            const [dia, mes, año] = fechaID.split("_").map((n) => parseInt(n));
+            const fechaDate = new Date(año, mes - 1, dia);
+
+            novedades.push({ fechaID, texto, fechaDate });
+          });
+
+          novedades.sort((a, b) => b.fechaDate - a.fechaDate);
+
+          contenedor.innerHTML = "";
+
+          novedades.forEach((n) => {
+            const p = document.createElement("p");
+            const fechaFormateada = n.fechaID.replace(/_/g, "/");
+            p.textContent = `${fechaFormateada} | ${n.texto}`;
+            contenedor.appendChild(p);
+          });
+
+          if (novedades.length === 0) {
+            contenedor.innerHTML = "<p>No hay novedades todavía.</p>";
+          }
+        } catch (err) {
+          console.error(err);
+          contenedor.innerHTML = "<p>Error cargando novedades.</p>";
+        }
+      }
+
+      function openPopup() {
+        document.getElementById("popup").style.display = "block";
+        cargarNovedades();
+      }
     </script>
   </body>
 </html>
