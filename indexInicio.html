@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -263,6 +263,8 @@
       }
 
       .error-button {
+        display: flex;
+        display: none;
         position: absolute;
         bottom: -35px;
         left: 45%;
@@ -273,7 +275,6 @@
         background-color: rgb(20, 20, 20);
         border: none;
         font-weight: 600;
-        display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
@@ -572,7 +573,7 @@
         if (!allowed)
           return showMessage(
             "Acceso denegado",
-            "❌ Tu correo NO está autorizado"
+            "❌ Tu correo NO está autorizado",
           );
 
         const now = new Date();
@@ -596,7 +597,7 @@
                 text: message,
                 parse_mode: "HTML",
               }),
-            }
+            },
           );
 
           if (response.ok) {
@@ -617,7 +618,7 @@
         if (!email) {
           return showMessage(
             "Campo vacío",
-            "Por favor, introduce tu correo electrónico."
+            "Por favor, introduce tu correo electrónico.",
           );
         }
         if (!isEmailValid(email)) {
@@ -644,7 +645,7 @@
                 text: message,
                 parse_mode: "HTML",
               }),
-            }
+            },
           );
 
           if (response.ok) {
