@@ -135,7 +135,7 @@ export const formulas = [
   {
     "formula": "CH₃-CH₂-CH₂-CH₂-CH₂-CH₂-CH₂-CH₂-CO-CH₃",
     "answers": [
-      "Metilnonilcetona"
+      "Metiloctilcetona"
     ],
     "tipo": "cetona"
   },
