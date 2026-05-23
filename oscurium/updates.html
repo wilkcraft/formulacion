@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Oscurium</title>
+    <link rel="icon" href="oscuriumLogo.png" />
+    <style>
+      body {
+        margin: 0;
+        font-family: Times New Roman, serif;
+        background-color: white;
+      }
+
+      header {
+        background-color: #201c1e;
+        background-image: url("header.png");
+        background-repeat: repeat;
+        background-size: 10%;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+
+      #floatingMenu {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background-image: url("header.png");
+        background-repeat: repeat;
+        background-size: 55%;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 10px;
+        display: none;
+        align-items: center;
+        gap: 8px;
+        z-index: 10000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        font-family: Times New Roman, serif;
+      }
+
+      #floatingMenu .dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 5px;
+      }
+
+      #menu-header {
+        top: 65px;
+        left: 20px;
+      }
+
+      .center-title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 50%;
+        transform: translate(-50%, -50%);
+        height: 70px; /* Ajusta el tamaño según necesites */
+        pointer-events: none;
+        z-index: 1; /* Opcional, por si hay solapamientos */
+      }
+
+      /* Animación */
+      #leftBox {
+        position: fixed;
+        top: 87px;
+        left: 0px;
+        width: 50%;
+        height: 100%;
+        background-color: #7d7d7d;
+        background-image: url("background.png");
+        background-repeat: repeat;
+        background-size: auto;
+        animation: fadeLeft 2.5s linear forwards;
+        opacity: 0;
+      }
+
+      @keyframes fadeLeft {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-100%);
+        }
+      }
+
+      #rightBox {
+        position: fixed;
+        top: 87px;
+        right: 0px;
+        width: 50%;
+        height: 100%;
+        background-color: #7d7d7d;
+        background-image: url("background.png");
+        background-repeat: repeat;
+        background-size: auto;
+        animation: fadeRight 2.5s linear forwards;
+        opacity: 0;
+      }
+
+      @keyframes fadeRight {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(100%);
+        }
+      }
+
+      #leftBox,
+      #rightBox {
+        z-index: 9999;
+      }
+
+      .home-image {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-right: 7px;
+      }
+
+      .menu-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      .dropdown {
+        position: absolute;
+        top: 50px;
+        left: 20px;
+        background-color: #3a3a3a;
+        background-image: url("dropDown.png");
+        background-repeat: repeat;
+        background-size: 90%;
+        border-radius: 5px;
+        display: none;
+        flex-direction: column;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        z-index: 9999999999;
+      }
+
+      .dropdown a {
+        padding: 10px 20px;
+        color: white;
+        text-decoration: none;
+      }
+
+      .dropdown a:hover {
+        background-color: #666666;
+        background-image: url("dropDownHover.png");
+        background-repeat: repeat;
+        background-size: 90%;
+      }
+
+      .social-cards {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      /* Discord */
+      .discord-card {
+        background: #01073e;
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: block;
+        margin: 30px auto;
+        transition: transform 0.2s;
+      }
+
+      .discord-card:hover {
+        transform: scale(1.03);
+      }
+
+      .discord-image {
+        width: 64px;
+        height: 64px;
+        border-radius: 15px;
+        object-fit: cover;
+      }
+
+      .discord-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .discord-subtext {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .discord-icon-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .discord-icon-label img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .discord-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .discord-tag {
+        background-color: #2c2f33;
+        border-radius: 15px;
+        padding: 6px 12px;
+        font-size: 13px;
+        color: #ccc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .discord-tag img {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* WhatsApp */
+      .whatsapp-card {
+        width: 320px;
+        background: #1d4d23;
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: flex;
+        margin: 30px auto;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        transition: transform 0.2s;
+      }
+
+      .whatsapp-card:hover {
+        transform: scale(1.03);
+      }
+
+      .whatsapp-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .whatsapp-title {
+        font-size: 30px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .whatsapp-subtext {
+        color: #aaa;
+        font-size: 16px;
+        margin-bottom: 15px;
+      }
+
+      /* CurseForge */
+      .curseForge-card {
+        background: linear-gradient(
+          to bottom,
+          #1e1f22 0%,
+          #1e1f22 90%,
+          #fd6938 100%
+        );
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: block;
+        margin: 30px auto;
+        transition: transform 0.2s;
+      }
+
+      .curseForge-card:hover {
+        transform: scale(1.03);
+      }
+
+      .curseForge-image {
+        width: 64px;
+        height: 64px;
+        border-radius: 15px;
+        object-fit: cover;
+      }
+
+      .curseForge-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .curseForge-subtext {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .curseForge-icon-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .curseForge-icon-label img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .curseForge-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .curseForge-tag {
+        background-color: #2c2f33;
+        border-radius: 15px;
+        padding: 6px 12px;
+        font-size: 13px;
+        color: #ccc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .curseForge-tag img {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* Modrinth */
+      .modrinth-card {
+        background: linear-gradient(
+          to bottom,
+          #1e1f22 0%,
+          #1e1f22 90%,
+          #19ca62 100%
+        );
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: block;
+        margin: 30px auto;
+        transition: transform 0.2s;
+      }
+
+      .modrinth-card:hover {
+        transform: scale(1.03);
+      }
+
+      .modrinth-image {
+        width: 64px;
+        height: 64px;
+        border-radius: 15px;
+        object-fit: cover;
+      }
+
+      .modrinth-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .modrinth-subtext {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .modrinth-icon-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .modrinth-icon-label img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .modrinth-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .modrinth-tag {
+        background-color: #2c2f33;
+        border-radius: 15px;
+        padding: 6px 12px;
+        font-size: 13px;
+        color: #ccc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .modrinth-tag img {
+        width: 14px;
+        height: 14px;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      .section.active {
+        display: block;
+      }
+
+      h1 {
+        font-size: 45px;
+        text-align: center;
+      }
+
+      p {
+        color: black;
+        font-size: 20px;
+        text-align: center;
+      }
+
+      a {
+        cursor: pointer;
+      }
+
+      #p2 {
+        text-align: left;
+        margin: 10px;
+      }
+
+      #span1 {
+        width: 150px;
+        text-align: center;
+        border-radius: 5px;
+        border: #bfe1f6 solid 3px;
+      }
+
+      #wiki {
+        text-align: center;
+      }
+
+      size {
+        font-size: 20px;
+      }
+
+      .imagenItem {
+        height: 150px;
+        width: 150px;
+      }
+
+      .imagenCrafteo {
+        height: 100%;
+        width: 370px;
+      }
+
+      .imagenHorno {
+        height: 100%;
+        width: 270px;
+      }
+
+      .imagenArmadura {
+        height: 100%;
+        width: 350px;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          font-size: 16px;
+        }
+
+        header {
+          background-size: 40%;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 75px; /* Altura fija */
+          position: relative; /* necesario para que .center-title absoluta se posicione dentro */
+          overflow: visible;
+        }
+
+        .center-title {
+          position: static;
+          transform: none;
+          height: auto;
+          width: 100%;
+          max-width: 250px;
+          margin: 0 auto;
+          display: block;
+        }
+
+        header .menu-btn,
+        header .home-image,
+        header #menu-header,
+        header h2 {
+          display: none !important;
+        }
+
+        #floatingMenu {
+          background-size: 50%;
+          display: flex !important;
+          top: 100px;
+        }
+
+        main {
+          padding-top: 80px; /* para evitar que el menú flote sobre el contenido */
+        }
+
+        .home-image {
+          width: 32px;
+          height: 32px;
+          margin-right: 5px;
+        }
+
+        h1 {
+          font-size: 30px;
+        }
+
+        h3 {
+          font-size: 20px;
+          margin-left: 0;
+        }
+
+        p {
+          font-size: 16px;
+          text-align: justify;
+        }
+
+        #p2 {
+          margin: 5px;
+        }
+
+        .scrollToStage {
+          right: 5px;
+          width: 40px;
+          height: 40px;
+        }
+
+        .scrollToStage img {
+          width: 24px;
+          height: 24px;
+        }
+
+        .dropdown {
+          left: 0;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+      <img src="oscurium.png" alt="Oscurium logo" class="home-image" />
+      <div class="dropdown" id="menu-header">
+        <a href="index.html">General</a>
+        <a href="wiki.html">Wiki</a>
+        <a href="ideas.html">Ideas</a>
+        <a href="updates.html">Updates</a>
+      </div>
+      <h2>Menu</h2>
+      <img src="oscuriumTitle.png" alt="Oscurium Title" class="center-title" />
+    </header>
+
+    <div id="floatingMenu">
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+      <img src="oscurium.png" alt="Oscurium logo" class="home-image" />
+      <h2 style="margin: 0">Menu</h2>
+      <div class="dropdown" id="menu-floating">
+        <a href="index.html">General</a>
+        <a href="wiki.html">Wiki</a>
+        <a href="ideas.html">Ideas</a>
+        <a href="updates.html">Updates</a>
+      </div>
+    </div>
+
+    <main>
+      <div id="actualizaciones" class="section">
+        <div id="leftBox"></div>
+        <div id="rightBox"></div>
+        <h1 style="color: #83afc1">⚙️ UPDATES ⚙️</h1>
+        <p>The version of the mod and its update will be posted here:</p>
+        <p id="p2">
+          <strong>⚙️ Version 1.2.6:</strong> This update adds many new features,
+          all of which are summarised here. The Dark Furnace allows you to
+          recycle Cursed Tools and Cursed Armour (which has been redesigned,
+          just like Obscurita armour). A natural block called Sculk Grass has
+          now been added to the Deep Void dimension, along with Deepsculk Brick
+          and Deepsculk Tiles, along with their cracked versions.<br />
+          Now you can craft the Dark Ring with Lapis Lazuli Pearl, which is made
+          from Lapis Lazuli Fragment. By right-clicking to open the GUI for this
+          ring, you can add a crystal, allowing you to use it infinitely. A new
+          mineral called Resonant Essence has also been added to the Deep Void
+          dimension. To craft it, you need Resonant Essence Fragment, which is
+          made from Resonant Essence Nugget. You can melt this essence in the
+          Dark Furnace to receive Resonant Essence Fluid. You can put this fluid
+          into the Resonant Fountain. When you put in five buckets, you can
+          right-click with a Resonant Essence to summon the Warden Boss. When
+          you defeat it, it will give you the Sculk Rock Crystal, which
+          generates giant rocks that fall on top of the other entities.<br />
+          In addition, the paper dimension has been added. To enter it, you will
+          have to go to a dungeon in the Deep Void dimension, where you can
+          obtain an altar wall template, which you can use to build the altar
+          wall. Placing this on the portal structure to the Paper Dimension will
+          activate the portal. Upon entering the dimension, you will find some
+          bedrock trapdoors, which can be opened by hand and close on their
+          own.<br />
+          In the Paper Dimension, you will find the new wood kit. And together
+          with Mache Paper (made from Bamboo Paper), you can craft the new Mache
+          Paper Block in black, red, orange, yellow, and blue. You can also
+          craft the Precise Loom, which is currently only a decorative block. In
+          this dimension, you will also find the Cloud Rider, which, when
+          defeated, will give you the Storm Crystal, which generates lightning
+          bolts to strike your enemies. When the Cloud Rider dies, it will leave
+          behind its cloud, which you can ride.
+          <strong
+            >For more detailed information, please refer to the Wiki
+            section.</strong
+          >
+        </p>
+        <p id="p2">
+          <strong>⚙️ Version 1.2.5:</strong> A new mob called “Deependerman” has
+          been added (he appears in the “Deep Void” dimension with a 7% chance),
+          when defeated he will have a 10% chance to drop a new crystal, called
+          “Immortal Crystal” (there is a mistake and it has the name
+          “Mimetization Crystal”) which will give you for 5 seconds the
+          “Immortal effect”, which makes you immortal and teleport in a 3x3
+          range when something attacks you. The “Cursed Shovel” has also been
+          added, and therefore all cursed tools are finished.
+        </p>
+        <p id="p2">
+          <strong>⚙️ Version 1.2.4:</strong> Two achievements have been added,
+          “Cursed Armour” (given when you have all the cursed armor and you get
+          the item “Cursed Flint”) and “Cursed Tools” (given when you have all
+          the cursed tools and you get the item “Cursed Steel”), also has been
+          added the “Cursed flint and steel” and its crafting. Also the “Deep
+          void” dimension has been added, you enter it when you use the new mech
+          in the big portal of the ancient city, in it only spawnean endermans,
+          and the blocks are the sculk block and the “Deepsculk”, a new block
+          that breaks with the hoe and gives you experience.
+        </p>
+        <p id="p2">
+          <strong>⚙️ Version 1.1.9:</strong> Added the “Cursed pickaxe”, “Cursed
+          axe” and “Cursed hoe” tools; also added the cursed armor, and added
+          all the crafters of the above mentioned.
+        </p>
+        <p id="p2">
+          <strong>⚙️ Version 1.1.5:</strong> The “Dark rod fragment ore” block,
+          the minerals “Raw dark rod fragment”, “Dark rod fragment” and the
+          “Dark rod” item have been added. Also the “Dark lantern”, “Dark altar”
+          and “Cursed sword” crafters have been changed.
+        </p>
+        <p id="p2">
+          <strong>⚙️ Version 1.0.9:</strong> The “Dark golem”, the “Dark altar”,
+          all the essences and the lamp have been added. Several bugs and
+          texture model errors have also been fixed.
+        </p>
+      </div>
+    </main>
+
+    <script>
+      function toggleMenu() {
+        const headerBottom = document
+          .querySelector("header")
+          .getBoundingClientRect().bottom;
+        const menuFloating = document.getElementById("menu-floating");
+        const menuHeader = document.getElementById("menu-header");
+
+        if (window.innerWidth <= 768) {
+          // En móvil siempre usar el menú flotante
+          menuFloating.style.display =
+            menuFloating.style.display === "flex" ? "none" : "flex";
+        } else {
+          // En escritorio depende de la visibilidad del header
+          if (headerBottom <= 0) {
+            // Mostrar menú flotante
+            menuFloating.style.display =
+              menuFloating.style.display === "flex" ? "none" : "flex";
+          } else {
+            // Mostrar menú del header
+            menuHeader.style.display =
+              menuHeader.style.display === "flex" ? "none" : "flex";
+          }
+        }
+      }
+
+      const header = document.querySelector("header");
+
+      window.addEventListener("scroll", () => {
+        const headerBottom = header.getBoundingClientRect().bottom;
+        const floatingMenu = document.getElementById("floatingMenu");
+        const allLeftBoxes = document.querySelectorAll("#leftBox");
+        const allRightBoxes = document.querySelectorAll("#rightBox");
+
+        // Ajuste animación de cajas laterales
+        allLeftBoxes.forEach((leftBox) => {
+          leftBox.style.top = headerBottom <= 0 ? "0" : "87px";
+        });
+
+        allRightBoxes.forEach((rightBox) => {
+          rightBox.style.top = headerBottom <= 0 ? "0" : "87px";
+        });
+
+        // Control floatingMenu
+        if (window.innerWidth > 768) {
+          // Escritorio
+          if (headerBottom <= 0) {
+            floatingMenu.style.display = "flex";
+            floatingMenu.style.top = "10px";
+          } else {
+            floatingMenu.style.display = "none";
+          }
+        } else {
+          // Móvil
+          floatingMenu.style.display = "flex";
+          floatingMenu.style.top = headerBottom <= 0 ? "10px" : "100px";
+        }
+      });
+    </script>
+  </body>
+</html>

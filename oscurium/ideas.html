@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Oscurium</title>
+    <link rel="icon" href="oscuriumLogo.png" />
+    <style>
+      body {
+        margin: 0;
+        font-family: Times New Roman, serif;
+        background-color: white;
+      }
+
+      header {
+        background-color: #201c1e;
+        background-image: url("header.png");
+        background-repeat: repeat;
+        background-size: 10%;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+
+      #floatingMenu {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background-image: url("header.png");
+        background-repeat: repeat;
+        background-size: 55%;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 10px;
+        display: none;
+        align-items: center;
+        gap: 8px;
+        z-index: 10000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        font-family: Times New Roman, serif;
+      }
+
+      #floatingMenu .dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 5px;
+      }
+
+      #menu-header {
+        top: 65px;
+        left: 20px;
+      }
+
+      .center-title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 50%;
+        transform: translate(-50%, -50%);
+        height: 70px; /* Ajusta el tamaño según necesites */
+        pointer-events: none;
+        z-index: 1; /* Opcional, por si hay solapamientos */
+      }
+
+      /* Animación */
+      #leftBox {
+        position: fixed;
+        top: 87px;
+        left: 0px;
+        width: 50%;
+        height: 100%;
+        background-color: #7d7d7d;
+        background-image: url("background.png");
+        background-repeat: repeat;
+        background-size: auto;
+        animation: fadeLeft 2.5s linear forwards;
+        opacity: 0;
+      }
+
+      @keyframes fadeLeft {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-100%);
+        }
+      }
+
+      #rightBox {
+        position: fixed;
+        top: 87px;
+        right: 0px;
+        width: 50%;
+        height: 100%;
+        background-color: #7d7d7d;
+        background-image: url("background.png");
+        background-repeat: repeat;
+        background-size: auto;
+        animation: fadeRight 2.5s linear forwards;
+        opacity: 0;
+      }
+
+      @keyframes fadeRight {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(100%);
+        }
+      }
+
+      #leftBox,
+      #rightBox {
+        z-index: 9999;
+      }
+
+      .home-image {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-right: 7px;
+      }
+
+      .menu-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      .dropdown {
+        position: absolute;
+        top: 50px;
+        left: 20px;
+        background-color: #3a3a3a;
+        background-image: url("dropDown.png");
+        background-repeat: repeat;
+        background-size: 90%;
+        border-radius: 5px;
+        display: none;
+        flex-direction: column;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        z-index: 9999999999;
+      }
+
+      .dropdown a {
+        padding: 10px 20px;
+        color: white;
+        text-decoration: none;
+      }
+
+      .dropdown a:hover {
+        background-color: #666666;
+        background-image: url("dropDownHover.png");
+        background-repeat: repeat;
+        background-size: 90%;
+      }
+
+      .social-cards {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      /* Discord */
+      .discord-card {
+        background: #01073e;
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: block;
+        margin: 30px auto;
+        transition: transform 0.2s;
+      }
+
+      .discord-card:hover {
+        transform: scale(1.03);
+      }
+
+      .discord-image {
+        width: 64px;
+        height: 64px;
+        border-radius: 15px;
+        object-fit: cover;
+      }
+
+      .discord-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .discord-subtext {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .discord-icon-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .discord-icon-label img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .discord-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .discord-tag {
+        background-color: #2c2f33;
+        border-radius: 15px;
+        padding: 6px 12px;
+        font-size: 13px;
+        color: #ccc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .discord-tag img {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* WhatsApp */
+      .whatsapp-card {
+        width: 320px;
+        background: #1d4d23;
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: flex;
+        margin: 30px auto;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        transition: transform 0.2s;
+      }
+
+      .whatsapp-card:hover {
+        transform: scale(1.03);
+      }
+
+      .whatsapp-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .whatsapp-title {
+        font-size: 30px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .whatsapp-subtext {
+        color: #aaa;
+        font-size: 16px;
+        margin-bottom: 15px;
+      }
+
+      /* CurseForge */
+      .curseForge-card {
+        background: linear-gradient(
+          to bottom,
+          #1e1f22 0%,
+          #1e1f22 90%,
+          #fd6938 100%
+        );
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: block;
+        margin: 30px auto;
+        transition: transform 0.2s;
+      }
+
+      .curseForge-card:hover {
+        transform: scale(1.03);
+      }
+
+      .curseForge-image {
+        width: 64px;
+        height: 64px;
+        border-radius: 15px;
+        object-fit: cover;
+      }
+
+      .curseForge-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .curseForge-subtext {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .curseForge-icon-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .curseForge-icon-label img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .curseForge-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .curseForge-tag {
+        background-color: #2c2f33;
+        border-radius: 15px;
+        padding: 6px 12px;
+        font-size: 13px;
+        color: #ccc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .curseForge-tag img {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* Modrinth */
+      .modrinth-card {
+        background: linear-gradient(
+          to bottom,
+          #1e1f22 0%,
+          #1e1f22 90%,
+          #19ca62 100%
+        );
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: block;
+        margin: 30px auto;
+        transition: transform 0.2s;
+      }
+
+      .modrinth-card:hover {
+        transform: scale(1.03);
+      }
+
+      .modrinth-image {
+        width: 64px;
+        height: 64px;
+        border-radius: 15px;
+        object-fit: cover;
+      }
+
+      .modrinth-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .modrinth-subtext {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .modrinth-icon-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .modrinth-icon-label img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .modrinth-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .modrinth-tag {
+        background-color: #2c2f33;
+        border-radius: 15px;
+        padding: 6px 12px;
+        font-size: 13px;
+        color: #ccc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .modrinth-tag img {
+        width: 14px;
+        height: 14px;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      .section.active {
+        display: block;
+      }
+
+      h1 {
+        font-size: 45px;
+        text-align: center;
+      }
+
+      p {
+        color: black;
+        font-size: 20px;
+        text-align: center;
+      }
+
+      a {
+        cursor: pointer;
+      }
+
+      #p2 {
+        text-align: left;
+        margin: 10px;
+      }
+
+      #span1 {
+        width: 150px;
+        text-align: center;
+        border-radius: 5px;
+        border: #bfe1f6 solid 3px;
+      }
+
+      #wiki {
+        text-align: center;
+      }
+
+      size {
+        font-size: 20px;
+      }
+
+      .imagenItem {
+        height: 150px;
+        width: 150px;
+      }
+
+      .imagenCrafteo {
+        height: 100%;
+        width: 370px;
+      }
+
+      .imagenHorno {
+        height: 100%;
+        width: 270px;
+      }
+
+      .imagenArmadura {
+        height: 100%;
+        width: 350px;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          font-size: 16px;
+        }
+
+        header {
+          background-size: 40%;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 75px; /* Altura fija */
+          position: relative; /* necesario para que .center-title absoluta se posicione dentro */
+          overflow: visible;
+        }
+
+        .center-title {
+          position: static;
+          transform: none;
+          height: auto;
+          width: 100%;
+          max-width: 250px;
+          margin: 0 auto;
+          display: block;
+        }
+
+        header .menu-btn,
+        header .home-image,
+        header #menu-header,
+        header h2 {
+          display: none !important;
+        }
+
+        #floatingMenu {
+          background-size: 50%;
+          display: flex !important;
+          top: 100px;
+        }
+
+        main {
+          padding-top: 80px; /* para evitar que el menú flote sobre el contenido */
+        }
+
+        .home-image {
+          width: 32px;
+          height: 32px;
+          margin-right: 5px;
+        }
+
+        h1 {
+          font-size: 30px;
+        }
+
+        h3 {
+          font-size: 20px;
+          margin-left: 0;
+        }
+
+        p {
+          font-size: 16px;
+          text-align: justify;
+        }
+
+        #p2 {
+          margin: 5px;
+        }
+
+        .scrollToStage {
+          right: 5px;
+          width: 40px;
+          height: 40px;
+        }
+
+        .scrollToStage img {
+          width: 24px;
+          height: 24px;
+        }
+
+        .dropdown {
+          left: 0;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+      <img src="oscurium.png" alt="Oscurium logo" class="home-image" />
+      <div class="dropdown" id="menu-header">
+        <a href="index.html">General</a>
+        <a href="wiki.html">Wiki</a>
+        <a href="ideas.html">Ideas</a>
+        <a href="updates.html">Updates</a>
+      </div>
+      <h2>Menu</h2>
+      <img src="oscuriumTitle.png" alt="Oscurium Title" class="center-title" />
+    </header>
+
+    <div id="floatingMenu">
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+      <img src="oscurium.png" alt="Oscurium logo" class="home-image" />
+      <h2 style="margin: 0">Menu</h2>
+      <div class="dropdown" id="menu-floating">
+        <a href="index.html">General</a>
+        <a href="wiki.html">Wiki</a>
+        <a href="ideas.html">Ideas</a>
+        <a href="updates.html">Updates</a>
+      </div>
+    </div>
+
+    <main>
+      <div id="ideas" class="section">
+        <div id="leftBox"></div>
+        <div id="rightBox"></div>
+        <h1 style="color: #ffd700">💡 IDEAS 💡</h1>
+        <p>
+          To be able to contribute ideas enter to the
+          <strong>Ideas</strong> section of <strong>Discord</strong>.
+        </p>
+        <div class="social-cards">
+          <a
+            class="discord-card"
+            href="https://discord.gg/QYbq5epVGB"
+            target="_blank"
+          >
+            <img src="oscurium.png" alt="Oscurium logo" class="discord-image" />
+            <div class="discord-title">Oscurium</div>
+            <div class="discord-subtext" style="margin-bottom: 0">
+              Discord Server
+            </div>
+            <div class="discord-subtext" style="margin-top: 5px">
+              Est. may 2025
+            </div>
+
+            <div class="discord-icon-label">
+              <img src="minecraft.png" alt="Minecraft icon" />
+              <span>Minecraft</span>
+            </div>
+
+            <div class="discord-tags">
+              <div class="discord-tag">🟩 minecraft</div>
+              <div class="discord-tag">🔧 mod</div>
+              <div class="discord-tag">💻 programming</div>
+            </div>
+          </a>
+        </div>
+        <p>
+          The ideas you submit for the mod, have to pass this filter, otherwise
+          your ideas will not be re-evaluated:
+        </p>
+        <p id="p2">
+          <strong>💡Required📌:</strong> When you are going to send an idea you
+          will have to put as subject your Minecraft user name.
+        </p>
+        <p id="p2">
+          <strong>💡First rule📌:</strong> The idea cannot be longer than 50
+          words due to technical issues (you can exceed 10 words maximum)
+          otherwise it will be rejected without looking at it.
+        </p>
+        <p id="p2">
+          <strong>💡Second rule📌:</strong> No obscene, obscure, or ideological
+          ideas can be presented to influence real decisions and change the
+          perspective of real life.
+        </p>
+        <p id="p2">
+          <strong>💡Third rule📌:</strong> It has to be things that have to do
+          with the main idea of the Oscurium mod.
+        </p>
+        <p id="p2">
+          <strong>💡Fourth rule📌:</strong> If the idea has already been
+          rejected, it cannot be resubmitted.
+        </p>
+        <p id="p2">
+          <strong>💡Fifth rule📌:</strong> If you send any nonsense or things
+          that have nothing to do with contributing interesting and beneficial
+          ideas for the development of the mod, they will be discarded.
+        </p>
+        <p id="p2">
+          <strong>💡Sixth rule📌:</strong> If there are already 20 ideas, no new
+          ideas will be accepted or read until 50% of the existing ideas are
+          completed.
+        </p>
+      </div>
+    </main>
+
+    <script>
+      function toggleMenu() {
+        const headerBottom = document
+          .querySelector("header")
+          .getBoundingClientRect().bottom;
+        const menuFloating = document.getElementById("menu-floating");
+        const menuHeader = document.getElementById("menu-header");
+
+        if (window.innerWidth <= 768) {
+          // En móvil siempre usar el menú flotante
+          menuFloating.style.display =
+            menuFloating.style.display === "flex" ? "none" : "flex";
+        } else {
+          // En escritorio depende de la visibilidad del header
+          if (headerBottom <= 0) {
+            // Mostrar menú flotante
+            menuFloating.style.display =
+              menuFloating.style.display === "flex" ? "none" : "flex";
+          } else {
+            // Mostrar menú del header
+            menuHeader.style.display =
+              menuHeader.style.display === "flex" ? "none" : "flex";
+          }
+        }
+      }
+
+      const header = document.querySelector("header");
+
+      window.addEventListener("scroll", () => {
+        const headerBottom = header.getBoundingClientRect().bottom;
+        const floatingMenu = document.getElementById("floatingMenu");
+        const allLeftBoxes = document.querySelectorAll("#leftBox");
+        const allRightBoxes = document.querySelectorAll("#rightBox");
+
+        // Ajuste animación de cajas laterales
+        allLeftBoxes.forEach((leftBox) => {
+          leftBox.style.top = headerBottom <= 0 ? "0" : "87px";
+        });
+
+        allRightBoxes.forEach((rightBox) => {
+          rightBox.style.top = headerBottom <= 0 ? "0" : "87px";
+        });
+
+        // Control floatingMenu
+        if (window.innerWidth > 768) {
+          // Escritorio
+          if (headerBottom <= 0) {
+            floatingMenu.style.display = "flex";
+            floatingMenu.style.top = "10px";
+          } else {
+            floatingMenu.style.display = "none";
+          }
+        } else {
+          // Móvil
+          floatingMenu.style.display = "flex";
+          floatingMenu.style.top = headerBottom <= 0 ? "10px" : "100px";
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visor Formulación Inorgánica</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f0f4f8;
+      }
+
+      .container {
+        margin: 20px auto;
+        width: 95%;
+        max-width: 1000px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      /* 🔹 MENU */
+      #menu {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .btn {
+        transition: all 0.3s ease;
+        border-radius: 6px;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        background: linear-gradient(135deg, #149cea, #0d7ac2);
+        color: white;
+      }
+
+      .btn:hover {
+        transform: translateY(2px);
+      }
+
+      .btn.active {
+        background: #28a745;
+      }
+
+      /* 🔹 TABLA */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      th {
+        background: #007bff;
+        color: white;
+        padding: 10px;
+      }
+
+      td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+      }
+
+      td:first-child {
+        text-align: center;
+        vertical-align: middle;
+        font-weight: bold;
+      }
+
+      /* 🔹 RESPUESTAS CENTRADAS */
+      .answers {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 100%;
+      }
+
+      .answer-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      input {
+        width: 100%;
+        text-align: center;
+        padding: 6px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #007bff;
+      }
+
+      .add-btn {
+        background: #28a745;
+      }
+
+      .delete-btn {
+        background: #dc3545;
+      }
+
+      /* 🔹 BANNER */
+      #save-banner {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 8px;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: 0.3s;
+      }
+
+      #save-banner.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* 🔐 LOGIN BONITO */
+      .login-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #149cea, #0d7ac2);
+      }
+
+      .login-card {
+        background: white;
+        padding: 30px;
+        border-radius: 14px;
+        width: 300px;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.4s ease;
+      }
+
+      .login-card h2 {
+        margin-bottom: 20px;
+      }
+
+      .login-card input {
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+      }
+
+      /* animación */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* 🔔 POPUP */
+      .popup {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #333;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 10px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: 0.3s;
+        z-index: 999;
+        font-size: 14px;
+      }
+
+      /* tipos */
+      .popup.success {
+        background: #28a745;
+      }
+
+      .popup.error {
+        background: #dc3545;
+      }
+
+      .popup.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .input-group {
+        position: relative;
+        width: 100%;
+      }
+
+      .input-group input {
+        width: 100%;
+        box-sizing: border-box;
+        padding-right: 40px;
+        margin-bottom: 15px;
+      }
+
+      .toggle-pass {
+        position: absolute;
+        right: 10px;
+        top: 25%;
+        cursor: pointer;
+        font-size: 16px;
+        opacity: 0.6;
+        line-height: 1;
+      }
+
+      .toggle-pass:hover {
+        opacity: 1;
+      }
+
+      #volver-btn {
+        display: block;
+      }
+
+      /* 🔹 BARRA SUPERIOR */
+      .top-nav {
+        position: sticky;
+        top: 0;
+        z-index: 2000;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+
+        padding: 14px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+
+        border-bottom: 1px solid #ddd;
+      }
+
+      .nav-btn {
+        border: none;
+        border-radius: 10px;
+        padding: 10px 18px;
+
+        cursor: pointer;
+
+        font-size: 14px;
+        font-weight: bold;
+
+        transition: all 0.25s ease;
+
+        background: linear-gradient(135deg, #149cea, #0d7ac2);
+        color: white;
+
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-btn:hover {
+        transform: translateY(2px) scale(0.98);
+      }
+
+      .active-nav {
+        background: linear-gradient(135deg, #28a745, #1d7d34);
+      }
+
+      /* 🔹 RESPONSIVE */
+      @media (max-width: 600px) {
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
+          display: block;
+        }
+
+        tr {
+          margin-bottom: 15px;
+          background: #fafafa;
+          border-radius: 10px;
+          padding: 10px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          tr {
+            background: #1f1f1f;
+          }
+        }
+
+        th {
+          display: none;
+        }
+
+        td {
+          border: none;
+          padding: 8px 0;
+        }
+      }
+
+      @media (max-width: 320px) {
+        #volver-btn {
+          display: none;
+        }
+
+        .top-nav {
+          display: none;
+        }
+      }
+
+      /* 🌙 MODO OSCURO */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #121212;
+          color: #e0e0e0;
+        }
+
+        .container {
+          background: #1e1e1e;
+        }
+
+        th {
+          background: #0d7ac2;
+        }
+
+        input {
+          background: #2a2a2a;
+          color: white;
+          border: 1px solid #555;
+        }
+
+        td {
+          border-bottom: 1px solid #333;
+        }
+
+        .login-screen {
+          background: linear-gradient(135deg, #0d1b2a, #1b263b);
+        }
+
+        .login-card {
+          background: #1e1e1e;
+          color: #e0e0e0;
+        }
+
+        .login-card input {
+          background: #2a2a2a;
+          color: white;
+          border: 1px solid #555;
+        }
+
+        .popup {
+          background: #222;
+        }
+
+        /* 🔹 NAV DARK MODE */
+        .top-nav {
+          background: rgba(20, 20, 20, 0.92);
+          border-bottom: 1px solid #333;
+        }
+
+        .nav-btn {
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- 🔹 BARRA DE NAVEGACIÓN -->
+    <div class="top-nav">
+      <button
+        class="nav-btn active-nav"
+        onclick="window.location.href = '../formInor/visor.html'"
+      >
+        Formulación Inorgánica
+      </button>
+
+      <button
+        class="nav-btn"
+        onclick="window.location.href = '../formOr/visor.html'"
+      >
+        Formulación Orgánica
+      </button>
+
+      <button
+        class="nav-btn"
+        onclick="window.location.href = '../formulas/visor.html'"
+      >
+        Otros
+      </button>
+    </div>
+
+    <button
+      onclick="window.location.href = 'formInor.html'"
+      style="position: fixed; top: 15px; left: 15px; z-index: 3000"
+      class="btn"
+      id="volver-btn"
+    >
+      ← Volver
+    </button>
+
+    <div id="login-screen" class="login-screen">
+      <div class="login-card">
+        <h2>🔐 Iniciar sesión</h2>
+        <input id="user" placeholder="Usuario" />
+
+        <div class="input-group">
+          <input id="pass" type="password" placeholder="Contraseña" />
+          <span class="toggle-pass" onclick="togglePassword('pass')">👁</span>
+        </div>
+
+        <button class="btn" onclick="login()">Entrar</button>
+      </div>
+    </div>
+
+    <div id="change-password-screen" class="login-screen" style="display: none">
+      <div class="login-card">
+        <h2>🔐 Cambiar contraseña</h2>
+
+        <div class="input-group">
+          <input
+            id="currentPass"
+            type="password"
+            placeholder="Contraseña actual"
+          />
+          <span class="toggle-pass" onclick="togglePassword('currentPass')"
+            >👁</span
+          >
+        </div>
+
+        <div class="input-group">
+          <input id="newPass" type="password" placeholder="Nueva contraseña" />
+          <span class="toggle-pass" onclick="togglePassword('newPass')"
+            >👁</span
+          >
+        </div>
+
+        <div class="input-group">
+          <input
+            id="confirmPass"
+            type="password"
+            placeholder="Confirmar contraseña"
+          />
+          <span class="toggle-pass" onclick="togglePassword('confirmPass')"
+            >👁</span
+          >
+        </div>
+
+        <button class="btn" onclick="changePassword()">
+          Actualizar contraseña
+        </button>
+      </div>
+    </div>
+
+    <div class="container" id="app" style="display: none">
+      <h1>Selecciona tipo</h1>
+      <button class="btn delete-btn" onclick="logout()" style="float: right">
+        Cerrar sesión
+      </button>
+      <p
+        id="menu-text"
+        style="
+          text-align: center;
+          font-size: 18px;
+          margin-bottom: 15px;
+          font-weight: bold;
+          color: #0d7ac2;
+        "
+      >
+        Elige una categoría para empezar a editar
+      </p>
+
+      <div id="menu"></div>
+      <div
+        id="add-formula-section"
+        style="text-align: center; margin-top: 20px; display: none"
+      >
+        <button class="btn add-btn" onclick="showAddFormula()">
+          ➕ Añadir fórmula
+        </button>
+      </div>
+
+      <div
+        id="add-formula-box"
+        style="display: none; margin-top: 15px; text-align: center"
+      >
+        <input
+          id="newFormula"
+          placeholder="Fórmula (ej: H2O)"
+          style="max-width: 300px"
+        />
+        <br /><br />
+
+        <input
+          id="newAnswer"
+          placeholder="Respuesta (ej: Agua)"
+          style="max-width: 300px"
+        />
+        <br /><br />
+
+        <button class="btn add-btn" onclick="addFormula()">Guardar</button>
+      </div>
+      <div id="table-container"></div>
+    </div>
+
+    <div id="save-banner">Guardado ✅</div>
+    <div id="popup" class="popup"></div>
+
+    <script>
+      let token = localStorage.getItem("token");
+      let currentFile = "";
+      let data = [];
+      let originalData = "";
+      let saveTimeout = null;
+      let currentUser = "";
+      let isTestUser = false;
+
+      async function login() {
+        const username = document.getElementById("user").value;
+        const password = document.getElementById("pass").value;
+
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        });
+
+        if (!res.ok) {
+          showPopup("Login incorrecto", "error");
+          return;
+        }
+
+        const data = await res.json();
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("firstLogin", data.firstLogin);
+        localStorage.setItem("username", username);
+
+        location.reload();
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          if (
+            document.getElementById("login-screen").style.display !== "none"
+          ) {
+            login();
+          }
+        }
+      });
+
+      function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("firstLogin");
+        localStorage.removeItem("username");
+        location.reload();
+      }
+
+      async function changePassword() {
+        const currentPassword = document.getElementById("currentPass").value;
+        const newPassword = document.getElementById("newPass").value;
+        const confirmPassword = document.getElementById("confirmPass").value;
+
+        // ❌ misma contraseña
+        if (currentPassword === newPassword) {
+          showPopup(
+            "La nueva contraseña no puede ser igual a la actual",
+            "error",
+          );
+          return;
+        }
+
+        // ❌ mínimo 6 caracteres
+        if (newPassword.length < 6) {
+          showPopup("La contraseña debe tener al menos 6 caracteres", "error");
+          return;
+        }
+
+        // ❌ confirmación
+        if (newPassword !== confirmPassword) {
+          showPopup("Las contraseñas no coinciden", "error");
+          return;
+        }
+
+        const res = await fetch("/api/change-password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({ currentPassword, newPassword }),
+        });
+
+        if (!res.ok) {
+          showPopup(await res.text(), "error");
+          return;
+        }
+
+        showPopup("Contraseña actualizada ✅");
+        localStorage.setItem("firstLogin", "false");
+
+        setTimeout(() => location.reload(), 1000);
+      }
+
+      async function loadMenu() {
+        const res = await fetch("/api/files?type=inor", {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
+        if (!res.ok) {
+          console.log("Error:", await res.text());
+          logout();
+          return;
+        }
+
+        const files = await res.json();
+        const menu = document.getElementById("menu");
+        menu.innerHTML = "";
+
+        files.forEach((file) => {
+          const btn = document.createElement("button");
+          btn.className = "btn";
+          btn.textContent = capitalize(file);
+
+          btn.onclick = () => {
+            document
+              .querySelectorAll(".btn")
+              .forEach((b) => b.classList.remove("active"));
+
+            btn.classList.add("active");
+            loadFile(file);
+          };
+
+          menu.appendChild(btn);
+        });
+      }
+
+      function capitalize(text) {
+        return text.charAt(0).toUpperCase() + text.slice(1);
+      }
+
+      async function loadFile(file) {
+        currentFile = file;
+
+        const res = await fetch(`/api/formulas/inor/${file}`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
+        data = await res.json();
+
+        // 🔥 guardamos estado original
+        originalData = JSON.stringify(data);
+        document.getElementById("add-formula-section").style.display =
+          isTestUser ? "none" : "block";
+
+        renderTable();
+      }
+
+      function renderTable() {
+        let html = `
+    <table>
+      <tr>
+        <th>Fórmula</th>
+        <th>Respuestas</th>
+      </tr>
+  `;
+
+        data.forEach((item, index) => {
+          html += `
+      <tr>
+        <td>
+  ${
+    isTestUser
+      ? item.formula
+      : `
+        <input
+          value="${item.formula}"
+          oninput="updateFormula(${index}, this.value)"
+        >
+      `
+  }
+</td>
+        <td>
+          <div class="answers">
+            ${item.answers
+              .map(
+                (ans, i) => `
+                <div class="answer-row">
+                  <input
+                    value="${ans}"
+                    ${isTestUser ? "disabled" : ""}
+                    oninput="updateAnswer(${index}, ${i}, this.value)"
+                  >
+
+                  ${
+                    !isTestUser
+                      ? `
+                    <button class="btn delete-btn"
+                      onclick="removeAnswer(${index}, ${i})">
+                      ✖
+                    </button>
+                  `
+                      : ""
+                  }
+                </div>
+              `,
+              )
+              .join("")}
+
+            ${
+              !isTestUser
+                ? `
+              <button class="btn add-btn" onclick="addAnswer(${index})">
+                + Añadir
+              </button>
+            `
+                : ""
+            }
+          </div>
+        </td>
+      </tr>
+    `;
+        });
+
+        html += `</table>`;
+        document.getElementById("table-container").innerHTML = html;
+      }
+
+      function updateAnswer(rowIndex, answerIndex, value) {
+        data[rowIndex].answers[answerIndex] = value;
+        autoSave();
+      }
+
+      function updateFormula(rowIndex, value) {
+        data[rowIndex].formula = value;
+        autoSave();
+      }
+
+      function addAnswer(index) {
+        data[index].answers.push("");
+        renderTable();
+      }
+
+      function removeAnswer(rowIndex, answerIndex) {
+        if (data[rowIndex].answers.length <= 1) {
+          showPopup("Debe haber al menos una respuesta", "error");
+          return;
+        }
+
+        data[rowIndex].answers.splice(answerIndex, 1);
+        renderTable();
+        autoSave();
+      }
+
+      function hasEmptyInputs() {
+        return data.some((row) => row.answers.some((ans) => ans.trim() === ""));
+      }
+
+      function hasChanges() {
+        return JSON.stringify(data) !== originalData;
+      }
+
+      function autoSave() {
+        clearTimeout(saveTimeout);
+
+        saveTimeout = setTimeout(async () => {
+          // ❌ NO guardar si no hay cambios
+          if (!hasChanges()) {
+            console.log("No guardado: sin cambios");
+            return;
+          }
+
+          // 🔥 limpiar datos (quitar vacíos)
+          const cleanedData = data.map((row) => ({
+            ...row,
+            answers: row.answers.filter((ans) => ans.trim() !== ""),
+          }));
+
+          await fetch(`/api/formulas/inor/${currentFile}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify(cleanedData),
+          });
+
+          // 🔥 actualizar estado base
+          originalData = JSON.stringify(cleanedData);
+
+          showBanner();
+        }, 800);
+      }
+
+      function showBanner() {
+        const banner = document.getElementById("save-banner");
+        banner.classList.add("show");
+
+        setTimeout(() => {
+          banner.classList.remove("show");
+        }, 1500);
+      }
+
+      function showPopup(message, type = "success") {
+        const popup = document.getElementById("popup");
+
+        popup.textContent = message;
+        popup.className = "popup show " + type;
+
+        setTimeout(() => {
+          popup.classList.remove("show");
+        }, 2000);
+      }
+
+      function togglePassword(id) {
+        const input = document.getElementById(id);
+        input.type = input.type === "password" ? "text" : "password";
+      }
+
+      const firstLogin = localStorage.getItem("firstLogin") === "true";
+      currentUser = localStorage.getItem("username") || "";
+      isTestUser = currentUser === "TestUser";
+      if (!token) {
+        document.getElementById("login-screen").style.display = "flex";
+      } else if (firstLogin) {
+        document.getElementById("change-password-screen").style.display =
+          "flex";
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("app").style.display = "none";
+      } else {
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("change-password-screen").style.display =
+          "none";
+        document.getElementById("app").style.display = "block";
+        loadMenu();
+      }
+
+      function showAddFormula() {
+        const box = document.getElementById("add-formula-box");
+        box.style.display = box.style.display === "none" ? "block" : "none";
+      }
+
+      function addFormula() {
+        const formulaInput = document.getElementById("newFormula");
+        const answerInput = document.getElementById("newAnswer");
+
+        const formula = formulaInput.value.trim();
+        const answer = answerInput.value.trim();
+
+        if (!formula) {
+          showPopup("Escribe una fórmula", "error");
+          return;
+        }
+
+        if (!answer) {
+          showPopup("Escribe al menos una respuesta", "error");
+          return;
+        }
+
+        // evitar duplicados
+        if (data.some((f) => f.formula === formula)) {
+          showPopup("La fórmula ya existe", "error");
+          return;
+        }
+
+        data.push({
+          formula: formula,
+          answers: [answer],
+        });
+
+        // limpiar inputs
+        formulaInput.value = "";
+        answerInput.value = "";
+
+        document.getElementById("add-formula-box").style.display = "none";
+
+        renderTable();
+        autoSave();
+
+        showPopup("Fórmula añadida ✅");
+      }
+    </script>
+  </body>
+</html>

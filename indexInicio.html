@@ -1,0 +1,1083 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Química</title>
+    <link rel="icon" href="/media/indice.png" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f4f8;
+      }
+      :root {
+        --button-bg: rgb(20, 20, 20);
+        --button-hover: #0d7ac2;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --button-bg: #333;
+          --button-hover: #0d7ac2;
+        }
+      }
+      .container {
+        text-align: center;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: translateY(-20px);
+        animation: fadeIn 1s forwards;
+        position: relative; /* Añadido para posicionar los botones relativos al container */
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      .wilkcraft-link {
+        position: relative;
+        color: #0d7ac2;
+        text-decoration: none;
+        font-weight: bold;
+        transition:
+          color 0.25s ease,
+          letter-spacing 0.25s ease;
+      }
+
+      .wilkcraft-link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -3px;
+        width: 0%;
+        height: 2px;
+        background-color: var(--button-hover);
+        transition: width 0.3s ease;
+      }
+
+      .wilkcraft-link::before {
+        content: "Ir a www.wilkcraft.work";
+        position: absolute;
+        left: 50%;
+        top: -35px;
+        transform: translateX(-50%) translateY(5px);
+        background-color: var(--button-hover);
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: normal;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .wilkcraft-link:hover {
+        letter-spacing: 1px;
+        color: #149cea;
+      }
+
+      .wilkcraft-link:hover::after {
+        width: 100%;
+      }
+
+      .wilkcraft-link:hover::before {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .wilkcraft-link:active {
+        opacity: 0.8;
+      }
+
+      .blue-button {
+        display: inline-block; /* Hace que el botón se ajuste al contenido */
+        position: relative;
+        height: 3.5em;
+        padding: 0 1em; /* Añade padding horizontal para que el texto no esté pegado a los bordes */
+        border: 3px ridge #149cea;
+        outline: none;
+        background-color: transparent;
+        color: black;
+        transition: 1s;
+        border-radius: 0.3em;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+        margin-top: 1px;
+      }
+
+      .blue-button::after {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: white;
+        transition: 0.5s;
+        transform-origin: center;
+      }
+
+      .blue-button::before {
+        content: "";
+        transform-origin: center;
+        position: absolute;
+        top: 80%;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: white;
+        transition: 0.5s;
+      }
+
+      .blue-button:hover::before,
+      .blue-button:hover::after {
+        transform: scale(0);
+      }
+
+      .blue-button:hover {
+        box-shadow: inset 0px 0px 25px #1479ea;
+        background-color: rgba(33, 136, 56, 0.1);
+      }
+
+      .new-button {
+        position: absolute;
+        right: -25px; /* Posicionado a la derecha del container */
+        top: 85%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--button-bg);
+        border: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition-duration: 0.3s;
+        overflow: hidden;
+        color: white;
+        font-size: 16px;
+        animation: fadeIn 1s forwards;
+      }
+
+      .new-button.news-alert {
+        top: 95%;
+        transform: translateY(-50%);
+        animation:
+          glowPulse 2s infinite ease-in-out,
+          fakeHover 2s infinite ease-in-out;
+      }
+
+      .new-button.news-alert::after {
+        animation: fakeHoverIcon 2s infinite ease-in-out;
+      }
+
+      .new-button.news-alert::before {
+        animation: fakeHoverText 2s infinite ease-in-out;
+      }
+      @keyframes glowPulse {
+        0% {
+          box-shadow:
+            0 0 0px rgba(13, 122, 194, 0),
+            0 0 0px rgba(13, 122, 194, 0);
+        }
+
+        50% {
+          box-shadow:
+            0 0 10px rgba(13, 122, 194, 0.45),
+            0 0 18px rgba(13, 122, 194, 0.2);
+        }
+
+        100% {
+          box-shadow:
+            0 0 0px rgba(13, 122, 194, 0),
+            0 0 0px rgba(13, 122, 194, 0);
+        }
+      }
+
+      @keyframes fakeHover {
+        0%,
+        100% {
+          transform: translateY(-50%) scale(1);
+          border-radius: 50%;
+          background-color: var(--button-bg);
+        }
+
+        50% {
+          transform: translateY(-50%) scale(1.2);
+          border-radius: 8px;
+          background-color: var(--button-hover);
+        }
+      }
+
+      @keyframes fakeHoverIcon {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(8px);
+        }
+      }
+
+      @keyframes fakeHoverText {
+        0%,
+        100% {
+          font-size: 2px;
+          opacity: 0;
+          transform: translateY(0);
+        }
+
+        50% {
+          font-size: 15px;
+          opacity: 1;
+          transform: translateY(35px);
+        }
+      }
+
+      .left-button {
+        position: absolute;
+        left: -25px; /* Posicionado a la izquierda del container */
+        top: 85%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--button-bg);
+        border: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition-duration: 0.3s;
+        overflow: hidden;
+        color: white;
+        font-size: 16px;
+        animation: fadeIn 1s forwards;
+      }
+
+      /* Add proper selectors for both buttons */
+      .new-button::after {
+        content: "!";
+        display: inline-block;
+        transition: transform 0.3s ease-in-out;
+      }
+      .left-button::after {
+        content: "≡";
+        display: inline-block;
+        transition: transform 0.3s ease-in-out;
+      }
+      .feed-button::after {
+        content: "✉";
+        display: inline-block;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .new-button:hover::after,
+      .left-button:hover::after,
+      .feed-button:hover::after {
+        transform: translateY(8px);
+      }
+
+      .new-button:hover,
+      .left-button:hover,
+      .feed-button:hover {
+        transform: translateY(-50%) scale(1.2);
+        border-radius: 8px;
+        transition-duration: 0.3s;
+        background-color: var(--button-hover);
+      }
+
+      .new-button::before {
+        position: absolute;
+        top: -30px;
+        content: "New";
+        color: white;
+        transition-duration: 0.3s;
+        font-size: 2px;
+      }
+      .left-button::before {
+        position: absolute;
+        top: -30px;
+        content: "Autor";
+        color: white;
+        transition-duration: 0.3s;
+        font-size: 2px;
+      }
+      .feed-button::before {
+        position: absolute;
+        top: -30px;
+        content: "Ayuda";
+        color: white;
+        transition-duration: 0.3s;
+        font-size: 2px;
+      }
+
+      .new-button:hover::before,
+      .left-button:hover::before,
+      .feed-button:hover::before {
+        font-size: 15px;
+        opacity: 1;
+        transform: translateY(35px);
+        transition-duration: 0.3s;
+      }
+
+      #feedbackMode {
+        margin-bottom: 20px;
+      }
+
+      .popup,
+      .feed-popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        max-height: 70vh;
+        max-width: 100vh;
+        flex-direction: column;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+        border-radius: 8px;
+        text-align: center;
+        gap: 10px;
+      }
+
+      .feed-popup {
+        width: 300px;
+      }
+
+      .popup h2 {
+        margin: 0 0 10px;
+      }
+
+      .popup p {
+        margin-bottom: 20px;
+      }
+
+      /* Hace que el título no se mueva */
+      .popup-header {
+        position: sticky;
+        top: 0;
+        background: inherit;
+        padding-bottom: 10px;
+        z-index: 5;
+      }
+
+      /* Contenedor desplazable */
+      .popup-content {
+        max-height: 50vh; /* Ajusta la altura de la zona scroll */
+        overflow-y: auto;
+        padding-right: 5px;
+      }
+
+      /* Mantiene el botón siempre visible */
+      .popup .close-popup {
+        bottom: 0;
+        margin-top: 10px;
+        z-index: 5;
+      }
+
+      .close-popup {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto; /* centra horizontalmente */
+        border: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        background-color: #f1f1f1;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background 0.25s;
+      }
+
+      .close-popup:hover {
+        background-color: #d32f2f;
+        color: white;
+      }
+
+      .close-popup:active {
+        background-color: rgb(130, 0, 0);
+      }
+
+      .feed-button {
+        display: flex;
+        position: absolute;
+        bottom: -35px;
+        left: 45%;
+        transform: translateX(-50%); /* solo corrige el eje horizontal */
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--button-bg);
+        border: none;
+        font-weight: 600;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition-duration: 0.3s;
+        overflow: hidden;
+        color: white;
+        font-size: 16px;
+        animation: fadeIn 1s forwards;
+      }
+
+      .button-group {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        gap: 20px; /* Espacio entre los botones */
+        margin-top: 15px;
+      }
+
+      .button-group .close-popup {
+        margin: 0; /* mantiene los botones del grupo alineados en fila */
+        left: auto; /* conserva tu override previo */
+        position: relative;
+      }
+
+      /* Botón Enviar (verde en hover) */
+      .button-group .close-popup:first-child:hover {
+        background-color: #28a745;
+        color: white;
+      }
+
+      input[type="text"],
+      select,
+      #errorMsg {
+        width: calc(100% - 20px);
+        max-width: 300px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: block; /* Hace que el input ocupe su propia línea */
+        margin: 0 auto 20px auto; /* Centra el input y añade margen abajo */
+      }
+
+      .news-separator {
+        display: flex;
+        align-items: center;
+        margin: 18px 0;
+        color: #0d7ac2;
+        font-size: 14px;
+        font-weight: bold;
+        opacity: 0.9;
+      }
+
+      .news-separator::before,
+      .news-separator::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: rgba(13, 122, 194, 0.35);
+      }
+
+      .news-separator span {
+        padding: 0 12px;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          height: 100dvh;
+          padding: 0 15px 0 15px;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .container {
+          width: 100%;
+          max-width: 100%;
+          padding: 15px;
+          border-radius: 8px;
+        }
+
+        /* Botón derecha (news) */
+        .new-button {
+          right: -10px; /* antes -25 */
+          top: 90%;
+          width: 45px;
+          height: 45px;
+        }
+
+        /* Botón izquierda (autor) */
+        .left-button {
+          left: -10px; /* antes -25 */
+          top: 90%;
+          width: 45px;
+          height: 45px;
+        }
+
+        /* Botón feed centrado */
+        .feed-button {
+          bottom: -35px;
+          width: 45px;
+          height: 45px;
+        }
+
+        h1 {
+          font-size: 20px;
+        }
+
+        /* Botones en columna */
+        .button-container {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .btn {
+          width: 100%;
+          height: 50px;
+          font-size: 16px;
+          margin: 0;
+        }
+
+        /* Botón inicio también ancho completo */
+        .green-button {
+          width: 100%;
+          height: 50px;
+          font-size: 16px;
+          margin-top: 15px;
+        }
+
+        /* Mejorar tacto */
+        button {
+          touch-action: manipulation;
+        }
+
+        .popup {
+          width: 80vw;
+          max-width: 500px;
+          padding: 15px;
+        }
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #121212;
+          color: #e0e0e0; /* Texto más claro */
+        }
+
+        .container {
+          background-color: #1e1e1e;
+          box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+          color: #e0e0e0; /* Título más claro */
+        }
+
+        .blue-button {
+          color: #e0e0e0;
+          border: 3px ridge #42a5f5;
+        }
+
+        .blue-button::after,
+        .blue-button::before {
+          background-color: #1e1e1e; /* Mismo color que el fondo del container */
+        }
+
+        .blue-button:hover {
+          box-shadow: inset 0px 0px 25px #42a5f5;
+          background-color: rgba(33, 136, 56, 0.2);
+        }
+
+        .new-button,
+        .left-button,
+        .feed-button {
+          background-color: #333;
+          color: #e0e0e0;
+        }
+
+        .popup {
+          background-color: #2c2c2c;
+          color: #f0f0f0;
+        }
+
+        .close-popup {
+          background-color: #444;
+          color: #f0f0f0;
+        }
+
+        .close-popup:hover {
+          background-color: #d11515;
+        }
+
+        .close-popup:active {
+          background-color: #820000;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        Formulación Orgánica e Inorgánica, <br />Reactividad Química<br />y
+        ¿Quién es Quién?
+      </h1>
+      <button class="blue-button" onclick="goTo('indiceTest.html')">
+        Empezar
+      </button>
+      <button class="new-button" onclick="openPopup()"></button>
+      <button class="left-button" onclick="openAutor()"></button>
+      <button class="feed-button" onclick="openErrorForm()"></button>
+    </div>
+    <div class="popup" id="popup">
+      <h2 class="popup-header">Novedades</h2>
+      <div class="popup-content" id="novedadesContainer"></div>
+      <button class="close-popup" onclick="closePopup()">Cerrar</button>
+    </div>
+
+    <div class="popup" id="autor">
+      <h2>
+        Esta web ha sido creada por
+        <a
+          href="https://www.wilkcraft.work/"
+          target="_blank"
+          class="wilkcraft-link"
+        >
+          Wilkcraft
+        </a>
+      </h2>
+      <p>Con ayuda de D. Jorge Abal Fernandez</p>
+      <p>Hecho principalmente para el Colegio de Fomento Miralvent</p>
+      <button class="close-popup" onclick="closeAutor()">Cerrar</button>
+    </div>
+    <div class="popup feed-popup" id="errorForm">
+      <h2>Feedback</h2>
+
+      <select id="feedbackMode" onchange="changeFeedbackMode()">
+        <option value="report">Reportar error</option>
+        <option value="request">Solicitar acceso</option>
+      </select>
+
+      <!-- REPORTAR ERROR -->
+      <div id="reportSection">
+        <input type="text" id="username" placeholder="Tu correo electrónico" />
+
+        <textarea
+          id="errorMsg"
+          placeholder="Describe el error..."
+          rows="4"
+        ></textarea>
+      </div>
+
+      <!-- SOLICITAR ACCESO -->
+      <div id="requestSection" style="display: none">
+        <input type="text" id="helpEmail" placeholder="Tu correo electrónico" />
+
+        <select id="helpType">
+          <option value="Reporte">Acceso para reportar</option>
+          <option value="Editar">Acceso para editar</option>
+          <option value="Ambos">Ambos</option>
+        </select>
+      </div>
+
+      <div class="button-group">
+        <button class="close-popup" onclick="submitFeedback()">Enviar</button>
+
+        <button class="close-popup" onclick="closeErrorForm()">Cerrar</button>
+      </div>
+    </div>
+
+    <div class="popup" id="messagePopup">
+      <h2 id="messageTitle"></h2>
+      <p id="messageText"></p>
+      <button class="close-popup" onclick="closeMessagePopup()">Cerrar</button>
+    </div>
+
+    <script>
+      function goTo(page) {
+        window.location.href = page;
+      }
+      function closePopup() {
+        document.getElementById("popup").style.display = "none";
+      }
+      function openAutor() {
+        document.getElementById("autor").style.display = "block";
+      }
+      function closeAutor() {
+        document.getElementById("autor").style.display = "none";
+      }
+      function openErrorForm() {
+        document.getElementById("errorForm").style.display = "block";
+      }
+      function closeErrorForm() {
+        document.getElementById("errorForm").style.display = "none";
+        document.getElementById("feedbackMode").value = "report";
+        changeFeedbackMode();
+      }
+      function changeFeedbackMode() {
+        const mode = document.getElementById("feedbackMode").value;
+
+        const reportSection = document.getElementById("reportSection");
+        const requestSection = document.getElementById("requestSection");
+
+        document.getElementById("username").value = "";
+        document.getElementById("errorMsg").value = "";
+        document.getElementById("helpEmail").value = "";
+
+        if (mode === "report") {
+          reportSection.style.display = "block";
+          requestSection.style.display = "none";
+        } else {
+          reportSection.style.display = "none";
+          requestSection.style.display = "block";
+        }
+      }
+      function submitFeedback() {
+        const mode = document.getElementById("feedbackMode").value;
+
+        if (mode === "report") {
+          sendError();
+        } else {
+          sendHelpEmail();
+        }
+      }
+    </script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyA9DYbNbj_OrTTCUJmYmpvZOSilR-SKb2s",
+        authDomain: "withelistformulacion.firebaseapp.com",
+        projectId: "withelistformulacion",
+        storageBucket: "withelistformulacion.firebasestorage.app",
+        messagingSenderId: "522972149361",
+        appId: "1:522972149361:web:0c1013a3d0e4efb4214dd0",
+        measurementId: "G-HZZ1DPCQHB",
+      };
+
+      const app = firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      const TELEGRAM_BOT_TOKEN =
+        "8021709931:AAFuw9LxKeA7H1BMspY8h6PRP_yPmx8NMj8";
+      const TELEGRAM_CHAT_ID = "8337395780";
+
+      function isEmailValid(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      }
+
+      async function isWhitelisted(email) {
+        const docRef = db.collection("whitelist").doc(email.toLowerCase());
+        const docSnap = await docRef.get();
+        return docSnap.exists;
+      }
+
+      function showMessage(title, message) {
+        document.getElementById("messageTitle").innerText = title;
+        document.getElementById("messageText").innerText = message;
+        document.getElementById("messagePopup").style.display = "block";
+      }
+
+      function closeMessagePopup() {
+        document.getElementById("messagePopup").style.display = "none";
+      }
+
+      async function sendError() {
+        const email = document.getElementById("username").value.trim();
+        const error = document.getElementById("errorMsg").value.trim();
+
+        if (!email || !error)
+          return showMessage("Campos incompletos", "Completa todos los campos");
+        if (!isEmailValid(email))
+          return showMessage("Correo inválido", "Introduce un correo válido");
+
+        const allowed = await isWhitelisted(email);
+        if (!allowed)
+          return showMessage(
+            "Acceso denegado",
+            "❌ Tu correo NO está autorizado",
+          );
+
+        const now = new Date();
+        const fecha = now.toLocaleDateString("es-ES");
+        const hora = now.toLocaleTimeString("es-ES");
+
+        const message =
+          `🚨 Nuevo reporte de error\n\n` +
+          `👤 Usuario: ${email}\n` +
+          `📅⏰ Día: ${fecha}  |  Hora: ${hora}\n\n` +
+          `⚠️ Error: ${error}\n`;
+
+        try {
+          const response = await fetch("/api/report-error", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email,
+              error,
+              fecha,
+              hora,
+            }),
+          });
+
+          if (response.ok) {
+            showMessage("Éxito", "✅ Reporte enviado con éxito.");
+            document.getElementById("errorForm").style.display = "none";
+          } else {
+            showMessage("Error", "❌ Error al enviar el reporte a Telegram.");
+          }
+        } catch (err) {
+          console.error(err);
+          showMessage("Error", "⚠️ No se pudo conectar con Telegram.");
+        }
+      }
+
+      async function sendHelpEmail() {
+        const email = document.getElementById("helpEmail").value.trim();
+        const tipo = document.getElementById("helpType").value;
+
+        if (!email) {
+          return showMessage(
+            "Campo vacío",
+            "Por favor, introduce tu correo electrónico.",
+          );
+        }
+
+        if (!isEmailValid(email)) {
+          return showMessage("Correo inválido", "Introduce un correo válido.");
+        }
+
+        const alreadyAllowed = await isWhitelisted(email);
+
+        if (alreadyAllowed) {
+          return showMessage(
+            "Ya autorizado",
+            "✅ Este correo ya está en la whitelist",
+          );
+        }
+
+        const now = new Date();
+        const fecha = now.toLocaleDateString("es-ES");
+        const hora = now.toLocaleTimeString("es-ES");
+
+        try {
+          const response = await fetch("/api/request-access", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email,
+              tipo,
+              fecha,
+              hora,
+            }),
+          });
+
+          if (response.ok) {
+            showMessage("Éxito", "✅ Solicitud enviada con éxito.");
+            document.getElementById("errorForm").style.display = "none";
+          } else {
+            showMessage("Error", "❌ Error al enviar la solicitud.");
+          }
+        } catch (err) {
+          console.error(err);
+
+          showMessage("Error", "⚠️ No se pudo conectar con el servidor.");
+        }
+
+        document.getElementById("helpEmail").value = "";
+        document.getElementById("helpType").value = "Reporte";
+      }
+
+      window.addEventListener("load", () => {
+        document.getElementById("username").value = "";
+        document.getElementById("errorMsg").value = "";
+        document.getElementById("helpEmail").value = "";
+        document.getElementById("feedbackMode").value = "report";
+        changeFeedbackMode();
+      });
+
+      const NEWS_STORAGE_KEY = "ultimaNovedadVista";
+
+      async function cargarNovedades() {
+        const contenedor = document.getElementById("novedadesContainer");
+        const newsButton = document.querySelector(".new-button");
+
+        contenedor.innerHTML = "<p>Cargando...</p>";
+
+        try {
+          const snapshot = await db.collection("novedades").get();
+
+          let novedades = [];
+
+          snapshot.forEach((doc) => {
+            const fechaID = doc.id;
+            const texto = doc.data().text;
+
+            const [dia, mes, año] = fechaID.split("_").map((n) => parseInt(n));
+            const fechaDate = new Date(año, mes - 1, dia);
+
+            novedades.push({ fechaID, texto, fechaDate });
+          });
+
+          novedades.sort((a, b) => b.fechaDate - a.fechaDate);
+
+          contenedor.innerHTML = "";
+
+          const ahora = new Date();
+          const cincoDias = 5 * 24 * 60 * 60 * 1000;
+
+          const ultimaVista = localStorage.getItem(NEWS_STORAGE_KEY);
+
+          let separadorInsertado = false;
+
+          novedades.forEach((n) => {
+            const esReciente = ahora - n.fechaDate <= cincoDias;
+
+            const esNueva =
+              esReciente && (!ultimaVista || n.fechaID > ultimaVista);
+
+            // Insertar separador SOLO antes de la primera novedad nueva
+            if (esNueva && !separadorInsertado) {
+              const separador = document.createElement("div");
+              separador.classList.add("news-separator");
+
+              separador.innerHTML = "<span>Nuevas novedades</span>";
+
+              contenedor.appendChild(separador);
+
+              separadorInsertado = true;
+            }
+
+            const fechaFormateada = n.fechaID.replace(/_/g, "/");
+
+            // Dividir usando "/n"
+            const partes = n.texto.split("/n");
+
+            const wrapper = document.createElement("div");
+            wrapper.classList.add("news-item");
+
+            partes.forEach((parte, index) => {
+              const p = document.createElement("p");
+
+              if (index === 0) {
+                p.textContent = `${fechaFormateada} | ${parte}`;
+                p.classList.add("main-line");
+              } else {
+                p.textContent = parte;
+                p.classList.add("sub-line");
+              }
+
+              wrapper.appendChild(p);
+            });
+
+            contenedor.appendChild(wrapper);
+          });
+
+          if (novedades.length === 0) {
+            contenedor.innerHTML = "<p>No hay novedades todavía.</p>";
+            return;
+          }
+
+          // ========= DETECTAR NOVEDADES RECIENTES =========
+
+          const novedadesRecientes = novedades.filter((n) => {
+            return ahora - n.fechaDate <= cincoDias;
+          });
+
+          if (novedadesRecientes.length > 0) {
+            const ultimaNovedad = novedadesRecientes[0].fechaID;
+
+            const ultimaVista = localStorage.getItem(NEWS_STORAGE_KEY);
+
+            // Si es una novedad nueva no vista → activar animación
+            if (ultimaVista !== ultimaNovedad) {
+              newsButton.classList.add("news-alert");
+            }
+          }
+        } catch (err) {
+          console.error(err);
+          contenedor.innerHTML = "<p>Error cargando novedades.</p>";
+        }
+      }
+
+      async function openPopup() {
+        document.getElementById("popup").style.display = "block";
+
+        await cargarNovedades();
+
+        // Guardar la última novedad reciente como vista
+        try {
+          const snapshot = await db.collection("novedades").get();
+
+          let novedades = [];
+
+          snapshot.forEach((doc) => {
+            const fechaID = doc.id;
+
+            const [dia, mes, año] = fechaID.split("_").map((n) => parseInt(n));
+
+            const fechaDate = new Date(año, mes - 1, dia);
+
+            novedades.push({ fechaID, fechaDate });
+          });
+
+          novedades.sort((a, b) => b.fechaDate - a.fechaDate);
+
+          const ahora = new Date();
+          const cincoDias = 5 * 24 * 60 * 60 * 1000;
+
+          const recientes = novedades.filter((n) => {
+            return ahora - n.fechaDate <= cincoDias;
+          });
+
+          if (recientes.length > 0) {
+            localStorage.setItem(NEWS_STORAGE_KEY, recientes[0].fechaID);
+          }
+
+          // Quitar animación al abrir
+          document.querySelector(".new-button").classList.remove("news-alert");
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      // Comprobar novedades al cargar la web
+      window.addEventListener("load", () => {
+        cargarNovedades();
+      });
+    </script>
+  </body>
+</html>

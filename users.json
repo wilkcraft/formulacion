@@ -1,0 +1,17 @@
+[
+  {
+    "username": "Miguel",
+    "password": "$2b$10$l.7NFqjJD.MSGQ3LnGSDwOZN3M9x8JuN2fd5ZtVqVTs98AAK2bBbm",
+    "firstLogin": false
+  },
+  {
+    "username": "JAbal",
+    "password": "$2b$10$pM8ruJ8cpIBQbKNvAaxJUur6ugrFG8Ajlf.CPOXK0y/vm3OkbK.la",
+    "firstLogin": false
+  },
+  {
+    "username": "TestUser",
+    "password": "$2b$10$zPZN3lgnn0Kl8DlsFNj4Nu0qzdz.pVqSPZLAdGzcfXsza.Qa4hWjy",
+    "firstLogin": false
+  }
+]

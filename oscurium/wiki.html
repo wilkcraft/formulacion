@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Oscurium</title>
+    <link rel="icon" href="oscuriumLogo.png" />
+    <style>
+      body {
+        margin: 0;
+        font-family: Times New Roman, serif;
+        background-color: white;
+      }
+
+      header {
+        background-color: #201c1e;
+        background-image: url("header.png");
+        background-repeat: repeat;
+        background-size: 10%;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+
+      #floatingMenu {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background-image: url("header.png");
+        background-repeat: repeat;
+        background-size: 55%;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 10px;
+        display: none;
+        align-items: center;
+        gap: 8px;
+        z-index: 10000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        font-family: Times New Roman, serif;
+      }
+
+      #floatingMenu .dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 5px;
+      }
+
+      #menu-header {
+        top: 65px;
+        left: 20px;
+      }
+
+      .center-title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 50%;
+        transform: translate(-50%, -50%);
+        height: 70px; /* Ajusta el tamaño según necesites */
+        pointer-events: none;
+        z-index: 1; /* Opcional, por si hay solapamientos */
+      }
+
+      /* Animación */
+      #leftBox {
+        position: fixed;
+        top: 87px;
+        left: 0px;
+        width: 50%;
+        height: 100%;
+        background-color: #7d7d7d;
+        background-image: url("background.png");
+        background-repeat: repeat;
+        background-size: auto;
+        animation: fadeLeft 2.5s linear forwards;
+        opacity: 0;
+      }
+
+      #leftBox,
+      #rightBox {
+        z-index: 9999;
+      }
+
+      @keyframes fadeLeft {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-100%);
+        }
+      }
+
+      #rightBox {
+        position: fixed;
+        top: 87px;
+        right: 0px;
+        width: 50%;
+        height: 100%;
+        background-color: #7d7d7d;
+        background-image: url("background.png");
+        background-repeat: repeat;
+        background-size: auto;
+        animation: fadeRight 2.5s linear forwards;
+        opacity: 0;
+      }
+
+      @keyframes fadeRight {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(100%);
+        }
+      }
+
+      .home-image {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-right: 7px;
+      }
+
+      .menu-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      .dropdown {
+        position: absolute;
+        top: 50px;
+        left: 20px;
+        background-color: #3a3a3a;
+        background-image: url("dropDown.png");
+        background-repeat: repeat;
+        background-size: 90%;
+        border-radius: 5px;
+        display: none;
+        flex-direction: column;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        z-index: 9999999999;
+      }
+
+      .dropdown a {
+        padding: 10px 20px;
+        color: white;
+        text-decoration: none;
+      }
+
+      .dropdown a:hover {
+        background-color: #666666;
+        background-image: url("dropDownHover.png");
+        background-repeat: repeat;
+        background-size: 90%;
+      }
+
+      .social-cards {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      /* Discord */
+      .discord-card {
+        background: #01073e;
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: block;
+        margin: 30px auto;
+        transition: transform 0.2s;
+      }
+
+      .discord-card:hover {
+        transform: scale(1.03);
+      }
+
+      .discord-image {
+        width: 64px;
+        height: 64px;
+        border-radius: 15px;
+        object-fit: cover;
+      }
+
+      .discord-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .discord-subtext {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .discord-icon-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .discord-icon-label img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .discord-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .discord-tag {
+        background-color: #2c2f33;
+        border-radius: 15px;
+        padding: 6px 12px;
+        font-size: 13px;
+        color: #ccc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .discord-tag img {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* WhatsApp */
+      .whatsapp-card {
+        width: 320px;
+        background: #1d4d23;
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: flex;
+        margin: 30px auto;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        transition: transform 0.2s;
+      }
+
+      .whatsapp-card:hover {
+        transform: scale(1.03);
+      }
+
+      .whatsapp-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .whatsapp-title {
+        font-size: 30px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .whatsapp-subtext {
+        color: #aaa;
+        font-size: 16px;
+        margin-bottom: 15px;
+      }
+
+      /* CurseForge */
+      .curseForge-card {
+        background: linear-gradient(
+          to bottom,
+          #1e1f22 0%,
+          #1e1f22 90%,
+          #fd6938 100%
+        );
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: block;
+        margin: 30px auto;
+        transition: transform 0.2s;
+      }
+
+      .curseForge-card:hover {
+        transform: scale(1.03);
+      }
+
+      .curseForge-image {
+        width: 64px;
+        height: 64px;
+        border-radius: 15px;
+        object-fit: cover;
+      }
+
+      .curseForge-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .curseForge-subtext {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .curseForge-icon-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .curseForge-icon-label img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .curseForge-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .curseForge-tag {
+        background-color: #2c2f33;
+        border-radius: 15px;
+        padding: 6px 12px;
+        font-size: 13px;
+        color: #ccc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .curseForge-tag img {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* Modrinth */
+      .modrinth-card {
+        background: linear-gradient(
+          to bottom,
+          #1e1f22 0%,
+          #1e1f22 90%,
+          #19ca62 100%
+        );
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: block;
+        margin: 30px auto;
+        transition: transform 0.2s;
+      }
+
+      .modrinth-card:hover {
+        transform: scale(1.03);
+      }
+
+      .modrinth-image {
+        width: 64px;
+        height: 64px;
+        border-radius: 15px;
+        object-fit: cover;
+      }
+
+      .modrinth-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .modrinth-subtext {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .modrinth-icon-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .modrinth-icon-label img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .modrinth-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .modrinth-tag {
+        background-color: #2c2f33;
+        border-radius: 15px;
+        padding: 6px 12px;
+        font-size: 13px;
+        color: #ccc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .modrinth-tag img {
+        width: 14px;
+        height: 14px;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      .section.active {
+        display: block;
+      }
+
+      h1 {
+        font-size: 45px;
+        text-align: center;
+      }
+
+      p {
+        color: black;
+        font-size: 20px;
+        text-align: center;
+      }
+
+      a {
+        cursor: pointer;
+      }
+
+      #p2 {
+        text-align: left;
+        margin: 10px;
+      }
+
+      h3 {
+        font-size: 25px;
+        text-align: left;
+        margin-top: 30px;
+        margin-left: 10px;
+        text-decoration: underline;
+      }
+
+      #span1 {
+        width: 150px;
+        text-align: center;
+        border-radius: 5px;
+        border: #bfe1f6 solid 3px;
+      }
+
+      #wiki {
+        text-align: center;
+      }
+
+      size {
+        font-size: 20px;
+      }
+
+      .imagenItem {
+        height: 150px;
+        width: 150px;
+      }
+
+      .imagenCrafteo {
+        height: 100%;
+        width: 370px;
+      }
+
+      .imagenHorno {
+        height: 100%;
+        width: 270px;
+      }
+
+      .imagenArmadura {
+        height: 100%;
+        width: 350px;
+      }
+
+      .scrollToStage {
+        position: fixed;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        background: none;
+        border: none;
+        border-radius: 50%;
+        padding: 0;
+        cursor: pointer;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
+
+      .scrollToStage img {
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+        position: relative;
+        z-index: 1;
+      }
+
+      .scrollToStage:hover img {
+        transform: translateY(-10px);
+      }
+
+      .scrollToStage .arrow {
+        font-size: 14px;
+        color: black;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        position: absolute;
+        bottom: 6px;
+        z-index: 0;
+      }
+
+      .scrollToStage:hover .arrow {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .scrollToStage.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          font-size: 16px;
+        }
+
+        header {
+          background-size: 40%;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 75px; /* Altura fija */
+          position: relative; /* necesario para que .center-title absoluta se posicione dentro */
+          overflow: visible;
+        }
+
+        .center-title {
+          position: static;
+          transform: none;
+          height: auto;
+          width: 100%;
+          max-width: 250px;
+          margin: 0 auto;
+          display: block;
+        }
+
+        header .menu-btn,
+        header .home-image,
+        header #menu-header,
+        header h2 {
+          display: none !important;
+        }
+
+        #floatingMenu {
+          background-size: 50%;
+          display: flex !important;
+          top: 100px;
+        }
+
+        main {
+          padding-top: 80px; /* para evitar que el menú flote sobre el contenido */
+        }
+
+        .home-image {
+          width: 32px;
+          height: 32px;
+          margin-right: 5px;
+        }
+
+        h1 {
+          font-size: 30px;
+        }
+
+        h3 {
+          font-size: 20px;
+          margin-left: 0;
+        }
+
+        p {
+          font-size: 16px;
+          text-align: justify;
+        }
+
+        #p2 {
+          margin: 5px;
+        }
+
+        .imagenCrafteo,
+        .imagenHorno {
+          width: 100% !important;
+          height: auto !important;
+          margin-bottom: 10px;
+        }
+
+        .imagenArmadura {
+          width: 90% !important;
+          height: auto !important;
+          margin-bottom: 10px;
+        }
+
+        .scrollToStage {
+          right: 5px;
+          width: 40px;
+          height: 40px;
+        }
+
+        .scrollToStage img {
+          width: 24px;
+          height: 24px;
+        }
+
+        .discord-card,
+        .curseForge-card,
+        .modrinth-card,
+        .whatsapp-card {
+          width: 90%;
+          margin: 20px auto;
+        }
+
+        .dropdown {
+          left: 0;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+      <img src="oscurium.png" alt="Oscurium logo" class="home-image" />
+      <div class="dropdown" id="menu-header">
+        <a href="index.html">General</a>
+        <a href="wiki.html">Wiki</a>
+        <a href="ideas.html">Ideas</a>
+        <a href="updates.html">Updates</a>
+      </div>
+      <h2>Menu</h2>
+      <img src="oscuriumTitle.png" alt="Oscurium Title" class="center-title" />
+    </header>
+
+    <div id="floatingMenu">
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+      <img src="oscurium.png" alt="Oscurium logo" class="home-image" />
+      <h2 style="margin: 0">Menu</h2>
+      <div class="dropdown" id="menu-floating">
+        <a href="index.html">General</a>
+        <a href="wiki.html">Wiki</a>
+        <a href="ideas.html">Ideas</a>
+        <a href="updates.html">Updates</a>
+      </div>
+    </div>
+
+    <main>
+      <div id="wiki" class="section">
+        <div id="leftBox"></div>
+        <div id="rightBox"></div>
+
+        <!-- Stage 0 = Inicio -->
+        <button
+          class="scrollToStage"
+          data-target=".stage0"
+          title="Go to Start"
+          style="top: 40%"
+        >
+          <img src="oscuriumLogo.png" alt="oscuriumLogo" />
+          <span class="arrow">↓</span>
+        </button>
+        <h3 class="stage0"></h3>
+        <h1 style="color: #6fc0f0">📄 WIKI 📄</h1>
+
+        <p id="p2">
+          <strong>Enderman Essence:</strong> This is a new item similar to the
+          ender pearl. To get it you need to kill an Enderman, and with a 10%
+          chance he will release this essence.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="endermanEssence.png"
+          alt="endermanEssence"
+        />
+        <p id="p2">
+          <strong>Dark Lantern:</strong> This lamp obviously does not emit any
+          type of light, it only serves for this table and for decoration.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="lamp.png"
+          alt="darkLantern"
+          style="margin-right: 10px; width: 110px; height: 150px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="darkLanternRecipe.png"
+          alt="darkLanternRecipe"
+        />
+        <p id="p2">
+          <strong>Dark altar:</strong> In this new table you will have to add
+          three Enderman essences and a dark lamp to summon the new miniboss,
+          the Dark Golem.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="darkAltar.png"
+          alt="darkAltar"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="darkAltarRecipe.png"
+          alt="darkAltarRecipe"
+        />
+        <p id="p2">
+          <strong>Dark Golem:</strong> This is the miniboss that comes out when
+          you summon it with the dark altar. And it has these characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Life: 150pts.<br />- Experience at death: 20pts.<br />- Movement
+          speed: 0.15<br />- Step height: 1<br />- Follow-up range: 16 blocks<br />-
+          Tracking range: 64 blocks<br />- Attack strength: 20pts.<br />- Armor
+          protection: 3pts.<br />- Attack recoil: 0.8pts.<br />- Recoil
+          resistance: 1.5pts.<br />- Immune to arrows, falling damage and
+          suffocation.
+        </p>
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="darkGolemGUI.png"
+          alt="darkGolemGUI"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="enderGolem.png"
+          alt="enderGolem"
+          style="margin-left: 10px; height: 100%"
+        />
+        <p id="p2">
+          <strong>Dark Essence: </strong>This item will be dropped by the Dark
+          Golem upon death, and can be used at the blacksmith table to upgrade
+          your netherite weapon by 50%.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="darkEssence.png"
+          alt="darkEssence"
+        />
+        <p id="p2">
+          <strong>Dark rod fragment: </strong>This ore is released by the Dark
+          rod fragment ore, and can only be smelted in a blast furnace.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="DarkRodFragment.png"
+          alt="darkRodFragment"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="DarkRodFragmentMineral.png"
+          alt="DarkRodFragmentMineral"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenHorno"
+          src="darkRodFragmentRecipe.png"
+          alt="darkRodFragmentRecipe"
+        />
+        <p id="p2">
+          <strong>Dark rod fragment block: </strong>This block is made with Dark
+          Rod Fragment.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="darkRodFragmentBlock.png"
+          alt="darkRodBlock"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="darkRodFragmentBlockRecipe.png"
+          alt="darkRodFragmentBlockRecipe"
+        />
+        <p id="p2">
+          <strong>Dark rod: </strong>Four Dark rod fragments are needed to make
+          this Dark rod.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="darkRod.png"
+          alt="darkRod"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="darkRodRecipe.png"
+          alt="darkRodRecipe"
+        />
+        <p id="p2">
+          <strong>Cursed sword: </strong>This is a new sword. And it has these
+          characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Efficiency: 12pts.<br />- Enchantment: 2pts.<br />- Attack damage:
+          12pts.<br />- Attack speed: 2.4pts.<br />- Durability: 3046pts.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="cursedSwordItem.png"
+          alt="cursedSwordItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenArmadura"
+          src="cursedSword.png"
+          alt="cursedSword"
+        />
+        <p id="p2">
+          <strong>Cursed pickaxe: </strong>This is a new peak. And it has these
+          characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Efficiency: 13.5pts.<br />- Enchantment: 2pts.<br />- Attack damage:
+          9pts.<br />- Attack speed: 1.8pts.<br />- Durability: 3046pts.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="cursedPickaxeItem.png"
+          alt="cursedPickaxeItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenArmadura"
+          src="cursedPickaxe.png"
+          alt="cursedPickaxe"
+        />
+        <p id="p2">
+          <strong>Cursed axe: </strong>This is a new axe.And it has these
+          characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Efficiency: 13.5pts.<br />- Enchantment: 2pts.<br />- Attack damage:
+          15pts.<br />- Attack speed: 1.35pts.<br />- Durability: 3046pts.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="cursedAxeItem.png"
+          alt="cursedAxeItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenArmadura"
+          src="cursedAxe.png"
+          alt="cursedAxe"
+        />
+        <p id="p2">
+          <strong>Cursed shovel: </strong>This is a new shovel. And it has these
+          characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Efficiency: 13.5pts.<br />- Enchantment: 2pts.<br />- Attack damage:
+          7.5pts.<br />- Attack speed: 1.5pts.<br />- Durability: 3048pts.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="cursedShovelItem.png"
+          alt="cursedShovelItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenArmadura"
+          src="cursedShovel.png"
+          alt="cursedShovel"
+        />
+        <p id="p2">
+          <strong>Cursed hoe: </strong>This is a new hoe. And it has these
+          characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Efficiency: 13.5pts.<br />- Enchantment: 2pts.<br />- Attack damage:
+          6pts.<br />- Attack speed: 1.5pts.<br />- Durability: 4062pts.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="cursedHoeItem.png"
+          alt="cursedHoeItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenArmadura"
+          src="cursedHoe.png"
+          alt="cursedHoe"
+        />
+        <p id="p2">
+          <strong>Cursed armor: </strong>This is a new armor. And it has these
+          characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Total durability: 55pts.<br />- Helmet damage reduction: 4pts.<br />-
+          Chestplate damage reduction: 12pts.<br />- Leggings damage reduction:
+          9pts.<br />- Boots damage reduction: 4pts.<br />- Enchantment:
+          22pts.<br />- Hardness: 4.5pts.<br />- Thrust resistance: 0.15pts.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="cursedHelmetItem.png"
+          alt="cursedHelmetItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenArmadura"
+          src="cursedHelmet.png"
+          alt="cursedHelmet"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="cursedChestplateItem.png"
+          alt="cursedChestplateItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenArmadura"
+          src="cursedChestplate.png"
+          alt="cursedChestplate"
+        /><br />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="cursedLeggingsItem.png"
+          alt="cursedLeggingsItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenArmadura"
+          src="cursedLeggings.png"
+          alt="cursedLeggings"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="cursedBootsItem.png"
+          alt="cursedBootsItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenArmadura"
+          src="cursedBoots.png"
+          alt="cursedBoots"
+        />
+        <p id="p2">
+          <strong>Cursed flint and steel: </strong>This lighter is used to open
+          the portal to the Deep Void. It can be obtained in two ways:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          1. When you obtain all the armor, you will be awarded an achievement
+          that will give you the Cursed Flint, and when you obtain the Cursed
+          Sword, the Cursed Pickaxe, and the Cursed Axe, you will be awarded
+          another achievement that will give you the Cursed Steel.<br />2. With
+          the “Darf Furnace” you can melt down armor and the three tools, and
+          there is a 20% chance that you will get Cursed Flint and Cursed Steel.
+          This method is for when your lighter breaks.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="CursedSteelItem.png"
+          alt="CursedSteelItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="CursedFlintItem.png"
+          alt="CursedFlintItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="CursedFlintAndSteelItem.png"
+          alt="CursedFlintAndSteelItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="CursedFlintAndSteel.PNG"
+          alt="CursedFlintAndSteel"
+        /><br />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="darkFurnace.png"
+          alt="darkFurnace"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenHorno"
+          src="darkFurnaceGUI.png"
+          alt="darkFurnaceGUI"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="cursedSteel.jpg"
+          alt="cursedSteel"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="cursedFlint.jpg"
+          alt="cursedFlint"
+        />
+        <p id="p2">
+          <strong>Bedrock Trapdoor: </strong>This trapdoor appears above the
+          Deep Void and Paper Dimension dimensions. This trapdoor can only be
+          opened, and it closes automatically after five seconds. Since it is
+          made of bedrock, it is unbreakable and cannot be crafted.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="bedrockTrapdoor.png"
+          alt="bedrockTrapdoor"
+          style="margin-right: 10px; height: 100%"
+        />
+        <p id="p2">
+          <strong>Deep Void Portal Structure: </strong>This structure is well
+          known in the Ancient City. To activate the portal, you must remove all
+          the blocks and Sculk Veins that are obstructing the portal's opening.
+          Then you must activate it with the Cursed Flint and Steel.
+        </p>
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="deepVoidPortal.png"
+          alt="deepVoidPortal"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="openDeepVoidPortal.png"
+          alt="openDeepVoidPortal"
+        />
+
+        <!-- Stage 1 = Deep Void -->
+        <button
+          class="scrollToStage"
+          data-target=".stage1"
+          title="Go to Deep Void"
+          style="top: 50%"
+        >
+          <img src="deepVoidIcon.png" alt="deepVoidIcon" />
+          <span class="arrow">↓</span>
+        </button>
+
+        <h3 class="stage1">Deep Void:</h3>
+        <p id="p2">
+          <strong>Deepsculk pack: </strong>In this dimension, you have Sculk
+          Grass, Deepsculk, and normal Sculk Block. You can also craft Deepsculk
+          Brick, Deepsculk Tiles, and their Cracked versions.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="sculkGrass.png"
+          alt="sculkGrass"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="deepsculk.png"
+          alt="deepsculk"
+          style="height: 100%"
+        /><br />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="deepsculkBricks.png"
+          alt="deepsculkBricks"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="deepsculkBricksRecipe.png"
+          alt="deepsculkBricksRecipe"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="crackedDeepsculkBricks.png"
+          alt="crackedDeepsculkBricks"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenHorno"
+          src="crackedDeepsculkBricksRecipe.png"
+          alt="crackedDeepsculkBricksRecipe"
+        /><br />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="deepsculkTiles.png"
+          alt="deepsculkTiles"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="deepsculkTilesRecipe.png"
+          alt="deepsculkTilesRecipe"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="crackedDeepsculkTiles.png"
+          alt="crackedDeepsculkTiles"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenHorno"
+          src="crackedDeepsculkTilesRecipe.png"
+          alt="crackedDeepsculkTilesRecipe"
+        />
+        <p id="p2">
+          <strong>Obscurita ingot and Obscurita nugget: </strong>The Obscurite
+          ingot is made by melting in a blast furnace a Raw Obscurite. And the
+          Obscurite nugget is made like any other nugget.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="obscuritaOre.png"
+          alt="obscuritaOre"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="obscuritaIngotItem.png"
+          alt="obscuritaIngotItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenHorno"
+          src="obscuritaIngot.PNG"
+          alt="obscuritaIngot"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="obscuritaNuggetItem.png"
+          alt="obscuritaNuggetItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="obscuritaNugget.PNG"
+          alt="obscuritaNugget"
+        />
+        <p id="p2">
+          <strong>Obscurita armor: </strong>This is a new armor called Obscurita
+          armor. And it has these characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Total durability: 22pts.<br />- Helmet damage reduction: 2pts.<br />-
+          Chestplate damage reduction: 6pts.<br />- Leggings damage reduction:
+          5pts.<br />- Boots damage reduction: 2pts.<br />- Enchantment:
+          13pts.<br />- Hardness: 2.25pts.<br />- Thrust resistance:
+          0.125pts.<br />- Effects: Removes blindness and adds night vision.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="ObscuritaHelmetItem.png"
+          alt="ObscuritaHelmetItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="ObscuritaHelmet.PNG"
+          alt="obscuritaHelmet"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="obscuritaChestplateItem.png"
+          alt="obscuritaChestplateItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="obscuritaChestplate.PNG"
+          alt="obscuritaChestplate"
+        /><br />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="obscuritaLeggingsItem.png"
+          alt="obscuritaLeggingsItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="obscuritaLeggings.PNG"
+          alt="obscuritaLeggings"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="obscuritaBootsItem.png"
+          alt="obscuritaBootsItem"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="obscuritaBoots.PNG"
+          alt="obscuritaBoots"
+        />
+        <p id="p2">
+          <strong
+            >Dark Ring, Lapis Lazuli Pearl and Lapis Lazuli Fragment:</strong
+          >The Dark Ring is a ring that you can cast a spell on, giving it
+          unlimited uses and a 3-second cooldown. The default key to use it is
+          the tab key. It is crafted as follows:
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="lapislazuliFragment.png"
+          alt="lapislazuliFragment"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="lapislazuliFragmentRecipe.jpg"
+          alt="lapislazuliFragmentRecipe"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="lapislazuliPearl.png"
+          alt="lapislazuliPearl"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="lapislazuliPearlRecipe.jpg"
+          alt="lapislazuliPearlRecipe"
+        /><br />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="darkRing.png"
+          alt="darkRing"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="darkRingRecipe.jpg"
+          alt="darkRingRecipe"
+        />
+        <p id="p2">
+          <strong>Oscube:</strong> This is a mob that lives in the Deep Void
+          dimension and always stays still, so you can only tell it apart if you
+          try to mine it or hit it. It is very easy to find, as it is generated
+          with a 25% probability and in groups of 1 to 4. When you damage it, it
+          runs away and after a few seconds it comes back and attacks you. And
+          it has these characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Life: 16pts.<br />- Experience at death: 1pts.<br />- Movement
+          speed: 0.3<br />- Step height: 0.6<br />- Follow-up range: 16
+          blocks<br />- Tracking range: 64 blocks<br />- Attack strength:
+          4pts.<br />- Armor protection: 0pts.<br />- Attack recoil: 0pts.<br />-
+          Recoil resistance: 0pts.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="oscube.png"
+          alt="oscube"
+          style="height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="oscubeMove.png"
+          alt="oscubeMove"
+          style="height: 100%"
+        />
+        <p id="p2">
+          <strong>Mimetization Cristal: </strong>It is obtained with a 10%
+          chance of defeating an Oscube, and by right clicking on this crystal
+          you become invisible for 10 seconds.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="mimetizationCristal.png"
+          alt="mimetizationCristal"
+        />
+        <p id="p2">
+          <strong>Deependerman:</strong> This new type of Enderman is stronger
+          and faster than a normal Enderman. They only appear in the Deep Void,
+          and their spawn rate is very low (7%). And it has these
+          characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Life: 50pts.<br />- Experience at death: 6pts.<br />- Movement
+          speed: 0.3<br />- Step height: 0.6<br />- Follow-up range: 16
+          blocks<br />- Tracking range: 64 blocks<br />- Attack strength:
+          20pts.<br />- Armor protection: 17pts.<br />- Attack recoil: 0pts.<br />-
+          Recoil resistance: 0pts.<br />- Immune to arrows and falling damage
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="deepEnderman.png"
+          alt="deepEnderman"
+          style="margin-left: 10px; height: 250px; width: 60px"
+        />
+        <p id="p2">
+          <strong>Immortal Cristal: </strong>It is obtained with a 10% chance of
+          defeating an Deependerman, and by right clicking on this crystal gives
+          you the “Immortal effect” for 5 seconds.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="immortalCristal.png"
+          alt="immortalCristal"
+        />
+        <p id="p2">
+          <strong>Immortal effect: </strong>This is a new effect that gives you
+          maximum level resistance during the seconds the potion lasts, and if
+          you are attacked you will not take damage and you will be teleported
+          to a random place in a radius of 3x3 blocks in the “x” and “z” axes.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="immortalEffect.png"
+          alt="immortalEffect"
+        />
+        <p id="p2">
+          <strong>Sculk Zombie:</strong> This zombie only appears in the Deep
+          Void dungeon structure, and is slightly stronger than the normal
+          zombie. And it has these characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Life: 30pts.<br />- Experience at death: 5pts.<br />- Movement
+          speed: 0.23<br />- Step height: 1<br />- Follow-up range: 35 blocks<br />-
+          Tracking range: 35 blocks<br />- Attack strength: 5pts.<br />- Armor
+          protection: 0pts.<br />- Attack recoil: 0pts.<br />- Recoil
+          resistance: 0pts.<br />- Immune to potions and suffocation
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="sculkZombie.png"
+          alt="sculkZombie"
+          style="height: 100%"
+        />
+        <p id="p2">
+          <strong>Resonant Essence ore and Resonant Essence nugget: </strong
+          >This mineral is as rare as Netherite in the Nether. Breaking it gives
+          you a Nugget, which can then be used to craft Resonant Essence.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="resonantEssenceOre.png"
+          alt="resonantEssenceOre"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="resonantEssenceNugget.png"
+          alt="resonantEssenceNugget"
+        />
+        <p id="p2">
+          <strong>Resonant Essence Fragment and Resonant Essence: </strong>This
+          essence will be necessary to summon the Warden Boss, because with it
+          you will be able to make the new fluid. The Resonant Essence Fragment
+          stacks in groups of 32, and the Resonant Essence stacks in groups of
+          16.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="resonantEssenceFragment.png"
+          alt="resonantEssenceFragment"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="resonantEssenceFragmentRecipe.png"
+          alt="resonantEssenceFragmentRecipe"
+        /><br />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="resonantEssence.png"
+          alt="resonantEssence"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="resonantEssenceRecipe.png"
+          alt="resonantEssenceRecipe"
+        />
+        <p id="p2">
+          <strong>Resonant Essence Fluid: </strong>This new liquid is slightly
+          slower than water, and is required to summon the Warden Boss. To craft
+          it, you need to melt Resonant Essence in the Dark Furnace in the Melt
+          section.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="resonantEssenceFluid.png"
+          alt="resonantEssenceFluid"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="resonantEssenceFluidRecipe.png"
+          alt="resonantEssenceFluidRecipe"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="stillResonantEssenceFluid.png"
+          alt="stillResonantEssenceFluid"
+          style="margin-right: 10px; height: 100%"
+        />
+        <p id="p2">
+          <strong>Resonant Fountain: </strong>You can right-click on this block
+          to fill it with resonant essence fluid. Once you have filled it with 5
+          cubes, you will need to right-click with a resonant essence and you
+          will be able to summon the guardian boss, and the fountain will empty
+          completely. The block has three modes: empty, with fluid, and full.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="resonantFountain.png"
+          alt="resonantFountain"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="resonantFountainRecipe.png"
+          alt="resonantFountainRecipe"
+        /><br />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="openResonantFountain.png"
+          alt="openResonantFountain"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="closedResonantFountain.png"
+          alt="closedResonantFountain"
+          style="margin-right: 10px; height: 100%"
+        />
+        <p id="p2">
+          <strong>Warden Boss:</strong> This is the new boss of this dimension.
+          Its strongest attack is throwing rocks at its enemies. And it has
+          these characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Life: 250pts.<br />- Experience at death: 7000pts.<br />- Movement
+          speed: 0.3<br />- Step height: 1<br />- Follow-up range: 64 blocks<br />-
+          Tracking range: 64 blocks<br />- Attack strength: 40pts.<br />- Armor
+          protection: 10pts.<br />- Attack recoil: 4pts.<br />- Recoil
+          resistance: 100pts.<br />- Immune to fire and suffocation
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="wardenBoss.png"
+          alt="wardenBoss"
+          style="height: 100%"
+        />
+        <p id="p2">
+          <strong>Sculk Rock Cristal: </strong>It is obtained with a 40% chance
+          of defeating an Warden Boss, and by right clicking on this crystal
+          causes a giant block to appear above enemies and damages them.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="sculkRockCristal.png"
+          alt="sculkRockCristal"
+        />
+        <p id="p2">
+          <strong>Altar Wall Template: </strong>This item can be found in the
+          new Deep Void dungeon structure with a 30% chance of appearing, and is
+          required to craft the Altar Wall.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="AltarWallTemplate.png"
+          alt="AltarWallTemplate"
+        />
+        <p id="p2">
+          <strong>Altar Wall: </strong>You need this block to activate the
+          portal to the Paper Dimension.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="altarWall.png"
+          alt="altarWall"
+          style="margin-right: 10px; width: 100px; height: 180px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="altarWallRecipe.png"
+          alt="altarWallRecipe"
+        />
+        <p id="p2">
+          <strong>Mache Altar: </strong>This block has two textures, one for
+          when the portal is closed and another for when it is open. To activate
+          the portal, you must place Altar Walls at its corners. The block
+          cannot be crafted, and the portal will activate automatically when the
+          blocks are placed at its corners.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="macheAltar.png"
+          alt="macheAltar"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="openMacheAltar.png"
+          alt="openMacheAltar"
+          style="margin-right: 10px; height: 100%"
+        />
+        <p id="p2">
+          <strong>Paper Dimension Portal Structure: </strong>This is the
+          structure of the portal, and this is how the Altar walls must be
+          placed so that the portal can be activated.
+        </p>
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="machePortalStructure.png"
+          alt="machePortalStructure"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="machePortalBlocks.png"
+          alt="machePortalBlocks"
+        />
+
+        <!-- Stage 2 = Mache Dimension -->
+        <button
+          class="scrollToStage"
+          data-target=".stage2"
+          title="Go to Paper dimension"
+          style="top: 60%"
+        >
+          <img src="macheLogIcon.png" alt="macheLogIcon" />
+          <span class="arrow">↓</span>
+        </button>
+
+        <h3 class="stage2">Paper dimension:</h3>
+        <p id="p2">
+          <strong>Mache pack: </strong>This wood pack is only found in the Paper
+          dimension and is much less resistant than oak wood. The stairs, slab,
+          fence, fence gate, pressure plate, and button all look the same as the
+          plank.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="macheLog.png"
+          alt="macheLog"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="machePlanks.png"
+          alt="machePlanks"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="macheDoor.png"
+          alt="macheDoor"
+          style="margin-right: 10px; height: 300px; width: 120px"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="macheTrapDoor.png"
+          alt="macheTrapDoor"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="macheLeaves.png"
+          alt="macheLeaves"
+          style="height: 100%"
+        />
+        <p id="p2">
+          <strong>Bamboo Paper and Mache Paper: </strong>These are two new types
+          of paper needed to make the Mache Paper Block.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="bambooPaper.png"
+          alt="bambooPaper"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="bambooPaperRecipe.png"
+          alt="bambooPaperRecipe"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="machePaper.png"
+          alt="machePaper"
+          style="margin-right: 10px"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="machePaperRecipe.png"
+          alt="machePaperRecipe"
+        />
+        <p id="p2">
+          <strong>Mache Paper Block: </strong>These blocks are made of paper, so
+          they are not very resistant, and fire spreads through them very
+          quickly. To get blocks of different colours, you have to place the
+          Mache Paper Block and, next to it, a black dye, a red dye, an orange
+          dye, a yellow dye or a blue dye.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="machePaperBlock.png"
+          alt="machePaperBlock"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="machePaperBlockRecipe.png"
+          alt="machePaperBlockRecipe"
+        />
+        <br />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="blackPermache.png"
+          alt="blackPermache"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="redPermache.png"
+          alt="redPermache"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="orangePermache.png"
+          alt="orangePermache"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="yellowPermache.png"
+          alt="yellowPermache"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="bluePermache.png"
+          alt="bluePermache"
+          style="margin-right: 10px; height: 100%"
+        />
+        <p id="p2">
+          <strong>Precise Loom: </strong>This block is currently only
+          decorative.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="preciseLoom.png"
+          alt="preciseLoom"
+          style="margin-right: 10px; height: 100%"
+        />
+        <img
+          id="wiki"
+          class="imagenCrafteo"
+          src="preciseLoomRecipe.png"
+          alt="preciseLoomRecipe"
+        />
+        <p id="p2">
+          <strong>Cloud Rider:</strong> This creature is a rider riding a cloud.
+          Its main attack is to throw ice, but there is a 65% chance that when
+          it takes damage, it will generate lightning bolts that strike all
+          players within a 5x5 block radius. And it has these characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Life: 50pts.<br />- Experience at death: 15pts.<br />- Movement
+          speed: 0.5<br />- Step height: it can fly<br />- Follow-up range: 16
+          blocks<br />- Tracking range: 64 blocks<br />- Attack strength:
+          13pts.<br />- Armor protection: 0pts.<br />- Attack recoil: 0pts.<br />-
+          Recoil resistance: 0pts.<br />- Immune to fire, lightning, falling
+          damage, suffocation and anvil
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="cloudRider.png"
+          alt="cloudRider"
+          style="height: 100%"
+        />
+        <p id="p2">
+          <strong>Storm Cristal: </strong>It is obtained with a 40% chance of
+          defeating an Cloud Rider. Right-clicking on this crystal will cause a
+          wave of three lightning bolts to fall, damaging all nearby enemies and
+          entities. Even if you are struck by lightning, you will not take any
+          damage. You will also receive immunity to fire for a few seconds in
+          case it catches fire.
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="stormCristal.png"
+          alt="stormCristal"
+          style="margin-right: 10px"
+        />
+        <p id="p2">
+          <strong>Cloud:</strong> This creature appears when you kill its
+          variant with a rider. You can mount it by right-clicking on it and fly
+          with it. The cloud goes where you point with the mouse. It will also
+          heal if it rains or if it is in water. And it has these
+          characteristics:
+        </p>
+        <p id="p2" style="margin-left: 50px">
+          - Life: 40pts.<br />- Experience at death: 15pts.<br />- Movement
+          speed without player: 0<br />
+          - Movement speed with player: 0.43<br />- Step height: it can fly<br />-
+          Follow-up range: 0 blocks<br />- Tracking range: 0 blocks<br />-
+          Attack strength: 0pts.<br />- Armor protection: 0pts.<br />- Attack
+          recoil: 0pts.<br />- Recoil resistance: 0pts.<br />- Immune to fire,
+          lightning, falling damage, suffocation and anvil
+        </p>
+        <img
+          id="wiki"
+          class="imagenItem"
+          src="cloud.png"
+          alt="cloud"
+          style="height: 100%"
+        />
+      </div>
+    </main>
+    <script>
+      function toggleMenu() {
+        const headerBottom = document
+          .querySelector("header")
+          .getBoundingClientRect().bottom;
+        const menuFloating = document.getElementById("menu-floating");
+        const menuHeader = document.getElementById("menu-header");
+
+        if (window.innerWidth <= 768) {
+          // En móvil siempre usar el menú flotante
+          menuFloating.style.display =
+            menuFloating.style.display === "flex" ? "none" : "flex";
+        } else {
+          // En escritorio depende de la visibilidad del header
+          if (headerBottom <= 0) {
+            // Mostrar menú flotante
+            menuFloating.style.display =
+              menuFloating.style.display === "flex" ? "none" : "flex";
+          } else {
+            // Mostrar menú del header
+            menuHeader.style.display =
+              menuHeader.style.display === "flex" ? "none" : "flex";
+          }
+        }
+      }
+
+      const header = document.querySelector("header");
+
+      window.addEventListener("scroll", () => {
+        const headerBottom = header.getBoundingClientRect().bottom;
+        const floatingMenu = document.getElementById("floatingMenu");
+        const allLeftBoxes = document.querySelectorAll("#leftBox");
+        const allRightBoxes = document.querySelectorAll("#rightBox");
+
+        // Ajuste animación de cajas laterales
+        allLeftBoxes.forEach((leftBox) => {
+          leftBox.style.top = headerBottom <= 0 ? "0" : "87px";
+        });
+
+        allRightBoxes.forEach((rightBox) => {
+          rightBox.style.top = headerBottom <= 0 ? "0" : "87px";
+        });
+
+        // Control floatingMenu
+        if (window.innerWidth > 768) {
+          // Escritorio
+          if (headerBottom <= 0) {
+            floatingMenu.style.display = "flex";
+            floatingMenu.style.top = "10px";
+          } else {
+            floatingMenu.style.display = "none";
+          }
+        } else {
+          // Móvil
+          floatingMenu.style.display = "flex";
+          floatingMenu.style.top = headerBottom <= 0 ? "10px" : "100px";
+        }
+      });
+
+      // Nueva funcionalidad: scroll suave + flechas dinámicas + desactivación
+      const buttons = document.querySelectorAll(".scrollToStage");
+      const stageHeaders = {
+        stage0: document.querySelector("h3.stage0"),
+        stage1: document.querySelector("h3.stage1"),
+        stage2: document.querySelector("h3.stage2"),
+      };
+
+      // Scroll suave al hacer clic
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const targetClass = button.getAttribute("data-target").slice(1); // quitar "."
+          const targetElement = document.querySelector("h3." + targetClass);
+          if (targetElement) {
+            const yOffset = targetClass === "stage0" ? 0 : -70;
+            const y =
+              targetElement.getBoundingClientRect().top +
+              window.pageYOffset +
+              yOffset;
+            window.scrollTo({ top: y, behavior: "smooth" });
+          }
+        });
+      });
+
+      // Monitoreo del scroll para cambiar flecha y activar/desactivar botones
+      window.addEventListener("scroll", () => {
+        const OFFSET = 70;
+        const threshold = 5;
+
+        Object.entries(stageHeaders).forEach(([key, header], index) => {
+          const rect = header.getBoundingClientRect();
+          const button = buttons[index];
+          const arrow = button.querySelector(".arrow");
+
+          // Cambiar flecha
+          const isStage0 = key === "stage0";
+          const effectiveOffset = isStage0 ? 0 : OFFSET;
+
+          if (rect.top - effectiveOffset < 0) {
+            arrow.textContent = "↑";
+          } else {
+            arrow.textContent = "↓";
+          }
+
+          // Activar o desactivar el botón
+          const inView = Math.abs(rect.top - effectiveOffset) <= threshold;
+          if (inView) {
+            button.classList.add("disabled");
+          } else {
+            button.classList.remove("disabled");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

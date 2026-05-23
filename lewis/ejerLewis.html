@@ -1,0 +1,1238 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>¿Quién es Quién?</title>
+    <link rel="icon" href="../media/quimic.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f0f4f8;
+        overflow: hidden; /* Evita scroll global */
+      }
+
+      .container {
+        text-align: center;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 90vw;
+        max-width: 1000px;
+        max-height: 90vh;
+        overflow-y: auto;
+        overflow-x: auto;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      #test-container.final-view {
+        width: 400px !important;
+        max-width: 400px !important;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+      }
+
+      h1 {
+        font-size: 24px;
+        color: #333;
+      }
+
+      table {
+        border-collapse: collapse;
+        margin: 20px auto;
+        width: 100%;
+        max-width: 800px;
+        min-width: 400px;
+        overflow-x: auto;
+        display: block;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+        font-size: 14px;
+      }
+
+      th {
+        background-color: #007bff;
+        color: white;
+      }
+
+      /* 🔹 Ajuste de ancho de columnas */
+      th:nth-child(5),
+      td:nth-child(5) {
+        width: 90px; /* Columna "e⁻ C. V." más estrecha */
+      }
+
+      /* 🔹 Inputs más pequeños en la columna "e⁻ C. V." */
+      td:nth-child(5) input[type="text"] {
+        width: 85px; /* más estrecho que el 90% general */
+      }
+
+      th:nth-child(6),
+      td:nth-child(6) {
+        width: 120px; /* Columna "Cat. química" más ancha */
+      }
+
+      input[type="text"] {
+        width: 90%;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        transition:
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      input[type="text"]:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        outline: none;
+      }
+
+      input[disabled] {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+      }
+
+      /* 🔹 Estilos para los menús desplegables (select) */
+      select {
+        width: 90%;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        transition:
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
+        cursor: pointer;
+        appearance: none; /* Oculta la flecha nativa en algunos navegadores */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' fill='%23777' height='18' viewBox='0 0 24 24' width='18'><path d='M7 10l5 5 5-5z'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 14px;
+      }
+
+      select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        outline: none;
+      }
+
+      select[disabled] {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+      }
+
+      button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .result {
+        margin-top: 10px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      h2 {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 20px 0;
+      }
+
+      .correcto {
+        background-color: rgba(40, 167, 69, 0.3);
+        display: inline-block;
+      }
+
+      .incorrecto {
+        background-color: rgba(220, 53, 69, 0.4);
+        display: inline-block;
+      }
+
+      /* Estilos específicos para el bloque de "Respuestas correctas" */
+      .correct-answers {
+        margin-top: 10px;
+        font-size: 16px;
+        color: #555;
+        text-align: center;
+      }
+      .correct-answers p {
+        margin: 5px 0;
+      }
+
+      .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+      }
+
+      .navigation button {
+        padding: 10px;
+        border-radius: 50%;
+        background-color: #28a745;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+
+      .navigation button:hover {
+        background-color: #218838;
+      }
+
+      .progress {
+        font-size: 16px;
+        margin: 0 10px;
+      }
+
+      .finish-button,
+      .all-answers-button {
+        display: none;
+        margin-top: 10px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        color: #fff;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        display: block; /* Asegura que ocupen todo el ancho disponible si quieres */
+        margin-left: 0; /* Pegados al borde izquierdo */
+        margin-right: auto;
+      }
+
+      .finish-button {
+        background-color: #28a745;
+      }
+
+      .finish-button:hover {
+        background-color: #218838;
+      }
+
+      .all-answers-button {
+        background-color: #ffc107;
+        color: #fff;
+      }
+
+      .all-answers-button:hover {
+        background-color: #e0a800;
+      }
+
+      .timer {
+        font-size: 16px;
+        margin-top: 10px;
+        color: #555;
+      }
+
+      /* Botón "Volver al Test" en la vista de todas las respuestas */
+      #back-to-test-button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #back-to-test-button:hover {
+        background-color: #0056b3;
+      }
+
+      /* 🔹 Indicador de scroll */
+      #scroll-indicator {
+        position: fixed;
+        bottom: 35px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        color: #004085; /* azul fuerte para modo claro */
+        font-size: 16px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.65); /* 🔸 Fondo translúcido */
+        backdrop-filter: blur(8px);
+        padding: 8px 14px;
+        border-radius: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        display: none;
+        z-index: 999;
+        animation: fadeIn 0.6s ease-in-out;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      #scroll-indicator .arrow {
+        width: 22px;
+        height: 22px;
+        border-left: 4px solid #004085;
+        border-bottom: 4px solid #004085;
+        transform: rotate(-45deg);
+        margin: 0 auto 15px; /* 🔹 antes era 6px → ahora 10px para subir la flecha */
+        animation: arrowBounce 1.2s infinite;
+      }
+
+      @keyframes arrowBounce {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-45deg);
+        }
+        50% {
+          transform: translateY(8px) rotate(-45deg);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* 🔹 Mejoras para móviles */
+      @media (max-width: 768px) {
+        html,
+        body {
+          height: 100dvh; /* altura segura en móviles */
+          overflow: hidden;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .container {
+          width: 95vw;
+          max-width: 95vw;
+          height: auto;
+          max-height: 85dvh;
+          padding: 12px;
+          overflow-y: auto;
+          overflow-x: auto;
+          margin: 0 auto;
+
+          /* 🔹 El truco para centrar incluso con scroll */
+          position: relative;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        table {
+          width: 100%;
+          min-width: unset;
+          display: block;
+          overflow-x: auto;
+          font-size: 12px;
+        }
+
+        th,
+        td {
+          padding: 5px;
+          font-size: 12px;
+        }
+
+        /* 🔹 Ajuste de ancho de columnas */
+        th:nth-child(5),
+        td:nth-child(5) {
+          width: 40px; /* Columna "e⁻ C. V." más estrecha */
+        }
+
+        /* 🔹 Inputs más pequeños en la columna "e⁻ C. V." */
+        td:nth-child(5) input[type="text"] {
+          width: 35px; /* más estrecho que el 90% general */
+        }
+
+        th:nth-child(6),
+        td:nth-child(6) {
+          width: 60px; /* Columna "Cat. química" más ancha */
+        }
+
+        td:nth-child(6) select {
+          padding: 5px;
+          font-size: 12px;
+        }
+
+        input[type="text"] {
+          width: 80%;
+          padding: 5px;
+          font-size: 12px; /* 🔸 inputs más pequeños */
+        }
+
+        h1 {
+          font-size: 18px;
+          margin-bottom: 10px;
+        }
+
+        button {
+          font-size: 13px;
+          padding: 7px 12px;
+        }
+
+        .navigation {
+          flex-direction: row;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .progress {
+          font-size: 13px;
+        }
+      }
+
+      /* 🔹 Scrollbar elegante */
+      .container::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      .container::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 8px;
+      }
+
+      .container::-webkit-scrollbar-thumb:hover {
+        background-color: #555;
+      }
+
+      /* BOTÓN */
+      #login-btn {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: transparent;
+        border: 2px solid currentColor;
+        border-radius: 12px;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 999;
+        transition: all 0.3s ease;
+      }
+
+      /* Icono */
+      #login-btn i {
+        font-size: 20px;
+      }
+
+      /* Hover sutil */
+      #login-btn:hover {
+        transform: scale(1.1);
+      }
+
+      /* MODAL */
+      #login-modal {
+        position: fixed;
+        bottom: 80px;
+        left: 20px;
+        width: 320px;
+        height: 400px;
+        background: transparent;
+        border-radius: 12px;
+        overflow: hidden;
+        display: none;
+        z-index: 998;
+      }
+
+      /* IFRAME */
+      #login-modal iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 12px;
+      }
+
+      /* MODO OSCURO AUTOMÁTICO */
+      @media (prefers-color-scheme: dark) {
+        #login-btn {
+          color: #fff;
+          border-color: #fff;
+        }
+      }
+
+      /* MODO CLARO */
+      @media (prefers-color-scheme: light) {
+        #login-btn {
+          color: #000;
+          border-color: #000;
+        }
+      }
+
+      @media (max-width: 768px) {
+        body {
+          height: 100dvh;
+          padding: 0 15px 0 15px;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .container {
+          width: 100%;
+          max-width: 100%;
+          padding: 15px;
+          border-radius: 8px;
+        }
+
+        h1 {
+          font-size: 20px;
+        }
+
+        /* Mejora UX táctil */
+        button {
+          touch-action: manipulation;
+        }
+
+        #login-btn,
+        #login-modal {
+          display: none !important;
+        }
+      }
+
+      /* 🌙 Modo oscuro igual que Reactividad Química */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #121212;
+          color: #e0e0e0;
+        }
+
+        .container {
+          background-color: #1e1e1e;
+          box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+          color: #e0e0e0;
+        }
+
+        /* 🔹 RELOJ MÁS VISIBLE */
+        .timer {
+          color: #d6d6d6;
+        }
+
+        /* 🔹 RESPUESTAS MÁS CLARAS */
+        .correct-answers {
+          color: #d8d8d8;
+        }
+
+        .correct-answers h3 {
+          color: #ffffff;
+        }
+
+        .correct-answers p {
+          color: #d0d0d0;
+        }
+
+        .correct-answers strong {
+          color: #ffffff;
+        }
+
+        /* 🔹 Correcto / incorrecto más visibles */
+        .correcto {
+          background-color: rgba(40, 167, 69, 0.5);
+          color: #ffffff;
+          padding: 2px 6px;
+          border-radius: 4px;
+        }
+
+        .incorrecto {
+          background-color: rgba(220, 53, 69, 0.6);
+          color: #ffffff;
+          padding: 2px 6px;
+          border-radius: 4px;
+        }
+
+        th {
+          background-color: #2d4a7c;
+          border-color: #808080;
+        }
+
+        td {
+          border-color: #3c3c3c;
+          color: #e0e0e0;
+        }
+
+        input[type="text"]:focus {
+          border-color: #007bff;
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        select:focus {
+          border-color: #007bff;
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        button {
+          background-color: #007bff;
+          color: #fff;
+        }
+
+        button:hover {
+          background-color: #0056b3;
+        }
+
+        .navigation button {
+          background-color: #28a745;
+        }
+
+        .navigation button:hover {
+          background-color: #218838;
+        }
+
+        .finish-button {
+          background-color: #28a745;
+        }
+
+        .finish-button:hover {
+          background-color: #218838;
+        }
+
+        .all-answers-button {
+          background-color: #ffc107;
+          color: #fff;
+        }
+
+        .all-answers-button:hover {
+          background-color: #e0a800;
+        }
+
+        #all-answers-container {
+          background-color: #121212 !important;
+          color: #e0e0e0 !important;
+        }
+
+        #all-answers-container .container,
+        #all-answers-container div,
+        #all-answers-container li {
+          background-color: #1e1e1e !important;
+          border: 1px solid #3c3c3c !important;
+          color: #e0e0e0 !important;
+        }
+
+        #back-to-test-button {
+          background-color: rgba(255, 255, 255, 0.1) !important;
+          color: #fff !important;
+          border: 1px solid #555555 !important;
+        }
+
+        #back-to-test-button:hover {
+          background-color: #0056b3 !important;
+        }
+
+        #all-answers-container strong,
+        #all-answers-container h2,
+        #all-answers-container p,
+        #all-answers-container span {
+          color: #e0e0e0 !important;
+        }
+        th {
+          background-color: #2d4a7c; /* Azul oscuro elegante */
+          border-color: #808080;
+        }
+
+        #scroll-indicator {
+          background: rgba(0, 0, 0, 0.8);
+          color: #ffffff;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        #scroll-indicator .arrow {
+          border-left-color: #ffffff;
+          border-bottom-color: #ffffff;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="test-container">
+      <h1>¿Quién es Quién?</h1>
+      <div class="timer" id="timer">Tiempo: 0:00</div>
+      <div id="tabla-container"></div>
+      <button id="superscript-toggle" title="Cambiar a formato ²">²</button>
+      <button id="see-table">Ocultar Tabla</button>
+      <br />
+      <button id="check-button">Corregir</button>
+      <div class="result" id="result"></div>
+      <div class="correct-answers" id="correct-answers"></div>
+      <div class="navigation" id="navigation">
+        <button id="prev-button">←</button>
+        <span class="progress" id="progress"></span>
+        <button id="next-button">→</button>
+      </div>
+      <button class="finish-button" id="finish-button">Volver al inicio</button>
+      <button class="all-answers-button" id="all-answers-button">
+        Ver todas las respuestas
+      </button>
+    </div>
+    <div id="scroll-indicator">
+      <div class="arrow"></div>
+      <span>Desliza hacia abajo</span>
+    </div>
+
+    <div id="all-answers-container" style="display: none"></div>
+
+    <!-- BOTÓN LOGIN -->
+    <button id="login-btn">
+      <i class="fas fa-right-to-bracket login-icon"></i>
+    </button>
+
+    <!-- MODAL -->
+    <div id="login-modal">
+      <iframe src="../formulas/visor.html"></iframe>
+    </div>
+
+    <script type="module">
+      import { formulas } from "../formulas/lewis.js";
+
+      let superscriptMode = false;
+      let seeMode = false;
+
+      const superMap = {
+        0: "⁰",
+        1: "¹",
+        2: "²",
+        3: "³",
+        4: "⁴",
+        5: "⁵",
+        6: "⁶",
+        7: "⁷",
+        8: "⁸",
+        9: "⁹",
+      };
+
+      // Al pulsar el botón se alterna el modo
+      document
+        .getElementById("superscript-toggle")
+        .addEventListener("click", () => {
+          superscriptMode = !superscriptMode;
+          document.getElementById("superscript-toggle").textContent = `${
+            superscriptMode ? "2" : "²"
+          }`;
+          document.getElementById("superscript-toggle").title =
+            `Cambiar a formato ${superscriptMode ? "2" : "²"}`;
+        });
+
+      // Al pulsar el botón se alterna el oculto
+      document.getElementById("see-table").addEventListener("click", () => {
+        seeMode = !seeMode;
+
+        const tablaContainer = document.getElementById("tabla-container");
+        const seeTableBtn = document.getElementById("see-table");
+        const superscriptBtn = document.getElementById("superscript-toggle");
+
+        if (seeMode) {
+          tablaContainer.style.display = "none";
+          seeTableBtn.textContent = "Ver Tabla";
+          superscriptBtn.style.display = "none";
+        } else {
+          tablaContainer.style.display = "block";
+          seeTableBtn.textContent = "Ocultar Tabla";
+          superscriptBtn.style.display = "inline-block";
+        }
+      });
+
+      // Convierte solo los caracteres recién añadidos
+      document.addEventListener("beforeinput", (e) => {
+        if (!superscriptMode) return;
+        if (
+          e.target.tagName !== "INPUT" ||
+          e.target.type !== "text" ||
+          e.target.disabled
+        )
+          return;
+        if (!e.data) return; // ignorar borrados, pegados, etc.
+
+        const char = e.data
+          .split("")
+          .map((ch) => superMap[ch] || ch)
+          .join("");
+
+        // Evita inserción automática para sustituir con el carácter convertido
+        e.preventDefault();
+
+        const input = e.target;
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const before = input.value.slice(0, start);
+        const after = input.value.slice(end);
+
+        input.value = before + char + after;
+
+        // Mueve el cursor tras el nuevo carácter
+        const newPos = start + char.length;
+        input.setSelectionRange(newPos, newPos);
+      });
+
+      // Evitar conversión de números a superíndices al pegar
+      document.addEventListener("paste", (e) => {
+        if (
+          e.target.tagName !== "INPUT" ||
+          e.target.type !== "text" ||
+          e.target.disabled
+        )
+          return;
+
+        // Cancelar el comportamiento por defecto si el modo superíndice está activo
+        // y asegurarse de que se pegue el texto exacto
+        if (superscriptMode) {
+          e.preventDefault();
+          const pasteData = (e.clipboardData || window.clipboardData).getData(
+            "text",
+          );
+          const input = e.target;
+          const start = input.selectionStart;
+          const end = input.selectionEnd;
+          const before = input.value.slice(0, start);
+          const after = input.value.slice(end);
+          input.value = before + pasteData + after;
+          const newPos = start + pasteData.length;
+          input.setSelectionRange(newPos, newPos);
+        }
+      });
+
+      function getRandomGroups() {
+        const shuffled = [...formulas].sort(() => Math.random() - 0.5);
+        const groups = [];
+
+        for (let i = 0; i < 10; i++) {
+          // 🔹 Escoge entre 2 y 5 elementos distintos
+          const numFormulas = Math.floor(Math.random() * 4) + 2; // 2 a 5
+          const uniqueSet = new Set();
+
+          while (uniqueSet.size < numFormulas) {
+            const randomElement =
+              shuffled[Math.floor(Math.random() * formulas.length)];
+            uniqueSet.add(randomElement);
+          }
+
+          const group = Array.from(uniqueSet);
+          groups.push(group);
+        }
+
+        return groups;
+      }
+
+      let selectedGroups = getRandomGroups();
+      let userAnswers = selectedGroups.map((group) =>
+        group.map(() => ["", "", "", "", ""]),
+      );
+      let answerStates = Array(10).fill(null);
+
+      let currentIndex = 0;
+      let timerInterval;
+      let secondsElapsed = 0;
+
+      function formatTime(s) {
+        const m = Math.floor(s / 60);
+        const sec = s % 60;
+        return `${m}:${sec.toString().padStart(2, "0")}`;
+      }
+
+      function startTimer() {
+        timerInterval = setInterval(() => {
+          secondsElapsed++;
+          document.getElementById("timer").textContent = `Tiempo: ${formatTime(
+            secondsElapsed,
+          )}`;
+        }, 1000);
+      }
+
+      function stopTimer() {
+        clearInterval(timerInterval);
+      }
+
+      function normalize(t) {
+        return t
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/\s+/g, "") // elimina TODOS los espacios
+          .trim(); // elimina TODOS espacios al inicio o final
+      }
+
+      function updateUI() {
+        const result = document.getElementById("result");
+        const correctAnswers = document.getElementById("correct-answers");
+        const finishButton = document.getElementById("finish-button");
+        const allAnswersButton = document.getElementById("all-answers-button");
+        const navigation = document.getElementById("navigation");
+        const progress = document.getElementById("progress");
+        const checkButton = document.getElementById("check-button");
+
+        if (currentIndex < 10) {
+          const group = selectedGroups[currentIndex];
+
+          const tabla = `
+  <table>
+    <thead>
+      <tr>
+        <th>Z</th>
+        <th>Símbolo</th>
+        <th>Conf. elec</th>
+        <th>C. valencia</th>
+        <th>e⁻ C. V.</th>
+        <th>Cat. química</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${group
+        .map(
+          (f, r) => `
+          <tr>
+  <td>${f.formula[1]}</td>
+  <td>
+    <input type="text" id="ans_${r}_elem" placeholder="Símbolo"
+      value="${userAnswers[currentIndex][r][0]}"
+      ${answerStates[currentIndex] !== null ? "disabled" : ""}>
+  </td>
+  ${f.answers
+    .map((_, i) => {
+      if (i === 3) {
+        // 🔹 Reemplazar el input de "Cat. química" con un <select>
+        const savedValue = userAnswers[currentIndex][r][i + 1];
+        return `
+        <td>
+          <select id="ans_${r}_${i + 1}" ${
+            answerStates[currentIndex] !== null ? "disabled" : ""
+          }>
+            <option value="">Selecciona</option>
+            <option value="Metal" ${
+              savedValue === "Metal" ? "selected" : ""
+            }>Metal</option>
+            <option value="No Metal" ${
+              savedValue === "No Metal" ? "selected" : ""
+            }>No Metal</option>
+            <option value="Semimetal" ${
+              savedValue === "Semimetal" ? "selected" : ""
+            }>Semimetal</option>
+          </select>
+        </td>`;
+      } else {
+        return `
+        <td><input type="text" id="ans_${r}_${i + 1}"
+          placeholder="Respuesta"
+          value="${userAnswers[currentIndex][r][i + 1]}"
+          ${answerStates[currentIndex] !== null ? "disabled" : ""}>
+        </td>`;
+      }
+    })
+    .join("")}
+</tr>`,
+        )
+        .join("")}
+    </tbody>
+  </table>
+  `;
+          document.getElementById("tabla-container").innerHTML = tabla;
+
+          progress.textContent = `${currentIndex + 1}/10`;
+          result.textContent = "";
+          correctAnswers.innerHTML = "";
+          navigation.style.display = "flex";
+          finishButton.style.display = "none";
+          allAnswersButton.style.display = "none";
+
+          if (answerStates[currentIndex] !== null) {
+            checkAnswer();
+          }
+
+          const tablaContainer = document.getElementById("tabla-container");
+          const seeTableBtn = document.getElementById("see-table");
+          const superscriptBtn = document.getElementById("superscript-toggle");
+
+          if (answerStates[currentIndex] !== null) {
+            tablaContainer.style.display = "none";
+            seeTableBtn.textContent = "Ver Tabla";
+            superscriptBtn.style.display = "none";
+          } else {
+            tablaContainer.style.display = "block";
+            seeTableBtn.textContent = "Ocultar Tabla";
+            superscriptBtn.style.display = "inline-block";
+            seeMode = false;
+          }
+        } else {
+          stopTimer();
+          document.getElementById("tabla-container").style.display = "block";
+          const correctCount = answerStates.filter((s) => s === true).length;
+          document.getElementById("tabla-container").innerHTML = `
+      <h2>¡Has terminado el test!</h2>
+      <h2>Respuestas correctas: ${correctCount}/10</h2>
+    `;
+          result.textContent = "";
+          correctAnswers.innerHTML = "";
+          navigation.style.display = "none";
+          document.getElementById("superscript-toggle").style.display = "none";
+          document.getElementById("see-table").style.display = "none";
+          checkButton.style.display = "none";
+          finishButton.style.display = "block";
+          allAnswersButton.style.display = "block";
+          document.getElementById("test-container").classList.add("final-view");
+        }
+      }
+
+      function checkAnswer() {
+        // 🔸 Ocultar la tabla y el botón de superíndices al corregir
+        seeMode = true;
+
+        const tablaContainer = document.getElementById("tabla-container");
+        const seeTableBtn = document.getElementById("see-table");
+        const superscriptBtn = document.getElementById("superscript-toggle");
+
+        tablaContainer.style.display = "none";
+        seeTableBtn.textContent = "Ver Tabla";
+        superscriptBtn.style.display = "none";
+
+        const group = selectedGroups[currentIndex];
+        const headers = [
+          "Conf. elec",
+          "C. valencia",
+          "e⁻ C. V.",
+          "Cat. química",
+        ];
+        let html = "<h3>Respuestas correctas:</h3>";
+
+        let allCorrect = true;
+        const columnCorrectness = [true, true, true, true, true]; // índice 0 = símbolo
+
+        // 🔹 Verificar respuestas del usuario
+        group.forEach((f, r) => {
+          const valElem = document.getElementById(`ans_${r}_elem`).value.trim();
+          userAnswers[currentIndex][r][0] = valElem;
+          const elemCorrect = valElem === f.formula[0];
+          if (!elemCorrect) {
+            allCorrect = false;
+            columnCorrectness[0] = false;
+          }
+          document.getElementById(`ans_${r}_elem`).disabled = true;
+
+          headers.forEach((_, i) => {
+            const input = document.getElementById(`ans_${r}_${i + 1}`);
+            const val = input.value;
+            userAnswers[currentIndex][r][i + 1] = val;
+            const correct = normalize(val) === normalize(f.answers[i]);
+            if (!correct) {
+              allCorrect = false;
+              columnCorrectness[i + 1] = false;
+            }
+            input.disabled = true; // 🔒 Desactiva el campo
+          });
+        });
+
+        // 🔹 Filtrar símbolos únicos (por símbolo)
+        const uniqueElements = [];
+        const uniqueGroup = group.filter((f) => {
+          if (!uniqueElements.includes(f.formula[0])) {
+            uniqueElements.push(f.formula[0]);
+            return true;
+          }
+          return false;
+        });
+
+        // 🔸 Mostrar resultados
+        html += `<p>${
+          columnCorrectness[0]
+            ? '<strong class="correcto">Correcto</strong>'
+            : '<strong class="incorrecto">Incorrecto</strong>'
+        } | <strong>Símbolo:</strong> ${uniqueGroup
+          .map((f) => f.formula[0])
+          .join(" ; ")}</p>`;
+
+        headers.forEach((h, i) => {
+          const respuestas = uniqueGroup
+            .map((f) => `${f.formula[0]} (${f.answers[i]})`)
+            .join(" ; ");
+          html += `<p>${
+            columnCorrectness[i + 1]
+              ? '<strong class="correcto">Correcto</strong>'
+              : '<strong class="incorrecto">Incorrecto</strong>'
+          } | <strong>${h}:</strong> ${respuestas}</p>`;
+        });
+
+        // 🔸 Mostrar resultados en pantalla
+        answerStates[currentIndex] = allCorrect;
+        const resultEl = document.getElementById("result");
+        resultEl.textContent = allCorrect ? "¡Correcto!" : "Incorrecto.";
+        resultEl.style.color = allCorrect ? "#28a745" : "#dc3545";
+
+        const correctContainer = document.getElementById("correct-answers");
+        correctContainer.innerHTML = html;
+        correctContainer.style.display = "block"; // 🔹 Asegura que sea visible
+
+        // 🔸 Deshabilitar botón
+        document.getElementById("check-button").disabled = true;
+      }
+
+      function showAllAnswers() {
+        const answersContainer = document.getElementById(
+          "all-answers-container",
+        );
+        const headers = [
+          "Conf. elec",
+          "C. valencia",
+          "e⁻ C. V.",
+          "Cat. química",
+        ];
+
+        answersContainer.innerHTML = `
+  <div class="container">
+    <h2>Todas las Respuestas</h2>
+    <div style="display:flex;overflow-x:auto;gap:20px;padding:10px;justify-content:flex-start;align-items:flex-start;width:100%;">
+      ${selectedGroups
+        .map((group, i) => {
+          // 🔹 Filtrar símbolos únicos
+          const uniqueGroup = [];
+          const seen = new Set();
+          group.forEach((f) => {
+            if (!seen.has(f.formula[0])) {
+              seen.add(f.formula[0]);
+              uniqueGroup.push(f);
+            }
+          });
+
+          // 🔹 Crear título como "1. 54 ; 51"
+          const titulo = `${i + 1}. Z: ${uniqueGroup
+            .map((f) => f.formula[1])
+            .join(" ; ")}`;
+
+          // 🔹 Símbolos como "Xe ; Sb"
+          const simbolos = uniqueGroup.map((f) => f.formula[0]).join(" ; ");
+
+          // 🔹 Construcción de la lista de respuestas únicas
+          const respuestasHTML = headers
+            .map((h, j) => {
+              const respuestas = uniqueGroup
+                .map((f) => `${f.formula[0]} (${f.answers[j]})`)
+                .join(" ; ");
+
+              return `
+                <li style="margin-bottom:5px;padding:5px;background-color:#e9ecef;border-radius:5px;">
+                  <strong>${h}:</strong> ${respuestas}
+                </li>`;
+            })
+            .join("");
+
+          return `
+            <div style="min-width:300px;border:1px solid #ccc;padding:10px;border-radius:10px;background-color:#f9f9f9;">
+              <strong>${titulo}</strong>
+              <ul style="list-style:none;padding:0;margin-top:10px;">
+                <li style="margin-bottom:5px;padding:5px;background-color:#e9ecef;border-radius:5px;">
+                  <strong>Símbolo:</strong> ${simbolos}
+                </li>
+                ${respuestasHTML}
+              </ul>
+            </div>`;
+        })
+        .join("")}
+    </div>
+    <button id="back-to-test-button">Volver al Test</button>
+  </div>
+  `;
+
+        document.getElementById("test-container").style.display = "none";
+        answersContainer.style.display = "block";
+
+        document
+          .getElementById("back-to-test-button")
+          .addEventListener("click", () => {
+            answersContainer.style.display = "none";
+            document.getElementById("test-container").style.display = "block";
+          });
+      }
+
+      document
+        .getElementById("check-button")
+        .addEventListener("click", checkAnswer);
+      document.getElementById("next-button").addEventListener("click", () => {
+        if (currentIndex < 9) {
+          currentIndex++;
+          updateUI();
+          document.getElementById("check-button").disabled = false;
+        } else {
+          currentIndex = 10;
+          updateUI();
+        }
+      });
+      document.getElementById("prev-button").addEventListener("click", () => {
+        if (currentIndex > 0) currentIndex--;
+        updateUI();
+      });
+      document.getElementById("finish-button").addEventListener("click", () => {
+        window.location.href = "lewis.html";
+      });
+      document
+        .getElementById("all-answers-button")
+        .addEventListener("click", showAllAnswers);
+
+      // 🔹 Mostrar indicador de scroll cuando hay más contenido
+      const container = document.querySelector(".container");
+      const scrollIndicator = document.getElementById("scroll-indicator");
+
+      function checkScroll() {
+        const canScroll = container.scrollHeight > container.clientHeight + 10;
+        const isAtBottom =
+          container.scrollTop + container.clientHeight >=
+          container.scrollHeight - 10;
+
+        if (canScroll && !isAtBottom) {
+          scrollIndicator.style.display = "block";
+        } else {
+          scrollIndicator.style.display = "none";
+        }
+      }
+
+      // Detectar scroll y cambios de tamaño
+      container.addEventListener("scroll", checkScroll);
+      window.addEventListener("resize", checkScroll);
+      window.addEventListener("load", checkScroll);
+
+      // Revisar periódicamente por si el contenido cambia dinámicamente
+      setInterval(checkScroll, 800);
+
+      const btn = document.getElementById("login-btn");
+      const modal = document.getElementById("login-modal");
+
+      btn.addEventListener("click", () => {
+        if (modal.style.display === "block") {
+          modal.style.display = "none";
+        } else {
+          modal.style.display = "block";
+        }
+      });
+
+      startTimer();
+      updateUI();
+    </script>
+  </body>
+</html>

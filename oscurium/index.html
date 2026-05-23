@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Oscurium</title>
+    <link rel="icon" href="oscuriumLogo.png" />
+    <style>
+      body {
+        margin: 0;
+        font-family: Times New Roman, serif;
+        background-color: white;
+      }
+
+      header {
+        background-color: #201c1e;
+        background-image: url("header.png");
+        background-repeat: repeat;
+        background-size: 10%;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+
+      #floatingMenu {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background-image: url("header.png");
+        background-repeat: repeat;
+        background-size: 55%;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 10px;
+        display: none;
+        align-items: center;
+        gap: 8px;
+        z-index: 10000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        font-family: Times New Roman, serif;
+      }
+
+      #floatingMenu .dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 5px;
+      }
+
+      #menu-header {
+        top: 65px;
+        left: 20px;
+      }
+
+      .center-title {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(2.5);
+        height: 140px;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .animate-center-title {
+        animation: shrinkAndMove 2.5s ease-in-out forwards;
+      }
+
+      .center-title-static {
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%) scale(1);
+        height: 70px;
+        z-index: 1;
+      }
+
+      @keyframes shrinkAndMove {
+        from {
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) scale(2.5);
+          height: 140px;
+          z-index: 999999999;
+        }
+        to {
+          top: 10px;
+          left: 50%;
+          transform: translateX(-50%) scale(1);
+          height: 70px;
+          z-index: 1;
+        }
+      }
+
+      /* Animación */
+      #leftBox {
+        position: fixed;
+        top: 87px;
+        left: 0px;
+        width: 50%;
+        height: 100%;
+        background-color: #7d7d7d;
+        background-image: url("background.png");
+        background-repeat: repeat;
+        background-size: auto;
+        animation: fadeLeft 2.5s linear forwards;
+        opacity: 0;
+      }
+
+      @keyframes fadeLeft {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-100%);
+        }
+      }
+
+      #rightBox {
+        position: fixed;
+        top: 87px;
+        right: 0px;
+        width: 50%;
+        height: 100%;
+        background-color: #7d7d7d;
+        background-image: url("background.png");
+        background-repeat: repeat;
+        background-size: auto;
+        animation: fadeRight 2.5s linear forwards;
+        opacity: 0;
+      }
+
+      @keyframes fadeRight {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(100%);
+        }
+      }
+
+      #leftBox,
+      #rightBox {
+        z-index: 9999;
+      }
+
+      .home-image {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-right: 7px;
+      }
+
+      .menu-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      .dropdown {
+        position: absolute;
+        left: 20px;
+        background-color: #3a3a3a;
+        background-image: url("dropDown.png");
+        background-repeat: repeat;
+        background-size: 90%;
+        border-radius: 5px;
+        display: none;
+        flex-direction: column;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        z-index: 9999999999;
+      }
+
+      .dropdown a {
+        padding: 10px 20px;
+        color: white;
+        text-decoration: none;
+      }
+
+      .dropdown a:hover {
+        background-color: #666666;
+        background-image: url("dropDownHover.png");
+        background-repeat: repeat;
+        background-size: 90%;
+      }
+
+      .social-cards {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      /* Discord */
+      .discord-card {
+        background: #01073e;
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: block;
+        margin: 30px auto;
+        transition: transform 0.2s;
+      }
+
+      .discord-card:hover {
+        transform: scale(1.03);
+      }
+
+      .discord-image {
+        width: 64px;
+        height: 64px;
+        border-radius: 15px;
+        object-fit: cover;
+      }
+
+      .discord-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .discord-subtext {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .discord-icon-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .discord-icon-label img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .discord-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .discord-tag {
+        background-color: #2c2f33;
+        border-radius: 15px;
+        padding: 6px 12px;
+        font-size: 13px;
+        color: #ccc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .discord-tag img {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* WhatsApp */
+      .whatsapp-card {
+        width: 320px;
+        background: #1d4d23;
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: flex;
+        margin: 30px auto;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        transition: transform 0.2s;
+      }
+
+      .whatsapp-card:hover {
+        transform: scale(1.03);
+      }
+
+      .whatsapp-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .whatsapp-title {
+        font-size: 30px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .whatsapp-subtext {
+        color: #aaa;
+        font-size: 16px;
+        margin-bottom: 15px;
+      }
+
+      /* CurseForge */
+      .curseForge-card {
+        background: linear-gradient(
+          to bottom,
+          #1e1f22 0%,
+          #1e1f22 90%,
+          #fd6938 100%
+        );
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: block;
+        margin: 30px auto;
+        transition: transform 0.2s;
+      }
+
+      .curseForge-card:hover {
+        transform: scale(1.03);
+      }
+
+      .curseForge-image {
+        width: 64px;
+        height: 64px;
+        border-radius: 15px;
+        object-fit: cover;
+      }
+
+      .curseForge-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .curseForge-subtext {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .curseForge-icon-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .curseForge-icon-label img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .curseForge-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .curseForge-tag {
+        background-color: #2c2f33;
+        border-radius: 15px;
+        padding: 6px 12px;
+        font-size: 13px;
+        color: #ccc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .curseForge-tag img {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* Modrinth */
+      .modrinth-card {
+        background: linear-gradient(
+          to bottom,
+          #1e1f22 0%,
+          #1e1f22 90%,
+          #19ca62 100%
+        );
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        font-family: Times New Roman, serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        text-decoration: none;
+        display: block;
+        margin: 30px auto;
+        transition: transform 0.2s;
+      }
+
+      .modrinth-card:hover {
+        transform: scale(1.03);
+      }
+
+      .modrinth-image {
+        width: 64px;
+        height: 64px;
+        border-radius: 15px;
+        object-fit: cover;
+      }
+
+      .modrinth-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .modrinth-subtext {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .modrinth-icon-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .modrinth-icon-label img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .modrinth-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .modrinth-tag {
+        background-color: #2c2f33;
+        border-radius: 15px;
+        padding: 6px 12px;
+        font-size: 13px;
+        color: #ccc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .modrinth-tag img {
+        width: 14px;
+        height: 14px;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 45px;
+        text-align: center;
+      }
+
+      p {
+        color: black;
+        font-size: 20px;
+        text-align: center;
+      }
+
+      a {
+        cursor: pointer;
+      }
+
+      #p2 {
+        text-align: left;
+        margin: 10px;
+      }
+
+      #span1 {
+        width: 150px;
+        text-align: center;
+        border-radius: 5px;
+        border: #bfe1f6 solid 3px;
+      }
+
+      #wiki {
+        text-align: center;
+      }
+
+      size {
+        font-size: 20px;
+      }
+
+      .imagenItem {
+        height: 150px;
+        width: 150px;
+      }
+
+      .imagenCrafteo {
+        height: 100%;
+        width: 370px;
+      }
+
+      .imagenHorno {
+        height: 100%;
+        width: 270px;
+      }
+
+      .imagenArmadura {
+        height: 100%;
+        width: 350px;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          font-size: 16px;
+        }
+
+        header {
+          background-size: 40%;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 75px; /* Altura fija */
+          position: relative; /* necesario para que .center-title absoluta se posicione dentro */
+          overflow: visible;
+        }
+
+        .center-title {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          height: 70px;
+          transform: translate(-50%, -50%) scale(1.8);
+          pointer-events: none;
+        }
+
+        .center-title.animate-mobile {
+          animation: shrinkAndMoveMobile 2.5s ease-in-out forwards;
+        }
+
+        .center-title.animating {
+          z-index: 999999999;
+        }
+
+        @keyframes shrinkAndMoveMobile {
+          from {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.8);
+            height: 70px;
+          }
+          to {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            height: 70px;
+          }
+        }
+
+        header .menu-btn,
+        header .home-image,
+        header #menu-header,
+        header h2 {
+          display: none !important;
+        }
+
+        #floatingMenu {
+          display: flex !important;
+          top: 100px;
+          background-size: 50%;
+        }
+
+        main {
+          padding-top: 80px; /* para evitar que el menú flote sobre el contenido */
+        }
+
+        .home-image {
+          width: 32px;
+          height: 32px;
+          margin-right: 5px;
+        }
+
+        h1 {
+          font-size: 30px;
+        }
+
+        h3 {
+          font-size: 20px;
+          margin-left: 0;
+        }
+
+        p {
+          font-size: 16px;
+          text-align: justify;
+        }
+
+        #p2 {
+          margin: 5px;
+        }
+
+        .scrollToStage {
+          right: 5px;
+          width: 40px;
+          height: 40px;
+        }
+
+        .scrollToStage img {
+          width: 24px;
+          height: 24px;
+        }
+
+        .dropdown {
+          left: 0;
+          width: 100%;
+        }
+        .center-title-static-mobile {
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) scale(1);
+          height: 70px;
+          z-index: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+      <img src="oscurium.png" alt="Oscurium logo" class="home-image" />
+      <div class="dropdown" id="menu-header">
+        <a href="index.html">General</a>
+        <a href="wiki.html">Wiki</a>
+        <a href="ideas.html">Ideas</a>
+        <a href="updates.html">Updates</a>
+      </div>
+      <h2>Menu</h2>
+      <img src="oscuriumTitle.png" alt="Oscurium Title" class="center-title" />
+    </header>
+
+    <div id="floatingMenu">
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+      <img src="oscurium.png" alt="Oscurium logo" class="home-image" />
+      <h2 style="margin: 0">Menu</h2>
+      <div class="dropdown" id="menu-floating">
+        <a href="index.html">General</a>
+        <a href="wiki.html">Wiki</a>
+        <a href="ideas.html">Ideas</a>
+        <a href="updates.html">Updates</a>
+      </div>
+    </div>
+
+    <main>
+      <div id="general" class="section active">
+        <div id="leftBox"></div>
+        <div id="rightBox"></div>
+        <p
+          style="
+            border-bottom: 2px dotted;
+            padding-bottom: 10px;
+            margin: 0 auto;
+            text-align: center;
+          "
+        >
+          Migueloncio1793 presents, with the help of Minecraft Java, MCreator
+          and Blockbench…
+        </p>
+        <h1 style="color: #45818e">* Oscurium *</h1>
+        <p style="color: #45818e">
+          <span id="span1">Migueloncio1793 CREATION™</span>
+          <span id="span1" style="color: #0a53a8; background-color: #bfe1f6"
+            >🌐 OPERATIVO 🌐</span
+          >
+          <span id="span1">Minecraft version 1.20.1 Forge</span>
+        </p>
+        <h1 style="font-size: 25px">⚒ FORGE EXPERIENCE ⚒</h1>
+        <p></p>
+        <p>
+          🔧 This mod adds new bosses, items, tools, armor, mobs and dimensions.
+          Let's get started…
+        </p>
+        <p></p>
+        <p>
+          <size style="font-size: 24px"
+            ><strong>🎮 Steps to play it:</strong></size
+          >
+          You have to be on the <strong>Discord server</strong>, where there
+          will be a section called <strong>Updates</strong> to download the mod
+          and to see all the new updates and bug fixes.
+        </p>
+        <div class="social-cards">
+          <a
+            class="discord-card"
+            href="https://discord.gg/QYbq5epVGB"
+            target="_blank"
+          >
+            <img src="oscurium.png" alt="Oscurium logo" class="discord-image" />
+            <div class="discord-title">Oscurium</div>
+            <div class="discord-subtext" style="margin-bottom: 0">
+              Discord Server
+            </div>
+            <div class="discord-subtext" style="margin-top: 5px">
+              Est. may 2025
+            </div>
+
+            <div class="discord-icon-label">
+              <img src="minecraft.png" alt="Minecraft icon" />
+              <span>Minecraft</span>
+            </div>
+
+            <div class="discord-tags">
+              <div class="discord-tag">🟩 minecraft</div>
+              <div class="discord-tag">🔧 mod</div>
+              <div class="discord-tag">💻 programming</div>
+            </div>
+          </a>
+          <a
+            class="whatsapp-card"
+            href="https://chat.whatsapp.com/GgoezzH2gKcIL7PKFGLTDy"
+            target="_blank"
+          >
+            <img
+              src="oscurium.png"
+              alt="Oscurium logo"
+              class="whatsapp-image"
+            />
+            <div class="whatsapp-title">Oscurium</div>
+            <div class="whatsapp-subtext">WhatsApp Group</div>
+          </a>
+        </div>
+        <div class="social-cards">
+          <a
+            class="curseForge-card"
+            href="https://www.curseforge.com/minecraft/mc-mods/oscurium"
+            target="_blank"
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 10px;
+              "
+            >
+              <img
+                src="oscurium.png"
+                alt="Oscurium logo"
+                class="curseForge-image"
+              />
+              <div class="curseForge-title">Oscurium</div>
+            </div>
+
+            <div class="curseForge-icon-label">
+              <img src="curseForge.png" alt="curseForge icon" />
+              <span>Download mod from CurseForge</span>
+            </div>
+            <div class="curseForge-subtext">
+              This mod adds new bosses, items, tools, armor, mobs and
+              dimensions.
+            </div>
+
+            <div class="curseForge-tags">
+              <div class="curseForge-tag">⚔️ Armor, Tools, and Weapons</div>
+              <div class="curseForge-tag">♥️ Adventure and RPG</div>
+              <div class="curseForge-tag">✨ Magic</div>
+            </div>
+          </a>
+          <a
+            class="modrinth-card"
+            href="https://modrinth.com/mod/oscurium"
+            target="_blank"
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 10px;
+              "
+            >
+              <img
+                src="oscurium.png"
+                alt="Oscurium logo"
+                class="modrinth-image"
+              />
+              <div class="modrinth-title">Oscurium</div>
+            </div>
+
+            <div class="modrinth-icon-label">
+              <img src="modrinth.png" alt="modrinth icon" />
+              <span>Download mod from Modrinth</span>
+            </div>
+            <div class="modrinth-subtext">
+              This mod adds new bosses, items, tools, armor, mobs and
+              dimensions.
+            </div>
+
+            <div class="modrinth-tags">
+              <div class="modrinth-tag">⚔️ Equipment</div>
+              <div class="modrinth-tag">♥️ Adventure</div>
+              <div class="modrinth-tag">✨ Magic</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function toggleMenu() {
+        const headerBottom = document
+          .querySelector("header")
+          .getBoundingClientRect().bottom;
+        const menuFloating = document.getElementById("menu-floating");
+        const menuHeader = document.getElementById("menu-header");
+
+        if (window.innerWidth <= 768) {
+          // En móvil siempre usar el menú flotante
+          menuFloating.style.display =
+            menuFloating.style.display === "flex" ? "none" : "flex";
+        } else {
+          // En escritorio depende de la visibilidad del header
+          if (headerBottom <= 0) {
+            // Mostrar menú flotante
+            menuFloating.style.display =
+              menuFloating.style.display === "flex" ? "none" : "flex";
+          } else {
+            // Mostrar menú del header
+            menuHeader.style.display =
+              menuHeader.style.display === "flex" ? "none" : "flex";
+          }
+        }
+      }
+
+      const header = document.querySelector("header");
+
+      window.addEventListener("scroll", () => {
+        const headerBottom = header.getBoundingClientRect().bottom;
+        const floatingMenu = document.getElementById("floatingMenu");
+        const allLeftBoxes = document.querySelectorAll("#leftBox");
+        const allRightBoxes = document.querySelectorAll("#rightBox");
+
+        // Ajuste animación de cajas laterales
+        allLeftBoxes.forEach((leftBox) => {
+          leftBox.style.top = headerBottom <= 0 ? "0" : "87px";
+        });
+
+        allRightBoxes.forEach((rightBox) => {
+          rightBox.style.top = headerBottom <= 0 ? "0" : "87px";
+        });
+
+        // Control floatingMenu
+        if (window.innerWidth > 768) {
+          // Escritorio
+          if (headerBottom <= 0) {
+            floatingMenu.style.display = "flex";
+            floatingMenu.style.top = "10px";
+          } else {
+            floatingMenu.style.display = "none";
+          }
+        } else {
+          // Móvil
+          floatingMenu.style.display = "flex";
+          floatingMenu.style.top = headerBottom <= 0 ? "10px" : "100px";
+        }
+      });
+
+      window.addEventListener("load", () => {
+        const title = document.querySelector(".center-title");
+
+        const fromAnotherPage =
+          document.referrer.includes("wiki.html") ||
+          document.referrer.includes("ideas.html") ||
+          document.referrer.includes("updates.html");
+
+        const isMobile = window.innerWidth <= 768;
+
+        if (!fromAnotherPage) {
+          // Animación
+          if (isMobile) {
+            title.classList.add("animate-mobile", "animating");
+          } else {
+            title.classList.add("animate-center-title", "animating");
+          }
+
+          setTimeout(() => {
+            title.classList.remove("animating");
+          }, 2500);
+        } else {
+          // Sin animación → aplicar estado final
+          if (isMobile) {
+            title.classList.add("center-title-static-mobile");
+          } else {
+            title.classList.add("center-title-static");
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
