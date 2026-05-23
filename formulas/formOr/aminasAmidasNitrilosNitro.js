@@ -65,7 +65,7 @@ export const formulas = [
   {
     "formula": "CH₃-NH-CH₂-CH₂-CH₂-CH₃",
     "answers": [
-      "Metilamina"
+      "Butilmetilamina"
     ],
     "tipo": "amina"
   }
