@@ -128,7 +128,7 @@ export const formulas = [
   {
     "formula": "CH₃-CH₂-CH₂-CH₂-CH₂-CH₂-CH₂-CO-CH₂-CH₃",
     "answers": [
-      "c"
+      "Etilheptilcetona"
     ],
     "tipo": "cetona"
   },
@@ -247,7 +247,7 @@ export const formulas = [
   {
     "formula": "Etiloctilcetona",
     "answers": [
-      "CH₃-CH₂-CH₂-CH₂-CH₂-CH₂-CH₂-CO-CH₂-CH₃"
+      "Etilheptilcetona"
     ],
     "tipo": "cetona"
   },
