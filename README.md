@@ -33,4 +33,3 @@ Plataforma educativa interactiva para aprender formulación química de forma pr
 ### Backend (BaaS)
 - Firebase
   - Firestore / Realtime Database
-  - Hosting
