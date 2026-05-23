@@ -617,6 +617,41 @@
         }
       });
 
+      // CONTROLES DE TECLADO
+      document.addEventListener("keydown", (e) => {
+        const answerInput = document.getElementById("answer");
+
+        // ENTER = corregir
+        if (e.key === "Enter") {
+          // Evita enviar formularios o comportamientos raros
+          e.preventDefault();
+
+          // Solo corrige si el input está habilitado
+          if (!answerInput.disabled) {
+            checkAnswer();
+          }
+        }
+
+        // FLECHA IZQUIERDA = anterior
+        if (e.key === "ArrowLeft") {
+          if (currentIndex > 0) {
+            currentIndex--;
+            updateUI();
+          }
+        }
+
+        // FLECHA DERECHA = siguiente
+        if (e.key === "ArrowRight") {
+          if (currentIndex < 9) {
+            currentIndex++;
+            updateUI();
+          } else if (currentIndex === 9) {
+            currentIndex = 10;
+            updateUI();
+          }
+        }
+      });
+
       startTimer();
       updateUI();
     </script>
