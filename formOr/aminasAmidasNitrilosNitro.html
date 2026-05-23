@@ -362,21 +362,18 @@
       const nitrilos = formulas.filter((f) => f.tipo === "nitrilo");
       const nitro = formulas.filter((f) => f.tipo === "nitro");
 
-      const randomAminas = aminas.sort(() => 0.5 - Math.random()).slice(0, 2);
-
-      const randomAmidas = amidas.sort(() => 0.5 - Math.random()).slice(0, 2);
-
-      const randomNitrilos = nitrilos
+      const TOTAL_PREGUNTAS = 9;
+      const randomAminas = aminas.sort(() => 0.5 - Math.random()).slice(0, 3);
+      const randomAmidas = amidas.sort(() => 0.5 - Math.random()).slice(0, 3);
+      const grupoNitroNitrilo = [...nitro, ...nitrilos];
+      const randomNitroNitrilo = grupoNitroNitrilo
         .sort(() => 0.5 - Math.random())
         .slice(0, 3);
-
-      const randomNitro = nitro.sort(() => 0.5 - Math.random()).slice(0, 2);
 
       let selectedFormulas = [
         ...randomAminas,
         ...randomAmidas,
-        ...randomNitrilos,
-        ...randomNitro,
+        ...randomNitroNitrilo,
       ].sort(() => 0.5 - Math.random());
       let userAnswers = Array(totalQuestions).fill("");
       let answerStates = Array(totalQuestions).fill(null);
