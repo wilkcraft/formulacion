@@ -245,9 +245,9 @@ export const formulas = [
     "tipo": "cetona"
   },
   {
-    "formula": "Etiloctilcetona",
+    "formula": "Etilheptilcetona",
     "answers": [
-      "Etilheptilcetona"
+      "CH₃-CH₂-CH₂-CH₂-CH₂-CH₂-CH₂-CO-CH₂-CH₃"
     ],
     "tipo": "cetona"
   },
