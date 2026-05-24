@@ -579,7 +579,7 @@ export const formulas = [
     "formula": "H₃AsO₂",
     "answers": [
       "Ácido hipoarsenioso",
-      "Trihidroxidoarsénico",
+      "dihidroxidohidrogenoarsenico",
       "Trihidrógeno (dioxidoarsenato)"
     ]
   },
@@ -643,7 +643,7 @@ export const formulas = [
     "formula": "H₂N₂O₅",
     "answers": [
       "Ácido dinitrico",
-      "Dihidroxidotoxidodinitrógeno",
+      "Dihidroxidotrioxidodinitrógeno",
       "Dihidrógeno (pentaoxidodinitrato)"
     ]
   },
