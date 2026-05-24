@@ -1,750 +1,770 @@
 export const formulas = [
   {
-    formula: "HClO₃",
-    answers: [
+    "formula": "HClO₃",
+    "answers": [
       "Ácido clórico",
       "Hidroxidodioxidocloro",
-      "Hidrógeno (trioxidoclorato)",
-    ],
+      "Hidrógeno (trioxidoclorato)"
+    ]
   },
   {
-    formula: "H₂SO₄",
-    answers: [
+    "formula": "H₂SO₄",
+    "answers": [
       "Ácido sulfúrico",
       "Dihidroxidodioxidoazufre",
-      "Dihidrógeno (tetraoxidosulfato)",
-    ],
+      "Dihidrógeno (tetraoxidosulfato)"
+    ]
   },
   {
-    formula: "HNO₃",
-    answers: [
+    "formula": "HNO₃",
+    "answers": [
       "Ácido nítrico",
       "Hidroxidodioxidonitrógeno",
-      "Hidrógeno (trioxidonitrato)",
-    ],
+      "Hidrógeno (trioxidonitrato)"
+    ]
   },
   {
-    formula: "HMnO₄",
-    answers: [
+    "formula": "HMnO₄",
+    "answers": [
       "Ácido permangánico",
       "Hidroxidotrioxidomanganeso",
-      "Hidrógeno (tetraoxidomanganato)",
-    ],
+      "Hidrógeno (tetraoxidomanganato)"
+    ]
   },
   {
-    formula: "HIO₄",
-    answers: [
+    "formula": "HIO₄",
+    "answers": [
       "Ácido peryódico",
       "Hidroxidotrioxidoyodo",
-      "Hidrógeno (tetraoxidoyodato)",
-    ],
+      "Hidrógeno (tetraoxidoyodato)"
+    ]
   },
   {
-    formula: "H₂SeO₂",
-    answers: [
+    "formula": "H₂SeO₂",
+    "answers": [
       "Ácido hiposelenoso",
       "Dihidroxidoselenio",
-      "Dihidrógeno (dioxidoselenato)",
-    ],
+      "Dihidrógeno (dioxidoselenato)"
+    ]
   },
   {
-    formula: "H₂TeO₃",
-    answers: [
+    "formula": "H₂TeO₃",
+    "answers": [
       "Ácido telúrico",
       "Dihidroxidooxidoteluro",
-      "Dihidrógeno (trioxidotelurato)",
-    ],
+      "Dihidrógeno (trioxidotelurato)"
+    ]
   },
   {
-    formula: "H₂CO₃",
-    answers: [
+    "formula": "H₂CO₃",
+    "answers": [
       "Ácido carbónico",
       "Dihidroxidooxidocarbono",
-      "Dihidrógeno (trioxidocarbonato)",
-    ],
+      "Dihidrógeno (trioxidocarbonato)"
+    ]
   },
   {
-    formula: "H₃PO₃",
-    answers: [
+    "formula": "H₃PO₃",
+    "answers": [
       "Ácido fosforoso",
       "Trihidroxidofósforo",
-      "Trihidrógeno (trioxidofosfato)",
-    ],
+      "Trihidrógeno (trioxidofosfato)"
+    ]
   },
   {
-    formula: "HClO₄",
-    answers: [
+    "formula": "HClO₄",
+    "answers": [
       "Ácido perclórico",
       "Hidroxidotrioxidocloro",
-      "Hidrógeno (tetraoxidoclorato)",
-    ],
+      "Hidrógeno (tetraoxidoclorato)"
+    ]
   },
   {
-    formula: "HBrO",
-    answers: [
+    "formula": "HBrO",
+    "answers": [
       "Ácido hipobromoso",
       "Hidroxidobromo",
-      "Hidrógeno (oxidobromato)",
-    ],
+      "Hidrógeno (oxidobromato)"
+    ]
   },
   {
-    formula: "HBrO₂",
-    answers: [
+    "formula": "HBrO₂",
+    "answers": [
       "Ácido bromoso",
       "Hidroxidooxidobromo",
-      "Hidrógeno (dioxidobromato)",
-    ],
+      "Hidrógeno (dioxidobromato)"
+    ]
   },
   {
-    formula: "HBrO₃",
-    answers: [
+    "formula": "HBrO₃",
+    "answers": [
       "Ácido brómico",
       "Hidroxidodioxidobromo",
-      "Hidrógeno (trioxidobromato)",
-    ],
+      "Hidrógeno (trioxidobromato)"
+    ]
   },
   {
-    formula: "HBrO₄",
-    answers: [
+    "formula": "HBrO₄",
+    "answers": [
       "Ácido perbrómico",
       "Hidroxidotrioxidobromo",
-      "Hidrógeno (tetraoxidobromato)",
-    ],
+      "Hidrógeno (tetraoxidobromato)"
+    ]
   },
   {
-    formula: "HIO",
-    answers: ["Ácido hipoyodoso", "Hidroxidoyodo", "Hidrógeno (oxidoyodato)"],
+    "formula": "HIO",
+    "answers": [
+      "Ácido hipoyodoso",
+      "Hidroxidoyodo",
+      "Hidrógeno (oxidoyodato)"
+    ]
   },
   {
-    formula: "HIO₂",
-    answers: [
+    "formula": "HIO₂",
+    "answers": [
       "Ácido yodoso",
       "Hidroxidooxidoyodo",
-      "Hidrógeno (dioxidoyodato)",
-    ],
+      "Hidrógeno (dioxidoyodato)"
+    ]
   },
   {
-    formula: "HIO₃",
-    answers: [
+    "formula": "HIO₃",
+    "answers": [
       "Ácido yódico",
       "Hidroxidodioxidoyodo",
-      "Hidrógeno (trioxidoyodato)",
-    ],
+      "Hidrógeno (trioxidoyodato)"
+    ]
   },
   {
-    formula: "HClO",
-    answers: [
+    "formula": "HClO",
+    "answers": [
       "Ácido hipocloroso",
       "Hidroxidocloro",
-      "Hidrógeno (oxidoclorato)",
-    ],
+      "Hidrógeno (oxidoclorato)"
+    ]
   },
   {
-    formula: "HClO₂",
-    answers: [
+    "formula": "HClO₂",
+    "answers": [
       "Ácido cloroso",
       "Hidroxidooxidocloro",
-      "Hidrógeno (dioxidoclorato)",
-    ],
+      "Hidrógeno (dioxidoclorato)"
+    ]
   },
   {
-    formula: "H₂SO₃",
-    answers: [
+    "formula": "H₂SO₃",
+    "answers": [
       "Ácido sulfuroso",
       "Dihidroxidooxidoazufre",
-      "Dihidrógeno (trioxidosulfato)",
-    ],
+      "Dihidrógeno (trioxidosulfato)"
+    ]
   },
   {
-    formula: "H₂SeO₃",
-    answers: [
+    "formula": "H₂SeO₃",
+    "answers": [
       "Ácido selenioso",
       "Dihidroxidooxidoselenio",
-      "Dihidrógeno (trioxidoselenato)",
-    ],
+      "Dihidrógeno (trioxidoselenato)"
+    ]
   },
   {
-    formula: "H₂SeO₄",
-    answers: [
+    "formula": "H₂SeO₄",
+    "answers": [
       "Ácido selénico",
       "Dihidroxidodioxidoselenio",
-      "Dihidrógeno (tetraoxidoselenato)",
-    ],
+      "Dihidrógeno (tetraoxidoselenato)"
+    ]
   },
   {
-    formula: "H₂TeO₄",
-    answers: [
+    "formula": "H₂TeO₄",
+    "answers": [
       "Ácido telúrico",
       "Dihidroxidodioxidoteluro",
-      "Dihidrógeno (tetraoxidotelurato)",
-    ],
+      "Dihidrógeno (tetraoxidotelurato)"
+    ]
   },
   {
-    formula: "HNO₂",
-    answers: [
+    "formula": "HNO₂",
+    "answers": [
       "Ácido nitroso",
       "Hidroxidooxidonitrógeno",
-      "Hidrógeno (dioxidonitrato)",
-    ],
+      "Hidrógeno (dioxidonitrato)"
+    ]
   },
   {
-    formula: "H₃PO₄",
-    answers: [
+    "formula": "H₃PO₄",
+    "answers": [
       "Ácido fosfórico",
       "Trihidroxidooxidofósforo",
-      "Trihidrógeno (tetraoxidofosfato)",
-    ],
+      "Trihidrógeno (tetraoxidofosfato)"
+    ]
   },
   {
-    formula: "H₃BO₃",
-    answers: [
+    "formula": "H₃BO₃",
+    "answers": [
       "Ácido bórico",
       "Trihidroxidoboro",
-      "Trihidrógeno (trioxidoborato)",
-    ],
+      "Trihidrógeno (trioxidoborato)"
+    ]
   },
   {
-    formula: "H₂CrO₄",
-    answers: [
+    "formula": "H₂CrO₄",
+    "answers": [
       "Ácido crómico",
       "Dihidroxidodioxidocromo",
-      "Dihidrógeno (tetraoxidocromato)",
-    ],
+      "Dihidrógeno (tetraoxidocromato)"
+    ]
   },
   {
-    formula: "H₂Cr₂O₇",
-    answers: [
+    "formula": "H₂Cr₂O₇",
+    "answers": [
       "Ácido dicrómico",
       "Dihidroxidopentaoxidodicromo",
-      "Dihidrógeno (heptaoxidodicromato)",
-    ],
+      "Dihidrógeno (heptaoxidodicromato)"
+    ]
   },
   {
-    formula: "H₂MnO₄",
-    answers: [
+    "formula": "H₂MnO₄",
+    "answers": [
       "Ácido mangánico",
       "Dihidroxidodioxidomanganeso",
-      "Dihidrógeno (tetraoxidomanganato)",
-    ],
+      "Dihidrógeno (tetraoxidomanganato)"
+    ]
   },
   {
-    formula: "H₂SiO₃",
-    answers: [
+    "formula": "H₂SiO₃",
+    "answers": [
       "Ácido silícico",
       "Dihidroxidooxidosilicio",
-      "Dihidrógeno (trioxidosilicato)",
-    ],
+      "Dihidrógeno (trioxidosilicato)"
+    ]
   },
   {
-    formula: "H₄SiO₄",
-    answers: [
+    "formula": "H₄SiO₄",
+    "answers": [
       "Ácido ortosilícico",
       "Tetrahidroxidosilicio",
-      "Tetrahidrógeno (tetraoxidosilicato)",
-    ],
+      "Tetrahidrógeno (tetraoxidosilicato)"
+    ]
   },
   {
-    formula: "H₃AsO₄",
-    answers: [
+    "formula": "H₃AsO₄",
+    "answers": [
       "Ácido arsénico",
       "Trihidroxidooxidoarsénico",
-      "Trihidrógeno (tetraoxidoarsenato)",
-    ],
+      "Trihidrógeno (tetraoxidoarsenato)"
+    ]
   },
   {
-    formula: "H₃AsO₃",
-    answers: [
+    "formula": "H₃AsO₃",
+    "answers": [
       "Ácido arsenioso",
       "Trihidroxidoarsénico",
-      "Trihidrógeno (trioxidoarsenato)",
-    ],
+      "Trihidrógeno (trioxidoarsenato)"
+    ]
   },
   {
-    formula: "H₃SbO₄",
-    answers: [
+    "formula": "H₃SbO₄",
+    "answers": [
       "Ácido antimónico",
       "Trihidroxidooxidoantimonio",
-      "Trihidrógeno (tetraoxidoantimonato)",
-    ],
+      "Trihidrógeno (tetraoxidoantimonato)"
+    ]
   },
   {
-    formula: "H₃SbO₃",
-    answers: [
+    "formula": "H₃SbO₃",
+    "answers": [
       "Ácido antimonioso",
       "Trihidroxidoantimonio",
-      "Trihidrógeno (trioxidoantimonato)",
-    ],
+      "Trihidrógeno (trioxidoantimonato)"
+    ]
   },
   {
-    formula: "H₂SnO₃",
-    answers: [
+    "formula": "H₂SnO₃",
+    "answers": [
       "Ácido estánico",
       "Dihidroxidooxidestano",
-      "Dihidrógeno (trioxidoestanato)",
-    ],
+      "Dihidrógeno (trioxidoestanato)"
+    ]
   },
   {
-    formula: "H₂GeO₃",
-    answers: [
+    "formula": "H₂GeO₃",
+    "answers": [
       "Ácido germánico",
       "Dihidroxidooxidogermanio",
-      "Dihidrógeno (trioxidogermanato)",
-    ],
+      "Dihidrógeno (trioxidogermanato)"
+    ]
   },
   {
-    formula: "H₂PbO₃",
-    answers: [
+    "formula": "H₂PbO₃",
+    "answers": [
       "Ácido plúmbico",
       "Dihidroxidooxidoplomo",
-      "Dihidrógeno (trioxidoplumbato)",
-    ],
+      "Dihidrógeno (trioxidoplumbato)"
+    ]
   },
   {
-    formula: "H₂ZnO₂",
-    answers: [
+    "formula": "H₂ZnO₂",
+    "answers": [
       "Ácido zincico",
       "Dihidroxidozinc",
-      "Dihidrógeno (dioxidozincato)",
-    ],
+      "Dihidrógeno (dioxidozincato)"
+    ]
   },
   {
-    formula: "H₂CdO₂",
-    answers: [
+    "formula": "H₂CdO₂",
+    "answers": [
       "Ácido cadmico",
       "Dihidroxidocadmio",
-      "Dihidrógeno (dioxidocadmiato)",
-    ],
+      "Dihidrógeno (dioxidocadmiato)"
+    ]
   },
   {
-    formula: "H₂HgO₂",
-    answers: [
+    "formula": "H₂HgO₂",
+    "answers": [
       "Ácido mercúrico",
       "Dihidroxidomercurio",
-      "Dihidrógeno (dioxidomercuriato)",
-    ],
+      "Dihidrógeno (dioxidomercuriato)"
+    ]
   },
   {
-    formula: "HAuO₂",
-    answers: ["Ácido áurico", "Hidroxidooxidooro", "Hidrógeno (dioxidoaurato)"],
+    "formula": "HAuO₂",
+    "answers": [
+      "Ácido áurico",
+      "Hidroxidooxidooro",
+      "Hidrógeno (dioxidoaurato)"
+    ]
   },
   {
-    formula: "HAgO",
-    answers: ["Ácido argéntico", "Hidroxidoplata", "Hidrógeno (oxidoplata)"],
+    "formula": "HAgO",
+    "answers": [
+      "Ácido argéntico",
+      "Hidroxidoplata",
+      "Hidrógeno (oxidoplata)"
+    ]
   },
   {
-    formula: "H₂PtO₃",
-    answers: [
+    "formula": "H₂PtO₃",
+    "answers": [
       "Ácido platínico",
       "Dihidroxidooxidoplatino",
-      "Dihidrógeno (trioxidoplatinato)",
-    ],
+      "Dihidrógeno (trioxidoplatinato)"
+    ]
   },
   {
-    formula: "H₂PdO₃",
-    answers: [
+    "formula": "H₂PdO₃",
+    "answers": [
       "Ácido paládico",
       "Dihidroxidooxidopaladio",
-      "Dihidrógeno (trioxidopaladato)",
-    ],
+      "Dihidrógeno (trioxidopaladato)"
+    ]
   },
   {
-    formula: "H₂CuO₂",
-    answers: [
+    "formula": "H₂CuO₂",
+    "answers": [
       "Ácido cúprico",
       "Dihidroxidocobre",
-      "Dihidrógeno (dioxidocuprato)",
-    ],
+      "Dihidrógeno (dioxidocuprato)"
+    ]
   },
   {
-    formula: "H₂FeO₄",
-    answers: [
+    "formula": "H₂FeO₄",
+    "answers": [
       "Ácido férrico",
       "Dihidroxidodioxidohierro",
-      "Dihidrógeno (tetraoxidoferrato)",
-    ],
+      "Dihidrógeno (tetraoxidoferrato)"
+    ]
   },
   {
-    formula: "H₂CoO₃",
-    answers: [
+    "formula": "H₂CoO₃",
+    "answers": [
       "Ácido cobáltico",
       "Dihidroxidooxidocobalto",
-      "Dihidrógeno (trioxidocobaltato)",
-    ],
+      "Dihidrógeno (trioxidocobaltato)"
+    ]
   },
   {
-    formula: "H₂NiO₃",
-    answers: [
+    "formula": "H₂NiO₃",
+    "answers": [
       "Ácido niquélico",
       "Dihidroxidooxidoníquel",
-      "Dihidrógeno (trioxidoniquelato)",
-    ],
+      "Dihidrógeno (trioxidoniquelato)"
+    ]
   },
   {
-    formula: "HBO₂",
-    answers: [
+    "formula": "HBO₂",
+    "answers": [
       "Ácido metabórico",
       "Hidroxidooxidoboro",
-      "Hidrógeno (dioxidoborato)",
-    ],
+      "Hidrógeno (dioxidoborato)"
+    ]
   },
   {
-    formula: "HPO₃",
-    answers: [
+    "formula": "HPO₃",
+    "answers": [
       "Ácido metafosfórico",
       "Hidroxidodioxidofósforo",
-      "Hidrógeno (trioxidofosfato)",
-    ],
+      "Hidrógeno (trioxidofosfato)"
+    ]
   },
   {
-    formula: "HAsO₃",
-    answers: [
+    "formula": "HAsO₃",
+    "answers": [
       "Ácido metaarsénico",
       "Hidroxidodioxidoarsénico",
-      "Hidrógeno (trioxidoarsenato)",
-    ],
+      "Hidrógeno (trioxidoarsenato)"
+    ]
   },
   {
-    formula: "HSbO₃",
-    answers: [
+    "formula": "HSbO₃",
+    "answers": [
       "Ácido metaantimónico",
       "Hidroxidodioxidoantimonio",
-      "Hidrógeno (trioxidoantimonato)",
-    ],
+      "Hidrógeno (trioxidoantimonato)"
+    ]
   },
   {
-    formula: "H₂S₂O₇",
-    answers: [
+    "formula": "H₂S₂O₇",
+    "answers": [
       "Ácido pirosulfúrico",
       "Dihidroxidopentaoxidodiazufre",
-      "Dihidrógeno (heptaoxidodisulfato)",
-    ],
+      "Dihidrógeno (heptaoxidodisulfato)"
+    ]
   },
   {
-    formula: "H₄P₂O₇",
-    answers: [
+    "formula": "H₄P₂O₇",
+    "answers": [
       "Ácido pirofosfórico",
       "Tetrahidroxidotrioxidodifósforo",
-      "Tetrahidrógeno (heptaoxidodifosfato)",
-    ],
+      "Tetrahidrógeno (heptaoxidodifosfato)"
+    ]
   },
   {
-    formula: "H₄As₂O₇",
-    answers: [
+    "formula": "H₄As₂O₇",
+    "answers": [
       "Ácido piroarsénico",
       "Tetrahidroxidotrioxidodiarsénico",
-      "Tetrahidrógeno (heptaoxidodiarsenato)",
-    ],
+      "Tetrahidrógeno (heptaoxidodiarsenato)"
+    ]
   },
   {
-    formula: "H₄Sb₂O₇",
-    answers: [
+    "formula": "H₄Sb₂O₇",
+    "answers": [
       "Ácido piroantimónico",
       "Tetrahidroxidotrioxidodiantimonio",
-      "Tetrahidrógeno (heptaoxidodiantimonato)",
-    ],
+      "Tetrahidrógeno (heptaoxidodiantimonato)"
+    ]
   },
   {
-    formula: "H₂CO₂",
-    answers: [
+    "formula": "H₂CO₂",
+    "answers": [
       "Ácido carbonoso",
       "Dihidroxidocarbono",
-      "Dihidrógeno (dioxidocarbonato)",
-    ],
+      "Dihidrógeno (dioxidocarbonato)"
+    ]
   },
   {
-    formula: "H₂MnO₃",
-    answers: [
+    "formula": "H₂MnO₃",
+    "answers": [
       "Ácido manganoso",
       "Dihidroxidooxidomanganeso",
-      "Dihidrógeno (trioxidomanganato)",
-    ],
+      "Dihidrógeno (trioxidomanganato)"
+    ]
   },
   {
-    formula: "H₂CrO₃",
-    answers: [
+    "formula": "H₂CrO₃",
+    "answers": [
       "Ácido cromoso",
       "Dihidroxidooxidocromo",
-      "Dihidrógeno (trioxidocromato)",
-    ],
+      "Dihidrógeno (trioxidocromato)"
+    ]
   },
   {
-    formula: "H₂FeO₃",
-    answers: [
+    "formula": "H₂FeO₃",
+    "answers": [
       "Ácido ferroso",
       "Dihidroxidooxidohierro",
-      "Dihidrógeno (trioxidoferrato)",
-    ],
+      "Dihidrógeno (trioxidoferrato)"
+    ]
   },
   {
-    formula: "HCuO",
-    answers: ["Ácido cuproso", "Hidroxidocobre", "Hidrógeno (oxidocuprato)"],
+    "formula": "HCuO",
+    "answers": [
+      "Ácido cuproso",
+      "Hidroxidocobre",
+      "Hidrógeno (oxidocuprato)"
+    ]
   },
   {
-    formula: "HCoO₂",
-    answers: [
+    "formula": "HCoO₂",
+    "answers": [
       "Ácido cobaltoso",
       "Hidroxidooxidocobalto",
-      "Hidrógeno (dioxidocobaltato)",
-    ],
+      "Hidrógeno (dioxidocobaltato)"
+    ]
   },
   {
-    formula: "HNiO₂",
-    answers: [
+    "formula": "HNiO₂",
+    "answers": [
       "Ácido niqueloso",
       "Hidroxidooxidoníquel",
-      "Hidrógeno (dioxidoniquelato)",
-    ],
+      "Hidrógeno (dioxidoniquelato)"
+    ]
   },
   {
-    formula: "HPdO₂",
-    answers: [
+    "formula": "HPdO₂",
+    "answers": [
       "Ácido paladioso",
       "Hidroxidooxidopaladio",
-      "Hidrógeno (dioxidopaladato)",
-    ],
+      "Hidrógeno (dioxidopaladato)"
+    ]
   },
   {
-    formula: "HPtO₂",
-    answers: [
+    "formula": "HPtO₂",
+    "answers": [
       "Ácido platinoso",
       "Hidroxidooxidoplatino",
-      "Hidrógeno (dioxidoplatinato)",
-    ],
+      "Hidrógeno (dioxidoplatinato)"
+    ]
   },
   {
-    formula: "HAuO",
-    answers: ["Ácido auroso", "Hidroxidooro", "Hidrógeno (oxidoaurato)"],
+    "formula": "HAuO",
+    "answers": [
+      "Ácido auroso",
+      "Hidroxidooro",
+      "Hidrógeno (oxidoaurato)"
+    ]
   },
   {
-    formula: "H₂S₃O₁₀",
-    answers: [
+    "formula": "H₂S₃O₁₀",
+    "answers": [
       "Ácido trisulfúrico",
       "Dihidroxidooctaoxidotriazufre",
-      "Dihidrógeno (decaoxidotrisulfato)",
-    ],
+      "Dihidrógeno (decaoxidotrisulfato)"
+    ]
   },
   {
-    formula: "H₅P₃O₁₀",
-    answers: [
+    "formula": "H₅P₃O₁₀",
+    "answers": [
       "Ácido trifosfórico",
       "Pentahidroxidopentaoxidotrifósforo",
-      "Pentahidrógeno (decaoxidotrifosfato)",
-    ],
+      "Pentahidrógeno (decaoxidotrifosfato)"
+    ]
   },
   {
-    formula: "H₂Se₂O₇",
-    answers: [
+    "formula": "H₂Se₂O₇",
+    "answers": [
       "Ácido piroselénico",
       "Dihidroxidopentaoxidodiselenio",
-      "Dihidrógeno (heptaoxidodiselenato)",
-    ],
+      "Dihidrógeno (heptaoxidodiselenato)"
+    ]
   },
   {
-    formula: "H₂Te₂O₇",
-    answers: [
+    "formula": "H₂Te₂O₇",
+    "answers": [
       "Ácido pirotelúrico",
       "Dihidroxidopentaoxidoditeluro",
-      "Dihidrógeno (heptaoxidoditelurato)",
-    ],
+      "Dihidrógeno (heptaoxidoditelurato)"
+    ]
   },
   {
-    formula: "H₃PO₂",
-    answers: [
+    "formula": "H₃PO₂",
+    "answers": [
       "Ácido hipofosforoso",
       "Trihidroxidofósforo",
-      "Trihidrógeno (dioxidofosfato)",
-    ],
+      "Trihidrógeno (dioxidofosfato)"
+    ]
   },
   {
-    formula: "H₃AsO₂",
-    answers: [
+    "formula": "H₃AsO₂",
+    "answers": [
       "Ácido hipoarsenioso",
       "Trihidroxidoarsénico",
-      "Trihidrógeno (dioxidoarsenato)",
-    ],
+      "Trihidrógeno (dioxidoarsenato)"
+    ]
   },
   {
-    formula: "H₃SbO₂",
-    answers: [
+    "formula": "H₃SbO₂",
+    "answers": [
       "Ácido hipoantimonioso",
       "Trihidroxidoantimonio",
-      "Trihidrógeno (dioxidoantimonato)",
-    ],
+      "Trihidrógeno (dioxidoantimonato)"
+    ]
   },
   {
-    formula: "H₂GeO₂",
-    answers: [
+    "formula": "H₂GeO₂",
+    "answers": [
       "Ácido germanoso",
       "Dihidroxidogermanio",
-      "Dihidrógeno (dioxidogermanato)",
-    ],
+      "Dihidrógeno (dioxidogermanato)"
+    ]
   },
   {
-    formula: "H₂SnO₂",
-    answers: [
+    "formula": "H₂SnO₂",
+    "answers": [
       "Ácido estañoso",
       "Dihidroxidoestano",
-      "Dihidrógeno (dioxidoestanato)",
-    ],
+      "Dihidrógeno (dioxidoestanato)"
+    ]
   },
   {
-    formula: "H₂PbO₂",
-    answers: [
+    "formula": "H₂PbO₂",
+    "answers": [
       "Ácido plumboso",
       "Dihidroxidoplomo",
-      "Dihidrógeno (dioxidoplumbato)",
-    ],
+      "Dihidrógeno (dioxidoplumbato)"
+    ]
   },
   {
-    formula: "H₂Si₂O₅",
-    answers: [
+    "formula": "H₂Si₂O₅",
+    "answers": [
       "Ácido disilícico",
       "Dihidroxidotetraoxidodisilicio",
-      "Dihidrógeno (pentaoxidodisilicato)",
-    ],
+      "Dihidrógeno (pentaoxidodisilicato)"
+    ]
   },
   {
-    formula: "H₆Si₂O₇",
-    answers: [
+    "formula": "H₆Si₂O₇",
+    "answers": [
       "Ácido pirosilícico",
       "Hexahidroxidooxidodisilicio",
-      "Hexahidrógeno (heptaoxidodisilicato)",
-    ],
+      "Hexahidrógeno (heptaoxidodisilicato)"
+    ]
   },
   {
-    formula: "H₂C₂O₅",
-    answers: [
+    "formula": "H₂C₂O₅",
+    "answers": [
       "Ácido dicarbónico",
       "Dihidroxidotetraoxidodicarbono",
-      "Dihidrógeno (pentaoxidodicarbonato)",
-    ],
+      "Dihidrógeno (pentaoxidodicarbonato)"
+    ]
   },
   {
-    formula: "H₂N₂O₅",
-    answers: [
+    "formula": "H₂N₂O₅",
+    "answers": [
       "Ácido dinitrico",
-      "Dihidroxidotetraoxidodinitrógeno",
-      "Dihidrógeno (pentaoxidodinitrato)",
-    ],
+      "Dihidroxidotoxidodinitrógeno",
+      "Dihidrógeno (pentaoxidodinitrato)"
+    ]
   },
   {
-    formula: "H₂Cl₂O₇",
-    answers: [
+    "formula": "H₂Cl₂O₇",
+    "answers": [
       "Ácido diclórico",
       "Dihidroxidopentaoxidodicloro",
-      "Dihidrógeno (heptaoxidodiclorato)",
-    ],
+      "Dihidrógeno (heptaoxidodiclorato)"
+    ]
   },
   {
-    formula: "H₂Br₂O₇",
-    answers: [
+    "formula": "H₂Br₂O₇",
+    "answers": [
       "Ácido dibrómico",
       "Dihidroxidopentaoxidodibromo",
-      "Dihidrógeno (heptaoxidodibromato)",
-    ],
+      "Dihidrógeno (heptaoxidodibromato)"
+    ]
   },
   {
-    formula: "H₂I₂O₇",
-    answers: [
+    "formula": "H₂I₂O₇",
+    "answers": [
       "Ácido diyódico",
       "Dihidroxidopentaoxidodiyodo",
-      "Dihidrógeno (heptaoxidodiyodato)",
-    ],
+      "Dihidrógeno (heptaoxidodiyodato)"
+    ]
   },
   {
-    formula: "H₂Mn₂O₇",
-    answers: [
+    "formula": "H₂Mn₂O₇",
+    "answers": [
       "Ácido dimangánico",
       "Dihidroxidopentaoxidodimanganeso",
-      "Dihidrógeno (heptaoxidodimanganato)",
-    ],
+      "Dihidrógeno (heptaoxidodimanganato)"
+    ]
   },
   {
-    formula: "H₂Cr₃O₁₀",
-    answers: [
+    "formula": "H₂Cr₃O₁₀",
+    "answers": [
       "Ácido tricrómico",
       "Dihidroxidooctaoxidotricromo",
-      "Dihidrógeno (decaoxidotricromato)",
-    ],
+      "Dihidrógeno (decaoxidotricromato)"
+    ]
   },
   {
-    formula: "H₂Fe₂O₇",
-    answers: [
+    "formula": "H₂Fe₂O₇",
+    "answers": [
       "Ácido diférrico",
       "Dihidroxidopentaoxidodihierro",
-      "Dihidrógeno (heptaoxidodiferrato)",
-    ],
+      "Dihidrógeno (heptaoxidodiferrato)"
+    ]
   },
   {
-    formula: "H₂Co₂O₇",
-    answers: [
+    "formula": "H₂Co₂O₇",
+    "answers": [
       "Ácido dicobáltico",
       "Dihidroxidopentaoxidodicobalto",
-      "Dihidrógeno (heptaoxidodicobaltato)",
-    ],
+      "Dihidrógeno (heptaoxidodicobaltato)"
+    ]
   },
   {
-    formula: "H₂Ni₂O₇",
-    answers: [
+    "formula": "H₂Ni₂O₇",
+    "answers": [
       "Ácido diniquélico",
       "Dihidroxidopentaoxidodiníquel",
-      "Dihidrógeno (heptaoxidodiniquelato)",
-    ],
+      "Dihidrógeno (heptaoxidodiniquelato)"
+    ]
   },
   {
-    formula: "H₂Cu₂O₅",
-    answers: [
+    "formula": "H₂Cu₂O₅",
+    "answers": [
       "Ácido dicúprico",
       "Dihidroxidotetraoxidodicobre",
-      "Dihidrógeno (pentaoxidodicuprato)",
-    ],
+      "Dihidrógeno (pentaoxidodicuprato)"
+    ]
   },
   {
-    formula: "H₂Zn₂O₅",
-    answers: [
+    "formula": "H₂Zn₂O₅",
+    "answers": [
       "Ácido dizincico",
       "Dihidroxidotetraoxidodizinc",
-      "Dihidrógeno (pentaoxidodizincato)",
-    ],
+      "Dihidrógeno (pentaoxidodizincato)"
+    ]
   },
   {
-    formula: "H₂Cd₂O₅",
-    answers: [
+    "formula": "H₂Cd₂O₅",
+    "answers": [
       "Ácido dicadmico",
       "Dihidroxidotetraoxidodicadmio",
-      "Dihidrógeno (pentaoxidodicadmiato)",
-    ],
+      "Dihidrógeno (pentaoxidodicadmiato)"
+    ]
   },
   {
-    formula: "H₂Hg₂O₅",
-    answers: [
+    "formula": "H₂Hg₂O₅",
+    "answers": [
       "Ácido dimercúrico",
       "Dihidroxidotetraoxidodimercurio",
-      "Dihidrógeno (pentaoxidodimercuriato)",
-    ],
+      "Dihidrógeno (pentaoxidodimercuriato)"
+    ]
   },
   {
-    formula: "H₂Au₂O₅",
-    answers: [
+    "formula": "H₂Au₂O₅",
+    "answers": [
       "Ácido diaúrico",
       "Dihidroxidotetraoxidodioro",
-      "Dihidrógeno (pentaoxidodiaurato)",
-    ],
+      "Dihidrógeno (pentaoxidodiaurato)"
+    ]
   },
   {
-    formula: "H₂Pt₂O₇",
-    answers: [
+    "formula": "H₂Pt₂O₇",
+    "answers": [
       "Ácido diplatínico",
       "Dihidroxidopentaoxidodiplatino",
-      "Dihidrógeno (heptaoxidodiplatinato)",
-    ],
+      "Dihidrógeno (heptaoxidodiplatinato)"
+    ]
   },
   {
-    formula: "H₂Pd₂O₇",
-    answers: [
+    "formula": "H₂Pd₂O₇",
+    "answers": [
       "Ácido dipaládico",
       "Dihidroxidopentaoxidodipaladio",
-      "Dihidrógeno (heptaoxidodipaladato)",
-    ],
-  },
+      "Dihidrógeno (heptaoxidodipaladato)"
+    ]
+  }
 ];
