@@ -943,8 +943,10 @@
           let novedades = [];
 
           snapshot.forEach((doc) => {
-            const fechaID = doc.id;
-            const texto = doc.data().text;
+            const data = doc.data();
+
+const fechaID = data.fechaID;
+const texto = data.text;
 
             const [dia, mes, año] = fechaID.split("_").map((n) => parseInt(n));
             const fechaDate = new Date(año, mes - 1, dia);
