@@ -971,7 +971,7 @@
             const esNueva =
               esReciente && (!ultimaVista || n.fechaID > ultimaVista);
 
-            // Insertar separador justo antes de las novedades viejas
+            // Insertar separador entre nuevas y viejas
             if (!esNueva && !separadorInsertado) {
               const separador = document.createElement("div");
               separador.classList.add("news-separator");
@@ -985,7 +985,6 @@
 
             const fechaFormateada = n.fechaID.replace(/_/g, "/");
 
-            // Dividir usando "/n"
             const partes = n.texto.split("/n");
 
             const wrapper = document.createElement("div");
