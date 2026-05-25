@@ -951,7 +951,12 @@
             const [dia, mes, año] = fechaID.split("_").map((n) => parseInt(n));
             const fechaDate = new Date(año, mes - 1, dia);
 
-            novedades.push({ fechaID, texto, fechaDate });
+            novedades.push({
+              fechaID,
+              texto,
+              fechaDate,
+              timestamp: data.timestamp?.toMillis?.() || 0,
+            });
           });
 
           novedades.sort((a, b) => b.fechaDate - a.fechaDate);
