@@ -529,8 +529,10 @@ client.on("interactionCreate", async (interaction) => {
         let novedades = [];
 
         snapshot.forEach((doc) => {
-          const fechaID = doc.id;
-          const texto = doc.data().text;
+          const data = doc.data();
+
+          const fechaID = data.fechaID;
+          const texto = data.text;
 
           const [d, m, a] = fechaID.split("_");
           const fecha = new Date(a, m - 1, d);
