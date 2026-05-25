@@ -415,16 +415,12 @@ client.on("interactionCreate", async (interaction) => {
         let opciones = [];
 
         snapshot.forEach((doc) => {
-          const fechaID = doc.data().fechaID;
-
-          // convertir dd_mm_aaaa → Date
-          const [d, m, a] = fechaID.split("_");
-          const fecha = new Date(a, m - 1, d);
+          const data = doc.data();
 
           opciones.push({
-            name: fechaID.replace(/_/g, "/"),
-            value: fechaID,
-            fecha,
+            name: `${data.fechaID.replace(/_/g, "/")} | ${data.text.slice(0, 40)}`,
+            value: doc.id, // ID REAL FIRESTORE
+            fecha: data.timestamp?.toDate?.() || new Date(),
           });
         });
 
