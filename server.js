@@ -456,7 +456,6 @@ client.on("interactionCreate", async (interaction) => {
   if (interaction.isChatInputCommand()) {
     // 📰 ADD NEWS
     if (interaction.commandName === "addnews") {
-      // 🔒 (Opcional pero recomendado)
       if (!interaction.member.permissions.has("Administrator")) {
         return interaction.reply({
           content: "❌ No tienes permisos",
@@ -466,8 +465,8 @@ client.on("interactionCreate", async (interaction) => {
 
       const texto = interaction.options.getString("texto");
 
-      // 📅 Fecha automática
       const now = new Date();
+
       const dia = String(now.getDate()).padStart(2, "0");
       const mes = String(now.getMonth() + 1).padStart(2, "0");
       const año = now.getFullYear();
@@ -475,8 +474,10 @@ client.on("interactionCreate", async (interaction) => {
       const fechaID = `${dia}_${mes}_${año}`;
 
       try {
-        await dbAdmin.collection("novedades").doc(fechaID).set({
+        await dbAdmin.collection("novedades").add({
           text: texto,
+          fechaID,
+          timestamp: admin.firestore.FieldValue.serverTimestamp(),
         });
 
         return interaction.reply({
