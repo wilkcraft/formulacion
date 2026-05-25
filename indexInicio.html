@@ -971,12 +971,12 @@
             const esNueva =
               esReciente && (!ultimaVista || n.fechaID > ultimaVista);
 
-            // Insertar separador SOLO antes de la primera novedad nueva
-            if (esNueva && !separadorInsertado) {
+            // Insertar separador justo antes de las novedades viejas
+            if (!esNueva && !separadorInsertado) {
               const separador = document.createElement("div");
               separador.classList.add("news-separator");
 
-              separador.innerHTML = "<span>Nuevas novedades</span>";
+              separador.innerHTML = "<span>Novedades anteriores</span>";
 
               contenedor.appendChild(separador);
 
