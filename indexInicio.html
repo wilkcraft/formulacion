@@ -957,17 +957,15 @@
               fechaDate,
               timestamp: data.timestamp?.toMillis?.() || 0,
             });
-
-            novedades.sort((a, b) => {
-              if (b.fechaDate - a.fechaDate !== 0) {
-                return b.fechaDate - a.fechaDate;
-              }
-
-              return b.timestamp - a.timestamp;
-            });
           });
 
-          novedades.sort((a, b) => b.fechaDate - a.fechaDate);
+          novedades.sort((a, b) => {
+            if (b.fechaDate - a.fechaDate !== 0) {
+              return b.fechaDate - a.fechaDate;
+            }
+
+            return b.timestamp - a.timestamp;
+          });
 
           contenedor.innerHTML = "";
 
