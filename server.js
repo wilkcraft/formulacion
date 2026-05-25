@@ -419,12 +419,12 @@ client.on("interactionCreate", async (interaction) => {
 
           opciones.push({
             name: `${data.fechaID.replace(/_/g, "/")} | ${data.text.slice(0, 40)}`,
-            value: doc.id, // ID REAL FIRESTORE
-            fecha: data.timestamp?.toDate?.() || new Date(),
+            value: doc.id,
+            fecha: data.timestamp?.toMillis?.() || 0,
           });
         });
 
-        // ordenar por fecha descendente (más nueva primero)
+        // ordenar por timestamp descendente
         opciones.sort((a, b) => b.fecha - a.fecha);
 
         // filtrar según lo escrito
