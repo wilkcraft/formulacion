@@ -10,7 +10,6 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <style>
-      /* Añade estos estilos al bloque <style> existente */
       input[type="text"] {
         width: calc(100% - 20px);
         max-width: 300px;
@@ -18,12 +17,12 @@
         font-size: 16px;
         border: 1px solid #ccc;
         border-radius: 5px;
-        display: block; /* Hace que el input ocupe su propia línea */
-        margin: 0 auto 20px auto; /* Centra el input y añade margen abajo */
+        display: block;
+        margin: 0 auto 20px auto;
       }
 
       button#check-button {
-        margin: 0 auto; /* Centra el botón */
+        margin: 0 auto;
         padding: 10px 20px;
         font-size: 16px;
         color: #fff;
@@ -32,7 +31,7 @@
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s ease;
-        display: block; /* Hace que el botón ocupe su propia línea */
+        display: block;
       }
       body {
         font-family: Arial, sans-serif;
@@ -153,7 +152,6 @@
         background-color: #e0a800;
       }
 
-      /* BOTÓN */
       #login-btn {
         position: fixed;
         bottom: 20px;
@@ -167,17 +165,14 @@
         transition: all 0.3s ease;
       }
 
-      /* Icono */
       #login-btn i {
         font-size: 20px;
       }
 
-      /* Hover sutil */
       #login-btn:hover {
         transform: scale(1.1);
       }
 
-      /* MODAL */
       #login-modal {
         position: fixed;
         bottom: 80px;
@@ -191,7 +186,6 @@
         z-index: 998;
       }
 
-      /* IFRAME */
       #login-modal iframe {
         width: 100%;
         height: 100%;
@@ -199,7 +193,6 @@
         border-radius: 12px;
       }
 
-      /* MODO OSCURO AUTOMÁTICO */
       @media (prefers-color-scheme: dark) {
         #login-btn {
           color: #fff;
@@ -207,7 +200,6 @@
         }
       }
 
-      /* MODO CLARO */
       @media (prefers-color-scheme: light) {
         #login-btn {
           color: #000;
@@ -234,7 +226,6 @@
           font-size: 20px;
         }
 
-        /* Mejora UX táctil */
         button {
           touch-action: manipulation;
         }
@@ -260,12 +251,10 @@
           color: #e0e0e0;
         }
 
-        /* RELOJ MÁS CLARO */
         .timer {
           color: #cfcfcf;
         }
 
-        /* RESPUESTAS MÁS VISIBLES */
         .correct-answers {
           color: #d8d8d8;
         }
@@ -343,12 +332,10 @@
     </div>
     <div id="all-answers-container" style="display: none"></div>
 
-    <!-- BOTÓN LOGIN -->
     <button id="login-btn">
       <i class="fas fa-right-to-bracket login-icon"></i>
     </button>
 
-    <!-- MODAL -->
     <div id="login-modal">
       <iframe src="../formOr/visor.html"></iframe>
     </div>
@@ -395,7 +382,6 @@
         .filter(Boolean)
         .sort(() => 0.5 - Math.random());
 
-      // Pregunta extra aleatoria para llegar a 14
       const extraPools = [
         ...alcanos,
         ...alquenosAlquinos,
@@ -435,8 +421,9 @@
         timerInterval = setInterval(() => {
           secondsElapsed++;
 
-          document.getElementById("timer").textContent =
-            `Tiempo: ${formatTime(secondsElapsed)}`;
+          document.getElementById("timer").textContent = `Tiempo: ${formatTime(
+            secondsElapsed,
+          )}`;
         }, 1000);
       }
 
@@ -731,22 +718,17 @@
           modal.style.display === "block" ? "none" : "block";
       });
 
-      // CONTROLES DE TECLADO
       document.addEventListener("keydown", (e) => {
         const answerInput = document.getElementById("answer");
 
-        // ENTER = corregir
         if (e.key === "Enter") {
-          // Evita enviar formularios o comportamientos raros
           e.preventDefault();
 
-          // Solo corrige si el input está habilitado
           if (!answerInput.disabled) {
             checkAnswer();
           }
         }
 
-        // FLECHA IZQUIERDA = anterior
         if (e.key === "ArrowLeft") {
           if (currentIndex > 0) {
             currentIndex--;
@@ -754,7 +736,6 @@
           }
         }
 
-        // FLECHA DERECHA = siguiente
         if (e.key === "ArrowRight") {
           if (currentIndex < 9) {
             currentIndex++;

@@ -26,7 +26,6 @@
         text-align: center;
       }
 
-      /* 🔹 MENU */
       #menu {
         display: flex;
         justify-content: center;
@@ -52,7 +51,6 @@
         background: #28a745;
       }
 
-      /* 🔹 TABLA */
       table {
         width: 100%;
         border-collapse: collapse;
@@ -76,7 +74,6 @@
         font-weight: bold;
       }
 
-      /* 🔹 RESPUESTAS CENTRADAS */
       .answers {
         display: flex;
         flex-wrap: wrap;
@@ -116,7 +113,6 @@
         background: #dc3545;
       }
 
-      /* 🔹 BANNER */
       #save-banner {
         position: fixed;
         top: 20px;
@@ -135,7 +131,6 @@
         transform: translateY(0);
       }
 
-      /* 🔐 LOGIN BONITO */
       .login-screen {
         display: flex;
         justify-content: center;
@@ -167,7 +162,6 @@
         box-sizing: border-box;
       }
 
-      /* animación */
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -179,7 +173,6 @@
         }
       }
 
-      /* 🔔 POPUP */
       .popup {
         position: fixed;
         bottom: 20px;
@@ -195,7 +188,6 @@
         font-size: 14px;
       }
 
-      /* tipos */
       .popup.success {
         background: #28a745;
       }
@@ -239,7 +231,6 @@
         display: block;
       }
 
-      /* 🔹 BARRA SUPERIOR */
       .top-nav {
         position: sticky;
         top: 0;
@@ -284,7 +275,6 @@
         background: linear-gradient(135deg, #28a745, #1d7d34);
       }
 
-      /* 🔹 RESPONSIVE */
       @media (max-width: 600px) {
         table,
         thead,
@@ -328,7 +318,6 @@
         }
       }
 
-      /* 🌙 MODO OSCURO */
       @media (prefers-color-scheme: dark) {
         body {
           background: #121212;
@@ -372,7 +361,6 @@
           background: #222;
         }
 
-        /* 🔹 NAV DARK MODE */
         .top-nav {
           background: rgba(20, 20, 20, 0.92);
           border-bottom: 1px solid #333;
@@ -386,7 +374,6 @@
   </head>
 
   <body>
-    <!-- 🔹 BARRA DE NAVEGACIÓN -->
     <div class="top-nav">
       <button
         class="nav-btn active-nav"
@@ -582,7 +569,6 @@
         const newPassword = document.getElementById("newPass").value;
         const confirmPassword = document.getElementById("confirmPass").value;
 
-        // ❌ misma contraseña
         if (currentPassword === newPassword) {
           showPopup(
             "La nueva contraseña no puede ser igual a la actual",
@@ -591,13 +577,11 @@
           return;
         }
 
-        // ❌ mínimo 6 caracteres
         if (newPassword.length < 6) {
           showPopup("La contraseña debe tener al menos 6 caracteres", "error");
           return;
         }
 
-        // ❌ confirmación
         if (newPassword !== confirmPassword) {
           showPopup("Las contraseñas no coinciden", "error");
           return;
@@ -671,7 +655,6 @@
         });
         data = await res.json();
 
-        // 🔥 guardamos estado original
         originalData = JSON.stringify(data);
         document.getElementById("add-formula-section").style.display =
           isTestUser ? "none" : "block";
@@ -787,13 +770,11 @@
         clearTimeout(saveTimeout);
 
         saveTimeout = setTimeout(async () => {
-          // ❌ NO guardar si no hay cambios
           if (!hasChanges()) {
             console.log("No guardado: sin cambios");
             return;
           }
 
-          // 🔥 limpiar datos (quitar vacíos)
           const cleanedData = data.map((row) => ({
             ...row,
             answers: row.answers.filter((ans) => ans.trim() !== ""),
@@ -808,7 +789,6 @@
             body: JSON.stringify(cleanedData),
           });
 
-          // 🔥 actualizar estado base
           originalData = JSON.stringify(cleanedData);
 
           showBanner();
@@ -880,7 +860,6 @@
           return;
         }
 
-        // evitar duplicados
         if (data.some((f) => f.formula === formula)) {
           showPopup("La fórmula ya existe", "error");
           return;
@@ -891,7 +870,6 @@
           answers: [answer],
         });
 
-        // limpiar inputs
         formulaInput.value = "";
         answerInput.value = "";
 

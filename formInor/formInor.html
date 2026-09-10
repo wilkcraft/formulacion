@@ -168,6 +168,55 @@
         background-color: #5a32a3;
       }
 
+      .red-button {
+        display: inline-block;
+        position: relative;
+        height: 3.5em;
+        padding: 0 1em;
+        border: 3px ridge #dc3545;
+        outline: none;
+        background-color: transparent;
+        color: black;
+        transition: 1s;
+        border-radius: 0.3em;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        white-space: nowrap;
+        margin-top: 1px;
+      }
+
+      .red-button::after,
+      .red-button::before {
+        content: "";
+        position: absolute;
+        width: 95%;
+        height: 40%;
+        background-color: white;
+        transition: 0.5s;
+        transform-origin: center;
+      }
+
+      .red-button::after {
+        top: -10px;
+        left: 3%;
+      }
+
+      .red-button::before {
+        top: 80%;
+        left: 3%;
+      }
+
+      .red-button:hover::before,
+      .red-button:hover::after {
+        transform: scale(0);
+      }
+
+      .red-button:hover {
+        box-shadow: inset 0px 0px 15px #dc3545;
+        background-color: rgba(220, 53, 69, 0.1);
+      }
+
       @media (max-width: 768px) {
         body {
           height: 100dvh;
@@ -302,6 +351,14 @@
           box-shadow: inset 0px 0px 15px #ffc107;
           background-color: rgba(161, 128, 43, 0.1);
         }
+        .red-button {
+          color: #e0e0e0;
+        }
+
+        .red-button::after,
+        .red-button::before {
+          background-color: #1e1e1e;
+        }
       }
     </style>
   </head>
@@ -313,15 +370,26 @@
     <div class="container">
       <h1>Opciones del Test</h1>
       <div class="button-container">
-        <button class="btn" onclick="goTo('hidruros.html')">Hidruros</button>
-        <button class="btn" onclick="goTo('oxidos.html')">Óxidos</button>
-        <button class="btn" onclick="goTo('hidroxidos.html')">
+        <button class="btn" onclick="goTo('test.html?tipo=hidruros')">
+          Hidruros
+        </button>
+        <button class="btn" onclick="goTo('test.html?tipo=oxidos')">
+          Óxidos
+        </button>
+        <button class="btn" onclick="goTo('test.html?tipo=hidroxidos')">
           Hidróxidos
         </button>
-        <button class="btn" onclick="goTo('oxoacidos.html')">Oxoácidos</button>
-        <button class="btn" onclick="goTo('oxisales.html')">Oxisales</button>
+        <button class="btn" onclick="goTo('test.html?tipo=oxoacidos')">
+          Oxoácidos
+        </button>
+        <button class="btn" onclick="goTo('test.html?tipo=oxisales')">
+          Oxisales
+        </button>
       </div>
       <div class="button-wrapper">
+        <button class="red-button" onclick="goTo('general.html')">
+          General
+        </button>
         <button class="green-button" onclick="goTo('../indiceTest.html')">
           Ir al Indice
         </button>

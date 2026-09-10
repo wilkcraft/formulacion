@@ -3,14 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aminas, amidas y grupos nitro</title>
+    <title>General Inorgánica</title>
     <link rel="icon" href="../media/quimic.png" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <style>
-      /* Añade estos estilos al bloque <style> existente */
       input[type="text"] {
         width: calc(100% - 20px);
         max-width: 300px;
@@ -18,12 +17,12 @@
         font-size: 16px;
         border: 1px solid #ccc;
         border-radius: 5px;
-        display: block; /* Hace que el input ocupe su propia línea */
-        margin: 0 auto 20px auto; /* Centra el input y añade margen abajo */
+        display: block;
+        margin: 0 auto 20px auto;
       }
 
       button#check-button {
-        margin: 0 auto; /* Centra el botón */
+        margin: 0 auto;
         padding: 10px 20px;
         font-size: 16px;
         color: #fff;
@@ -32,7 +31,7 @@
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s ease;
-        display: block; /* Hace que el botón ocupe su propia línea */
+        display: block;
       }
       body {
         font-family: Arial, sans-serif;
@@ -153,7 +152,6 @@
         background-color: #e0a800;
       }
 
-      /* BOTÓN */
       #login-btn {
         position: fixed;
         bottom: 20px;
@@ -167,17 +165,14 @@
         transition: all 0.3s ease;
       }
 
-      /* Icono */
       #login-btn i {
         font-size: 20px;
       }
 
-      /* Hover sutil */
       #login-btn:hover {
         transform: scale(1.1);
       }
 
-      /* MODAL */
       #login-modal {
         position: fixed;
         bottom: 80px;
@@ -191,7 +186,6 @@
         z-index: 998;
       }
 
-      /* IFRAME */
       #login-modal iframe {
         width: 100%;
         height: 100%;
@@ -199,7 +193,6 @@
         border-radius: 12px;
       }
 
-      /* MODO OSCURO AUTOMÁTICO */
       @media (prefers-color-scheme: dark) {
         #login-btn {
           color: #fff;
@@ -207,7 +200,6 @@
         }
       }
 
-      /* MODO CLARO */
       @media (prefers-color-scheme: light) {
         #login-btn {
           color: #000;
@@ -234,7 +226,6 @@
           font-size: 20px;
         }
 
-        /* Mejora UX táctil */
         button {
           touch-action: manipulation;
         }
@@ -260,12 +251,10 @@
           color: #e0e0e0;
         }
 
-        /* RELOJ MÁS CLARO */
         .timer {
           color: #cfcfcf;
         }
 
-        /* RESPUESTAS MÁS VISIBLES */
         .correct-answers {
           color: #d8d8d8;
         }
@@ -324,7 +313,7 @@
   </head>
   <body>
     <div class="container" id="test-container">
-      <h1>Aminas, amidas y grupos nitro</h1>
+      <h1>General Inorgánica</h1>
       <div class="timer" id="timer">Tiempo: 0:00</div>
       <div class="formula" id="formula"></div>
       <input type="text" id="answer" placeholder="Escribe tu respuesta aquí" />
@@ -343,38 +332,38 @@
     </div>
     <div id="all-answers-container" style="display: none"></div>
 
-    <!-- BOTÓN LOGIN -->
     <button id="login-btn">
       <i class="fas fa-right-to-bracket login-icon"></i>
     </button>
 
-    <!-- MODAL -->
     <div id="login-modal">
-      <iframe src="../formOr/visor.html"></iframe>
+      <iframe src="../formInor/visor.html"></iframe>
     </div>
 
     <script type="module">
-      import { formulas } from "../formulas/formOr/aminasAmidasNitrilosNitro.js";
+      import { formulas as hidruros } from "../formulas/formInor/hidruros.js";
+      import { formulas as oxidos } from "../formulas/formInor/oxidos.js";
+      import { formulas as hidroxidos } from "../formulas/formInor/hidroxidos.js";
+      import { formulas as oxoacidos } from "../formulas/formInor/oxoacidos.js";
+      import { formulas as oxisales } from "../formulas/formInor/oxisales.js";
 
-      const totalQuestions = formulas.length;
-      const aminas = formulas.filter((f) => f.tipo === "amina");
-      const amidas = formulas.filter((f) => f.tipo === "amida");
-      const nitrilos = formulas.filter((f) => f.tipo === "nitrilo");
-      const nitro = formulas.filter((f) => f.tipo === "nitro");
+      function pickRandom(array, n) {
+        return array
+          .slice()
+          .sort(() => 0.5 - Math.random())
+          .slice(0, n);
+      }
 
-      const TOTAL_PREGUNTAS = 9;
-      const randomAminas = aminas.sort(() => 0.5 - Math.random()).slice(0, 3);
-      const randomAmidas = amidas.sort(() => 0.5 - Math.random()).slice(0, 3);
-      const grupoNitroNitrilo = [...nitro, ...nitrilos];
-      const randomNitroNitrilo = grupoNitroNitrilo
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 3);
-
-      let selectedFormulas = [
-        ...randomAminas,
-        ...randomAmidas,
-        ...randomNitroNitrilo,
+      const selectedFormulas = [
+        ...pickRandom(hidruros, 2),
+        ...pickRandom(oxidos, 2),
+        ...pickRandom(hidroxidos, 2),
+        ...pickRandom(oxoacidos, 2),
+        ...pickRandom(oxisales, 2),
       ].sort(() => 0.5 - Math.random());
+
+      const totalQuestions = selectedFormulas.length;
+
       let userAnswers = Array(totalQuestions).fill("");
       let answerStates = Array(totalQuestions).fill(null);
       let displayedAnswers = Array(totalQuestions).fill("");
@@ -385,12 +374,14 @@
       function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const secondsLeft = seconds % 60;
+
         return `${minutes}:${secondsLeft.toString().padStart(2, "0")}`;
       }
 
       function startTimer() {
         timerInterval = setInterval(() => {
           secondsElapsed++;
+
           document.getElementById("timer").textContent = `Tiempo: ${formatTime(
             secondsElapsed,
           )}`;
@@ -411,28 +402,36 @@
         const navigation = document.getElementById("navigation");
         const progress = document.getElementById("progress");
 
-        if (currentIndex < 10) {
-          // Mostramos la pregunta normal
+        if (currentIndex < totalQuestions) {
           const currentFormula = selectedFormulas[currentIndex];
           const userAnswer = userAnswers[currentIndex];
 
+          if (!currentFormula) {
+            console.error("Pregunta inválida en índice:", currentIndex);
+            return;
+          }
+
           document.getElementById("formula").innerHTML = currentFormula.formula;
-          progress.textContent = `${currentIndex + 1}/10`;
+
+          progress.textContent = `${currentIndex + 1}/${totalQuestions}`;
+
           answerInput.value = userAnswer || "";
           answerInput.disabled = answerStates[currentIndex] !== null;
+
           checkButton.disabled = answerStates[currentIndex] !== null;
 
-          // Asegurarse de que los elementos son visibles
           answerInput.style.display = "block";
           checkButton.style.display = "block";
 
           if (answerStates[currentIndex] === true) {
             result.textContent = "¡Correcto!";
             result.style.color = "#28a745";
+
             correctAnswers.innerHTML = displayedAnswers[currentIndex];
           } else if (answerStates[currentIndex] === false) {
             result.textContent = "Incorrecto.";
             result.style.color = "#dc3545";
+
             correctAnswers.innerHTML = displayedAnswers[currentIndex];
           } else {
             result.textContent = "";
@@ -452,10 +451,13 @@
 
           document.getElementById("formula").innerHTML =
             `¡Has terminado el test!<br><br>
-      <span style="font-size: 18px;">Respuestas correctas: ${correctCount}/10</span>`;
+        <span style="font-size: 18px;">
+          Respuestas correctas: ${correctCount}/${totalQuestions}
+        </span>`;
 
           result.textContent = "";
           correctAnswers.innerHTML = "";
+
           answerInput.style.display = "none";
           checkButton.style.display = "none";
           navigation.style.display = "none";
@@ -463,22 +465,34 @@
           finishButton.style.display = "block";
           allAnswersButton.style.display = "block";
         }
+
+        if (currentIndex >= totalQuestions) {
+          finishButton.style.display = "block";
+          allAnswersButton.style.display = "block";
+        } else {
+          allAnswersButton.style.display = "none";
+        }
       }
 
       function checkAnswer() {
         const answerInput = document.getElementById("answer");
+
         const userAnswer = normalize(answerInput.value.trim());
+
         const validAnswers =
           selectedFormulas[currentIndex].answers.map(normalize);
+
         const correctAnswersElement =
           document.getElementById("correct-answers");
 
         answerStates[currentIndex] = validAnswers.includes(userAnswer);
+
         document.getElementById("result").textContent = answerStates[
           currentIndex
         ]
           ? "¡Correcto!"
           : "Incorrecto.";
+
         document.getElementById("result").style.color = answerStates[
           currentIndex
         ]
@@ -488,98 +502,137 @@
         const answersHTML = selectedFormulas[currentIndex].answers
           .map((answer) => `<p>${answer}</p>`)
           .join("");
+
         correctAnswersElement.innerHTML = `<h3>Respuestas correctas:</h3>${answersHTML}`;
+
         displayedAnswers[currentIndex] =
           `<h3>Respuestas correctas:</h3>${answersHTML}`;
 
         userAnswers[currentIndex] = answerInput.value.trim();
+
         answerInput.disabled = true;
+
         document.getElementById("check-button").disabled = true;
       }
 
       function normalize(text) {
-        return (
-          text
-            .toLowerCase()
-
-            // quitar tildes
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-
-            // ===== SUBÍNDICES → números normales =====
-            .replace(/₀/g, "0")
-            .replace(/₁/g, "1")
-            .replace(/₂/g, "2")
-            .replace(/₃/g, "3")
-            .replace(/₄/g, "4")
-            .replace(/₅/g, "5")
-            .replace(/₆/g, "6")
-            .replace(/₇/g, "7")
-            .replace(/₈/g, "8")
-            .replace(/₉/g, "9")
-
-            // ===== SUPERÍNDICES → números normales =====
-            .replace(/⁰/g, "0")
-            .replace(/¹/g, "1")
-            .replace(/²/g, "2")
-            .replace(/³/g, "3")
-            .replace(/⁴/g, "4")
-            .replace(/⁵/g, "5")
-            .replace(/⁶/g, "6")
-            .replace(/⁷/g, "7")
-            .replace(/⁸/g, "8")
-            .replace(/⁹/g, "9")
-
-            // quitar símbolos ^
-            .replace(/\^/g, "")
-
-            // quitar espacios
-            .replace(/\s+/g, "")
-
-            .trim()
-        );
+        return text
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/₀/g, "0")
+          .replace(/₁/g, "1")
+          .replace(/₂/g, "2")
+          .replace(/₃/g, "3")
+          .replace(/₄/g, "4")
+          .replace(/₅/g, "5")
+          .replace(/₆/g, "6")
+          .replace(/₇/g, "7")
+          .replace(/₈/g, "8")
+          .replace(/₉/g, "9")
+          .replace(/⁰/g, "0")
+          .replace(/¹/g, "1")
+          .replace(/²/g, "2")
+          .replace(/³/g, "3")
+          .replace(/⁴/g, "4")
+          .replace(/⁵/g, "5")
+          .replace(/⁶/g, "6")
+          .replace(/⁷/g, "7")
+          .replace(/⁸/g, "8")
+          .replace(/⁹/g, "9")
+          .replace(/\^/g, "")
+          .replace(/\s+/g, "")
+          .trim();
       }
 
       function showAllAnswers() {
         const answersContainer = document.getElementById(
           "all-answers-container",
         );
+
         answersContainer.innerHTML = `
       <div class="container">
-          <h2 style="margin-bottom: 20px;">Todas las Respuestas</h2>
-          <div style="display: flex; overflow-x: auto; gap: 20px; padding: 10px;">
-              ${selectedFormulas
-                .map(
-                  (formula, index) => `
-                  <div style="min-width: 250px; border: 1px solid #ccc; padding: 15px; border-radius: 10px; background-color: #f9f9f9; flex-shrink: 0;">
-                      <strong>${index + 1}. ${formula.formula}</strong>
-                      <p style="margin-top: 10px;">Respuestas:</p>
-                      <ul style="list-style: none; padding: 0;">
-                          ${formula.answers
-                            .map(
-                              (answer) =>
-                                `<li style="margin-bottom: 5px; padding: 5px; background-color: #e9ecef; border-radius: 5px;">${answer}</li>`,
-                            )
-                            .join("")}
-                      </ul>
-                  </div>
-              `,
-                )
-                .join("")}
-          </div>
-          <button id="back-to-test-button" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer;">Volver al Test</button>
-      </div>
-  `;
+        <h2 style="margin-bottom: 20px;">
+          Todas las Respuestas
+        </h2>
 
-        // Ocultamos el contenedor del test y mostramos las respuestas
+        <div style="
+          display: flex;
+          overflow-x: auto;
+          gap: 20px;
+          padding: 10px;
+        ">
+          ${selectedFormulas
+            .map(
+              (formula, index) => `
+                <div style="
+                  min-width: 250px;
+                  border: 1px solid #ccc;
+                  padding: 15px;
+                  border-radius: 10px;
+                  background-color: #f9f9f9;
+                  flex-shrink: 0;
+                ">
+                  <strong>
+                    ${index + 1}. ${formula.formula}
+                  </strong>
+
+                  <p style="margin-top: 10px;">
+                    Respuestas:
+                  </p>
+
+                  <ul style="
+                    list-style: none;
+                    padding: 0;
+                  ">
+                    ${formula.answers
+                      .map(
+                        (answer) => `
+                          <li style="
+                            margin-bottom: 5px;
+                            padding: 5px;
+                            background-color: #e9ecef;
+                            border-radius: 5px;
+                          ">
+                            ${answer}
+                          </li>
+                        `,
+                      )
+                      .join("")}
+                  </ul>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <button
+          id="back-to-test-button"
+          style="
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          "
+        >
+          Volver al Test
+        </button>
+      </div>
+    `;
+
         document.getElementById("test-container").style.display = "none";
+
         answersContainer.style.display = "block";
 
-        // Evento para volver al test sin perder el progreso
         document
           .getElementById("back-to-test-button")
           .addEventListener("click", () => {
             answersContainer.style.display = "none";
+
             document.getElementById("test-container").style.display = "block";
           });
       }
@@ -587,25 +640,29 @@
       document
         .getElementById("check-button")
         .addEventListener("click", checkAnswer);
+
       document.getElementById("next-button").addEventListener("click", () => {
-        if (currentIndex < 9) {
+        if (currentIndex < totalQuestions - 1) {
           currentIndex++;
           updateUI();
-        } else {
-          // Estamos en la pregunta 10 (índice 9) y queremos ir a la pantalla final
-          currentIndex = 10; // Establecemos el índice a un valor mayor que el número de preguntas
-          updateUI(); // Esto mostrará la pantalla final
+        } else if (currentIndex === totalQuestions - 1) {
+          currentIndex++;
+          updateUI();
         }
       });
+
       document.getElementById("prev-button").addEventListener("click", () => {
         if (currentIndex > 0) {
           currentIndex--;
         }
+
         updateUI();
       });
+
       document.getElementById("finish-button").addEventListener("click", () => {
-        window.location.href = "formOr.html";
+        window.location.href = "formInor.html";
       });
+
       document
         .getElementById("all-answers-button")
         .addEventListener("click", showAllAnswers);
@@ -614,29 +671,21 @@
       const modal = document.getElementById("login-modal");
 
       btn.addEventListener("click", () => {
-        if (modal.style.display === "block") {
-          modal.style.display = "none";
-        } else {
-          modal.style.display = "block";
-        }
+        modal.style.display =
+          modal.style.display === "block" ? "none" : "block";
       });
 
-      // CONTROLES DE TECLADO
       document.addEventListener("keydown", (e) => {
         const answerInput = document.getElementById("answer");
 
-        // ENTER = corregir
         if (e.key === "Enter") {
-          // Evita enviar formularios o comportamientos raros
           e.preventDefault();
 
-          // Solo corrige si el input está habilitado
           if (!answerInput.disabled) {
             checkAnswer();
           }
         }
 
-        // FLECHA IZQUIERDA = anterior
         if (e.key === "ArrowLeft") {
           if (currentIndex > 0) {
             currentIndex--;
@@ -644,13 +693,12 @@
           }
         }
 
-        // FLECHA DERECHA = siguiente
         if (e.key === "ArrowRight") {
-          if (currentIndex < 9) {
+          if (currentIndex < totalQuestions - 1) {
             currentIndex++;
             updateUI();
-          } else if (currentIndex === 9) {
-            currentIndex = 10;
+          } else if (currentIndex === totalQuestions - 1) {
+            currentIndex = totalQuestions;
             updateUI();
           }
         }

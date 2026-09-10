@@ -385,25 +385,34 @@
     <div class="container">
       <h1>Opciones del Test</h1>
       <div class="button-container">
-        <button class="btn" onclick="goTo('alcanos.html')">Alcanos</button>
-        <button class="btn" onclick="goTo('alquenosAlquinos.html')">
+        <button class="btn" onclick="goTo('test.html?tipo=alcanos')">
+          Alcanos
+        </button>
+        <button class="btn" onclick="goTo('test.html?tipo=alquenosAlquinos')">
           Alquenos y alquinos
         </button>
-        <button class="btn" onclick="goTo('hidrocarburosRamificados.html')">
+        <button
+          class="btn"
+          onclick="goTo('test.html?tipo=hidrocarburosRamificados')"
+        >
           Hidrocarburos ramificados
         </button>
-        <button class="btn" onclick="goTo('bencenos.html')">Bencenos</button
+        <button class="btn" onclick="goTo('test.html?tipo=bencenos')">
+          Bencenos</button
         ><br />
-        <button class="btn" onclick="goTo('alcoholesEteres.html')">
+        <button class="btn" onclick="goTo('test.html?tipo=alcoholesEteres')">
           Alcoholes y éteres
         </button>
-        <button class="btn" onclick="goTo('aldehidosCetonas.html')">
+        <button class="btn" onclick="goTo('test.html?tipo=aldehidosCetonas')">
           Aldehídos y cetonas
         </button>
-        <button class="btn" onclick="goTo('acidosEsteres.html')">
+        <button class="btn" onclick="goTo('test.html?tipo=acidosEsteres')">
           Ácidos y ésteres
         </button>
-        <button class="btn" onclick="goTo('aminasAmidasNitrilosNitro.html')">
+        <button
+          class="btn"
+          onclick="goTo('test.html?tipo=aminasAmidasNitrilosNitro')"
+        >
           Aminas, amidas y grupos nitro
         </button>
       </div>
@@ -416,7 +425,6 @@
       </button>
     </div>
     <script>
-      // Función para redirigir a otra página
       function goTo(page) {
         window.location.href = page;
       }

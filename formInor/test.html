@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Óxidos</title>
+    <title id="page-title">Test</title>
     <link rel="icon" href="../media/quimic.png" />
     <link
       rel="stylesheet"
@@ -45,6 +45,8 @@
         font-size: 16px;
         border: 1px solid #ccc;
         border-radius: 5px;
+        display: block;
+        margin: 0 auto 20px auto;
       }
       input[disabled] {
         background-color: #e9ecef;
@@ -63,6 +65,10 @@
       }
       button:hover {
         background-color: #0056b3;
+      }
+      button#check-button {
+        margin: 0 auto;
+        display: block;
       }
       .result {
         margin-top: 20px;
@@ -128,32 +134,7 @@
       .all-answers-button:hover {
         background-color: #e0a800;
       }
-      /* Añade estos estilos al bloque <style> existente */
-      input[type="text"] {
-        width: calc(100% - 20px);
-        max-width: 300px;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        display: block; /* Hace que el input ocupe su propia línea */
-        margin: 0 auto 20px auto; /* Centra el input y añade margen abajo */
-      }
 
-      button#check-button {
-        margin: 0 auto; /* Centra el botón */
-        padding: 10px 20px;
-        font-size: 16px;
-        color: #fff;
-        background-color: #007bff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        display: block; /* Hace que el botón ocupe su propia línea */
-      }
-
-      /* BOTÓN */
       #login-btn {
         position: fixed;
         bottom: 20px;
@@ -166,18 +147,12 @@
         z-index: 999;
         transition: all 0.3s ease;
       }
-
-      /* Icono */
       #login-btn i {
         font-size: 20px;
       }
-
-      /* Hover sutil */
       #login-btn:hover {
         transform: scale(1.1);
       }
-
-      /* MODAL */
       #login-modal {
         position: fixed;
         bottom: 80px;
@@ -190,8 +165,6 @@
         display: none;
         z-index: 998;
       }
-
-      /* IFRAME */
       #login-modal iframe {
         width: 100%;
         height: 100%;
@@ -199,15 +172,12 @@
         border-radius: 12px;
       }
 
-      /* MODO OSCURO AUTOMÁTICO */
       @media (prefers-color-scheme: dark) {
         #login-btn {
           color: #fff;
           border-color: #fff;
         }
       }
-
-      /* MODO CLARO */
       @media (prefers-color-scheme: light) {
         #login-btn {
           color: #000;
@@ -222,23 +192,18 @@
           align-items: center;
           justify-content: center;
         }
-
         .container {
           width: 100%;
           max-width: 100%;
           padding: 15px;
           border-radius: 8px;
         }
-
         h1 {
           font-size: 20px;
         }
-
-        /* Mejora UX táctil */
         button {
           touch-action: manipulation;
         }
-
         #login-btn,
         #login-modal {
           display: none !important;
@@ -250,43 +215,30 @@
           background-color: #121212;
           color: #e0e0e0;
         }
-
         .container {
           background-color: #1e1e1e;
           box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
         }
-
         h1 {
           color: #e0e0e0;
         }
-
-        /* RELOJ MÁS CLARO */
         .timer {
           color: #cfcfcf;
         }
-
-        /* RESPUESTAS MÁS VISIBLES */
         .correct-answers {
           color: #d8d8d8;
         }
-
-        .correct-answers h3 {
-          color: #ffffff;
-        }
-
+        .correct-answers h3,
         .correct-answers strong {
           color: #ffffff;
         }
-
         .correct-answers p {
           color: #d0d0d0;
         }
-
         #all-answers-container {
           background-color: #121212 !important;
           color: #e0e0e0 !important;
         }
-
         #all-answers-container .container,
         #all-answers-container div,
         #all-answers-container li {
@@ -294,24 +246,20 @@
           border: 1px solid #3c3c3c !important;
           color: #e0e0e0 !important;
         }
-
         #back-to-test-button {
           background-color: #007bff !important;
           color: #fff !important;
           border: none !important;
         }
-
         #back-to-test-button:hover {
           background-color: #0056b3 !important;
         }
-
         #all-answers-container strong,
         #all-answers-container h2,
         #all-answers-container p,
         #all-answers-container span {
           color: #e0e0e0 !important;
         }
-
         #all-answers-container input[type="text"],
         #all-answers-container input[type="button"],
         #all-answers-container button {
@@ -324,7 +272,7 @@
   </head>
   <body>
     <div class="container" id="test-container">
-      <h1>Óxidos</h1>
+      <h1 id="titulo">Cargando...</h1>
       <div class="timer" id="timer">Tiempo: 0:00</div>
       <div class="formula" id="formula"></div>
       <input type="text" id="answer" placeholder="Escribe tu respuesta aquí" />
@@ -343,23 +291,58 @@
     </div>
     <div id="all-answers-container" style="display: none"></div>
 
-    <!-- BOTÓN LOGIN -->
     <button id="login-btn">
       <i class="fas fa-right-to-bracket login-icon"></i>
     </button>
-
-    <!-- MODAL -->
-    <div id="login-modal">
-      <iframe src="../formInor/visor.html"></iframe>
-    </div>
+    <div id="login-modal"><iframe src="../formInor/visor.html"></iframe></div>
 
     <script type="module">
-      import { formulas } from "../formulas/formInor/oxidos.js";
+      const CONFIG = {
+        hidruros: {
+          module: "../formulas/formInor/hidruros.js",
+          title: "Hidruros",
+          headers: ["Sistemática:"],
+        },
+        oxidos: {
+          module: "../formulas/formInor/oxidos.js",
+          title: "Óxidos",
+          headers: ["Sistemática:"],
+        },
+        hidroxidos: {
+          module: "../formulas/formInor/hidroxidos.js",
+          title: "Hidróxidos",
+          headers: ["Sistemática:"],
+        },
+        oxoacidos: {
+          module: "../formulas/formInor/oxoacidos.js",
+          title: "Oxoácidos",
+          headers: ["Tradicional:", "Adición:", "Hidrógeno:"],
+        },
+        oxisales: {
+          module: "../formulas/formInor/oxisales.js",
+          title: "Oxisales",
+          headers: ["Sistemática:"],
+        },
+      };
 
-      const totalQuestions = formulas.length;
+      const params = new URLSearchParams(window.location.search);
+      const tipo = params.get("tipo");
+      const cfg = CONFIG[tipo];
+
+      if (!cfg) {
+        window.location.href = "formInor.html";
+        throw new Error("Tipo de test no válido");
+      }
+
+      document.getElementById("page-title").textContent = cfg.title;
+      document.getElementById("titulo").textContent = cfg.title;
+
+      const { formulas } = await import(cfg.module);
+
+      const totalQuestions = 10;
       let selectedFormulas = formulas
         .sort(() => 0.5 - Math.random())
-        .slice(0, 10);
+        .slice(0, totalQuestions);
       let userAnswers = Array(totalQuestions).fill("");
       let answerStates = Array(totalQuestions).fill(null);
       let displayedAnswers = Array(totalQuestions).fill("");
@@ -396,18 +379,15 @@
         const navigation = document.getElementById("navigation");
         const progress = document.getElementById("progress");
 
-        if (currentIndex < 10) {
-          // Mostramos la pregunta normal
+        if (currentIndex < totalQuestions) {
           const currentFormula = selectedFormulas[currentIndex];
           const userAnswer = userAnswers[currentIndex];
 
           document.getElementById("formula").innerHTML = currentFormula.formula;
-          progress.textContent = `${currentIndex + 1}/10`;
+          progress.textContent = `${currentIndex + 1}/${totalQuestions}`;
           answerInput.value = userAnswer || "";
           answerInput.disabled = answerStates[currentIndex] !== null;
           checkButton.disabled = answerStates[currentIndex] !== null;
-
-          // Asegurarse de que los elementos son visibles
           answerInput.style.display = "block";
           checkButton.style.display = "block";
 
@@ -430,21 +410,14 @@
           allAnswersButton.style.display = "none";
         } else {
           stopTimer();
-
-          const correctCount = answerStates.filter(
-            (state) => state === true,
-          ).length;
-
+          const correctCount = answerStates.filter((s) => s === true).length;
           document.getElementById("formula").innerHTML =
-            `¡Has terminado el test!<br><br>
-      <span style="font-size: 18px;">Respuestas correctas: ${correctCount}/10</span>`;
-
+            `¡Has terminado el test!<br><br><span style="font-size: 18px;">Respuestas correctas: ${correctCount}/${totalQuestions}</span>`;
           result.textContent = "";
           correctAnswers.innerHTML = "";
           answerInput.style.display = "none";
           checkButton.style.display = "none";
           navigation.style.display = "none";
-
           finishButton.style.display = "block";
           allAnswersButton.style.display = "block";
         }
@@ -470,7 +443,7 @@
           ? "#28a745"
           : "#dc3545";
 
-        const headers = ["Sistemática:"];
+        const headers = cfg.headers;
         const answersHTML = selectedFormulas[currentIndex].answers
           .map(
             (answer, index) =>
@@ -487,86 +460,70 @@
       }
 
       function normalize(text) {
-        return (
-          text
-            .toLowerCase()
-
-            // quitar tildes
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-
-            // ===== SUBÍNDICES → números normales =====
-            .replace(/₀/g, "0")
-            .replace(/₁/g, "1")
-            .replace(/₂/g, "2")
-            .replace(/₃/g, "3")
-            .replace(/₄/g, "4")
-            .replace(/₅/g, "5")
-            .replace(/₆/g, "6")
-            .replace(/₇/g, "7")
-            .replace(/₈/g, "8")
-            .replace(/₉/g, "9")
-
-            // ===== SUPERÍNDICES → números normales =====
-            .replace(/⁰/g, "0")
-            .replace(/¹/g, "1")
-            .replace(/²/g, "2")
-            .replace(/³/g, "3")
-            .replace(/⁴/g, "4")
-            .replace(/⁵/g, "5")
-            .replace(/⁶/g, "6")
-            .replace(/⁷/g, "7")
-            .replace(/⁸/g, "8")
-            .replace(/⁹/g, "9")
-
-            // quitar símbolos ^
-            .replace(/\^/g, "")
-
-            // quitar espacios
-            .replace(/\s+/g, "")
-
-            .trim()
-        );
+        return text
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/₀/g, "0")
+          .replace(/₁/g, "1")
+          .replace(/₂/g, "2")
+          .replace(/₃/g, "3")
+          .replace(/₄/g, "4")
+          .replace(/₅/g, "5")
+          .replace(/₆/g, "6")
+          .replace(/₇/g, "7")
+          .replace(/₈/g, "8")
+          .replace(/₉/g, "9")
+          .replace(/⁰/g, "0")
+          .replace(/¹/g, "1")
+          .replace(/²/g, "2")
+          .replace(/³/g, "3")
+          .replace(/⁴/g, "4")
+          .replace(/⁵/g, "5")
+          .replace(/⁶/g, "6")
+          .replace(/⁷/g, "7")
+          .replace(/⁸/g, "8")
+          .replace(/⁹/g, "9")
+          .replace(/\^/g, "")
+          .replace(/\s+/g, "")
+          .trim();
       }
 
       function showAllAnswers() {
+        const headers = cfg.headers;
         const answersContainer = document.getElementById(
           "all-answers-container",
         );
         answersContainer.innerHTML = `
-      <div class="container">
-          <h2 style="margin-bottom: 20px;">Todas las Respuestas</h2>
-          <div style="display: flex; overflow-x: auto; gap: 20px; padding: 10px;">
+          <div class="container">
+            <h2 style="margin-bottom: 20px;">Todas las Respuestas</h2>
+            <div style="display: flex; overflow-x: auto; gap: 20px; padding: 10px;">
               ${selectedFormulas
                 .map(
                   (formula, index) => `
-                  <div style="min-width: 250px; border: 1px solid #ccc; padding: 15px; border-radius: 10px; background-color: #f9f9f9; flex-shrink: 0;">
-                      <strong>${index + 1}. ${formula.formula}</strong>
-                      <p style="margin-top: 10px;">Respuestas:</p>
-                      <ul style="list-style: none; padding: 0;">
-                          ${formula.answers
-                            .map(
-                              (answer, i) => `
-      <li style="margin-bottom: 5px; padding: 5px; background-color: #e9ecef; border-radius: 5px;">
-        <strong>${["Sistemática:"][i] || ""}</strong> ${answer}
-      </li>`,
-                            )
-                            .join("")}
-                      </ul>
-                  </div>
-              `,
+                <div style="min-width: 250px; border: 1px solid #ccc; padding: 15px; border-radius: 10px; background-color: #f9f9f9; flex-shrink: 0;">
+                  <strong>${index + 1}. ${formula.formula}</strong>
+                  <p style="margin-top: 10px;">Respuestas:</p>
+                  <ul style="list-style: none; padding: 0;">
+                    ${formula.answers
+                      .map(
+                        (answer, i) => `
+                      <li style="margin-bottom: 5px; padding: 5px; background-color: #e9ecef; border-radius: 5px;">
+                        <strong>${headers[i] || ""}</strong> ${answer}
+                      </li>`,
+                      )
+                      .join("")}
+                  </ul>
+                </div>`,
                 )
                 .join("")}
-          </div>
-          <button id="back-to-test-button" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer;">Volver al Test</button>
-      </div>
-  `;
+            </div>
+            <button id="back-to-test-button" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer;">Volver al Test</button>
+          </div>`;
 
-        // Ocultamos el contenedor del test y mostramos las respuestas
         document.getElementById("test-container").style.display = "none";
         answersContainer.style.display = "block";
 
-        // Evento para volver al test sin perder el progreso
         document
           .getElementById("back-to-test-button")
           .addEventListener("click", () => {
@@ -579,19 +536,11 @@
         .getElementById("check-button")
         .addEventListener("click", checkAnswer);
       document.getElementById("next-button").addEventListener("click", () => {
-        if (currentIndex < 9) {
-          currentIndex++;
-          updateUI();
-        } else {
-          // Estamos en la pregunta 10 (índice 9) y queremos ir a la pantalla final
-          currentIndex = 10; // Establecemos el índice a un valor mayor que el número de preguntas
-          updateUI(); // Esto mostrará la pantalla final
-        }
+        currentIndex = Math.min(currentIndex + 1, totalQuestions);
+        updateUI();
       });
       document.getElementById("prev-button").addEventListener("click", () => {
-        if (currentIndex > 0) {
-          currentIndex--;
-        }
+        if (currentIndex > 0) currentIndex--;
         updateUI();
       });
       document.getElementById("finish-button").addEventListener("click", () => {
@@ -603,47 +552,24 @@
 
       const btn = document.getElementById("login-btn");
       const modal = document.getElementById("login-modal");
-
       btn.addEventListener("click", () => {
-        if (modal.style.display === "block") {
-          modal.style.display = "none";
-        } else {
-          modal.style.display = "block";
-        }
+        modal.style.display =
+          modal.style.display === "block" ? "none" : "block";
       });
 
-      // CONTROLES DE TECLADO
       document.addEventListener("keydown", (e) => {
         const answerInput = document.getElementById("answer");
-
-        // ENTER = corregir
         if (e.key === "Enter") {
-          // Evita enviar formularios o comportamientos raros
           e.preventDefault();
-
-          // Solo corrige si el input está habilitado
-          if (!answerInput.disabled) {
-            checkAnswer();
-          }
+          if (!answerInput.disabled) checkAnswer();
         }
-
-        // FLECHA IZQUIERDA = anterior
-        if (e.key === "ArrowLeft") {
-          if (currentIndex > 0) {
-            currentIndex--;
-            updateUI();
-          }
+        if (e.key === "ArrowLeft" && currentIndex > 0) {
+          currentIndex--;
+          updateUI();
         }
-
-        // FLECHA DERECHA = siguiente
-        if (e.key === "ArrowRight") {
-          if (currentIndex < 9) {
-            currentIndex++;
-            updateUI();
-          } else if (currentIndex === 9) {
-            currentIndex = 10;
-            updateUI();
-          }
+        if (e.key === "ArrowRight" && currentIndex < totalQuestions) {
+          currentIndex++;
+          updateUI();
         }
       });
 

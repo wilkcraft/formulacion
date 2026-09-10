@@ -26,7 +26,6 @@
         text-align: center;
       }
 
-      /* 🔹 MENU */
       #menu {
         display: flex;
         justify-content: center;
@@ -52,7 +51,6 @@
         background: #28a745;
       }
 
-      /* 🔹 TABLA */
       table {
         width: 100%;
         border-collapse: collapse;
@@ -76,7 +74,6 @@
         font-weight: bold;
       }
 
-      /* 🔹 RESPUESTAS CENTRADAS */
       .answers {
         display: flex;
         flex-wrap: wrap;
@@ -116,7 +113,6 @@
         background: #dc3545;
       }
 
-      /* 🔹 BANNER */
       #save-banner {
         position: fixed;
         top: 20px;
@@ -135,7 +131,6 @@
         transform: translateY(0);
       }
 
-      /* 🔐 LOGIN BONITO */
       .login-screen {
         display: flex;
         justify-content: center;
@@ -167,7 +162,6 @@
         box-sizing: border-box;
       }
 
-      /* animación */
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -179,7 +173,6 @@
         }
       }
 
-      /* 🔔 POPUP */
       .popup {
         position: fixed;
         bottom: 20px;
@@ -195,7 +188,6 @@
         font-size: 14px;
       }
 
-      /* tipos */
       .popup.success {
         background: #28a745;
       }
@@ -263,7 +255,7 @@
       }
 
       select::-ms-expand {
-        display: none; /* IE */
+        display: none;
       }
 
       .select-wrapper {
@@ -286,7 +278,6 @@
         display: block;
       }
 
-      /* 🔹 MINI TABLAS BONITAS */
       .mini-table {
         width: 100%;
         max-width: 600px;
@@ -295,7 +286,6 @@
         border-spacing: 0 14px;
       }
 
-      /* etiquetas (Z, símbolo...) */
       .mini-table th {
         text-align: center;
         font-size: 13px;
@@ -305,7 +295,6 @@
         letter-spacing: 0.3px;
       }
 
-      /* celda */
       .mini-table tr {
         margin-bottom: 10px;
       }
@@ -314,7 +303,6 @@
         padding: 6px;
       }
 
-      /* INPUTS VISIBLES (clave) */
       .mini-table input {
         width: 100%;
         padding: 10px;
@@ -327,12 +315,10 @@
         margin-top: 4px;
       }
 
-      /* hover */
       .mini-table input:hover {
         border-color: #007bff;
       }
 
-      /* focus */
       .mini-table input:focus {
         outline: none;
         border-color: #007bff;
@@ -353,19 +339,16 @@
         transition: all 0.2s ease;
       }
 
-      /* hover */
       .mini-table select:hover {
         border-color: #007bff;
       }
 
-      /* focus */
       .mini-table select:focus {
         outline: none;
         border-color: #007bff;
         box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
       }
 
-      /* 🔹 BARRA SUPERIOR */
       .top-nav {
         position: sticky;
         top: 0;
@@ -410,7 +393,6 @@
         background: linear-gradient(135deg, #28a745, #1d7d34);
       }
 
-      /* 🔹 RESPONSIVE */
       @media (max-width: 600px) {
         table,
         thead,
@@ -454,7 +436,6 @@
         }
       }
 
-      /* 🌙 MODO OSCURO */
       @media (prefers-color-scheme: dark) {
         body {
           background: #121212;
@@ -524,7 +505,6 @@
           border-color: #4da3ff;
         }
 
-        /* 🔹 NAV DARK MODE */
         .top-nav {
           background: rgba(20, 20, 20, 0.92);
           border-bottom: 1px solid #333;
@@ -538,7 +518,6 @@
   </head>
 
   <body>
-    <!-- 🔹 BARRA DE NAVEGACIÓN -->
     <div class="top-nav">
       <button
         class="nav-btn"
@@ -734,7 +713,6 @@
         const newPassword = document.getElementById("newPass").value;
         const confirmPassword = document.getElementById("confirmPass").value;
 
-        // ❌ misma contraseña
         if (currentPassword === newPassword) {
           showPopup(
             "La nueva contraseña no puede ser igual a la actual",
@@ -743,13 +721,11 @@
           return;
         }
 
-        // ❌ mínimo 6 caracteres
         if (newPassword.length < 6) {
           showPopup("La contraseña debe tener al menos 6 caracteres", "error");
           return;
         }
 
-        // ❌ confirmación
         if (newPassword !== confirmPassword) {
           showPopup("Las contraseñas no coinciden", "error");
           return;
@@ -842,7 +818,6 @@
         data.forEach((item, index) => {
           let formulaHTML = "";
 
-          // 🔥 REACTIVIDAD y LEWIS → múltiples fórmulas
           if (Array.isArray(item.formula)) {
             formulaHTML = `
         <div class="answers">
@@ -862,7 +837,6 @@
         </div>
       `;
           } else {
-            // 🧪 fórmula normal
             formulaHTML = `
         <input
           value="${item.formula}"
@@ -921,7 +895,6 @@
       }
 
       function updateAnswer(rowIndex, answerIndex, value) {
-        // 🔒 bloquear tamaño fijo
         if (
           currentType === "reactividad" &&
           data[rowIndex].answers.length !== 3
@@ -935,11 +908,9 @@
       }
 
       function updateFormula(rowIndex, formulaIndex, value) {
-        // 🔥 arrays (reactividad/lewis)
         if (Array.isArray(data[rowIndex].formula)) {
           data[rowIndex].formula[formulaIndex] = value;
         } else {
-          // 🧪 fórmula normal
           data[rowIndex].formula = value;
         }
 
@@ -974,13 +945,11 @@
         clearTimeout(saveTimeout);
 
         saveTimeout = setTimeout(async () => {
-          // ❌ NO guardar si no hay cambios
           if (!hasChanges()) {
             console.log("No guardado: sin cambios");
             return;
           }
 
-          // 🔥 limpiar datos (quitar vacíos)
           const cleanedData = data.map((row) => ({
             ...row,
             answers: row.answers.filter((ans) => ans.trim() !== ""),
@@ -995,7 +964,6 @@
             body: JSON.stringify(cleanedData),
           });
 
-          // 🔥 actualizar estado base
           originalData = JSON.stringify(cleanedData);
 
           showBanner();
@@ -1137,7 +1105,6 @@
       }
 
       function addFormula() {
-        // 🔥 REACTIVIDAD
         if (currentType === "reactividad") {
           const r1 = document.getElementById("react1").value.trim();
           const r2 = document.getElementById("react2").value.trim();
@@ -1172,7 +1139,6 @@
           return;
         }
 
-        // 🔬 LEWIS
         if (currentType === "lewis") {
           const z = document.getElementById("z").value.trim();
           const symbol = document.getElementById("symbol").value.trim();
@@ -1204,7 +1170,6 @@
           return;
         }
 
-        // 🧪 NORMAL (solo aquí usamos newFormula)
         const formulaInput = document.getElementById("newFormula");
         const answerInput = document.getElementById("newAnswer");
 
@@ -1242,7 +1207,6 @@
       }
 
       function renderInput(rowIndex, answerIndex, value) {
-        // 🔬 LEWIS → último campo dropdown
         if (currentType === "lewis" && answerIndex === 3) {
           return `
   <div class="select-wrapper">
@@ -1255,7 +1219,6 @@
 `;
         }
 
-        // 🔥 normal input
         return `
     <input
       value="${value}"
