@@ -32,6 +32,10 @@ const { EmbedBuilder } = require("discord.js");
 const app = express();
 app.use(express.json());
 
+app.get("/api/firebase-config", (req, res) => {
+  res.json({ apiKey: process.env.GOOGLE_API_KEY });
+});
+
 const USERS_PATH = path.join(__dirname, "users.json");
 const SECRET = process.env.JWT_SECRET;
 

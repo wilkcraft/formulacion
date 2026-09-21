@@ -775,22 +775,24 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
     <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyA9DYbNbj_OrTTCUJmYmpvZOSilR-SKb2s",
-        authDomain: "withelistformulacion.firebaseapp.com",
-        projectId: "withelistformulacion",
-        storageBucket: "withelistformulacion.firebasestorage.app",
-        messagingSenderId: "522972149361",
-        appId: "1:522972149361:web:0c1013a3d0e4efb4214dd0",
-        measurementId: "G-HZZ1DPCQHB",
-      };
+      let db;
 
-      const app = firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
+      const dbReady = (async () => {
+        const res = await fetch("/api/firebase-config");
+        const { apiKey } = await res.json();
 
-      const TELEGRAM_BOT_TOKEN =
-        "8021709931:AAFuw9LxKeA7H1BMspY8h6PRP_yPmx8NMj8";
-      const TELEGRAM_CHAT_ID = "8337395780";
+        firebase.initializeApp({
+          apiKey,
+          authDomain: "withelistformulacion.firebaseapp.com",
+          projectId: "withelistformulacion",
+          storageBucket: "withelistformulacion.firebasestorage.app",
+          messagingSenderId: "522972149361",
+          appId: "1:522972149361:web:0c1013a3d0e4efb4214dd0",
+          measurementId: "G-HZZ1DPCQHB",
+        });
+
+        db = firebase.firestore();
+      })();
 
       function isEmailValid(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -798,6 +800,7 @@
       }
 
       async function isWhitelisted(email) {
+        await dbReady;
         const docRef = db.collection("whitelist").doc(email.toLowerCase());
         const docSnap = await docRef.get();
         return docSnap.exists;
@@ -938,6 +941,7 @@
         contenedor.innerHTML = "<p>Cargando...</p>";
 
         try {
+          await dbReady;
           const snapshot = await db.collection("novedades").get();
 
           let novedades = [];
@@ -1050,8 +1054,8 @@
 
         await cargarNovedades();
 
-        // Guardar la última novedad reciente como vista
         try {
+          await dbReady;
           const snapshot = await db.collection("novedades").get();
 
           let novedades = [];
