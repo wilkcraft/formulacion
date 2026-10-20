@@ -1,11 +1,23 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Index Química</title>
     <link rel="icon" href="/media/indice.png" />
     <style>
+      :root {
+        --surface: #ffffff;
+        --text: #000000;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --surface: #1e1e1e;
+          --text: #e0e0e0;
+        }
+      }
+
       body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -16,6 +28,7 @@
         height: 100vh;
         background-color: #f0f4f8;
       }
+
       .container {
         position: relative;
         text-align: center;
@@ -24,28 +37,27 @@
         border-radius: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
+
       h1 {
         font-size: 24px;
         color: #333;
         margin-bottom: 20px;
       }
+
+      /* ---- Botones azules ---- */
       .btn {
         transition: all 0.3s ease-in-out;
         font-family: "Dosis", sans-serif;
         width: auto;
         height: 40px;
         border-radius: 5px;
-        background-image: linear-gradient(
-          135deg,
-          #149cea 0%,
-          #0d7ac2 100%
-        ); /* Nuevo gradiente */
+        background-image: linear-gradient(135deg, #149cea 0%, #0d7ac2 100%);
         outline: none;
         cursor: pointer;
         border: none;
         font-size: 14px;
         color: white;
-        margin: 10px; /* Añade margen entre los botones */
+        margin: 10px;
         padding: 0 20px;
       }
 
@@ -57,58 +69,138 @@
       .btn:active {
         opacity: 0.5;
       }
-      .green-button {
-        display: inline-block; /* Hace que el botón se ajuste al contenido */
+
+      /* ---- Botones verde / naranja / rojo ---- */
+      .green-button,
+      .orange-button,
+      .red-button {
+        display: inline-block;
         position: relative;
         height: 3.5em;
-        padding: 0 1em; /* Añade padding horizontal para que el texto no esté pegado a los bordes */
-        border: 3px ridge #218838;
+        padding: 0 1em;
         outline: none;
         background-color: transparent;
-        color: black;
+        color: var(--text);
         transition: 1s;
         border-radius: 0.3em;
         font-size: 16px;
         font-weight: bold;
         cursor: pointer;
-        white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+        white-space: nowrap;
         margin-top: 1px;
       }
 
-      .green-button::after {
+      .green-button {
+        border: 3px ridge #218838;
+      }
+      .orange-button {
+        border: 3px ridge #ffc107;
+      }
+      .red-button {
+        border: 3px ridge #dc3545;
+      }
+
+      .green-button::after,
+      .green-button::before,
+      .orange-button::after,
+      .orange-button::before,
+      .red-button::after,
+      .red-button::before {
         content: "";
         position: absolute;
-        top: -10px;
         left: 3%;
         width: 95%;
         height: 40%;
-        background-color: white;
+        background-color: var(--surface);
         transition: 0.5s;
         transform-origin: center;
       }
 
-      .green-button::before {
-        content: "";
-        transform-origin: center;
-        position: absolute;
+      .green-button::after,
+      .orange-button::after,
+      .red-button::after {
+        top: -10px;
+      }
+
+      .green-button::before,
+      .orange-button::before,
+      .red-button::before {
         top: 80%;
-        left: 3%;
-        width: 95%;
-        height: 40%;
-        background-color: white;
-        transition: 0.5s;
       }
 
       .green-button:hover::before,
-      .green-button:hover::after {
+      .green-button:hover::after,
+      .orange-button:hover::before,
+      .orange-button:hover::after,
+      .red-button:hover::before,
+      .red-button:hover::after {
         transform: scale(0);
       }
 
       .green-button:hover {
-        box-shadow: inset 0px 0px 25px #218838;
+        box-shadow: inset 0 0 25px #218838;
         background-color: rgba(33, 136, 56, 0.1);
       }
 
+      .orange-button:hover {
+        box-shadow: inset 0 0 15px #ffc107;
+        background-color: rgba(161, 128, 43, 0.1);
+      }
+
+      .red-button:hover {
+        box-shadow: inset 0 0 15px #dc3545;
+        background-color: rgba(220, 53, 69, 0.1);
+      }
+
+      .button-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      /* ---- Botón flotante "Editar" ---- */
+      .floating-edit-button {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1000;
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: 2px solid #6f42c1;
+        background-color: #6f42c1;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
+      }
+
+      .floating-edit-button:hover {
+        transform: scale(1.05);
+        background-color: #5a32a3;
+      }
+
+      /* ---- Sistema de pantallas ---- */
+      .screen {
+        display: none;
+      }
+
+      .screen.active {
+        display: block;
+        animation: fade 0.25s ease;
+      }
+
+      @keyframes fade {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* ---- Móvil ---- */
       @media (max-width: 768px) {
         body {
           height: 100dvh;
@@ -128,27 +220,25 @@
           font-size: 20px;
         }
 
-        /* 🔥 Botones en columna (clave en móvil) */
         .button-container {
           display: flex;
           flex-direction: column;
         }
 
-        /* Ocultar tabla en móvil (ya lo usas bien) */
         .hide-mobile {
           display: none;
         }
 
-        /* Mejora UX táctil */
         button {
           touch-action: manipulation;
         }
       }
 
+      /* ---- Modo oscuro ---- */
       @media (prefers-color-scheme: dark) {
         body {
           background-color: #121212;
-          color: #e0e0e0; /* Texto más claro */
+          color: #e0e0e0;
         }
 
         .container {
@@ -157,91 +247,199 @@
         }
 
         h1 {
-          color: #e0e0e0; /* Título más claro */
-        }
-
-        .green-button {
-          display: inline-block; /* Hace que el botón se ajuste al contenido */
-          position: relative;
-          height: 3.5em;
-          padding: 0 1em; /* Añade padding horizontal para que el texto no esté pegado a los bordes */
-          border: 3px ridge #218838;
-          outline: none;
-          background-color: transparent;
           color: #e0e0e0;
-          transition: 1s;
-          border-radius: 0.3em;
-          font-size: 16px;
-          font-weight: bold;
-          cursor: pointer;
-          white-space: nowrap; /* Evita que el texto se divida en varias líneas */
-          margin-top: 1px;
-        }
-
-        .green-button::after {
-          content: "";
-          position: absolute;
-          top: -10px;
-          left: 3%;
-          width: 95%;
-          height: 40%;
-          background-color: #1e1e1e;
-          transition: 0.5s;
-          transform-origin: center;
-        }
-
-        .green-button::before {
-          content: "";
-          transform-origin: center;
-          position: absolute;
-          top: 80%;
-          left: 3%;
-          width: 95%;
-          height: 40%;
-          background-color: #1e1e1e;
-          transition: 0.5s;
-        }
-
-        .green-button:hover::before,
-        .green-button:hover::after {
-          transform: scale(0);
-        }
-
-        .green-button:hover {
-          box-shadow: inset 0px 0px 25px #218838;
-          background-color: rgba(33, 136, 56, 0.1);
         }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Opciones del Test</h1>
-      <div class="button-container">
-        <button class="btn" onclick="goTo('formInor/formInor.html')">
-          Formulación Inorgánica
+      <!-- ========== MENÚ PRINCIPAL ========== -->
+      <section class="screen active" id="menu">
+        <h1>Opciones del Test</h1>
+        <div class="button-container">
+          <button class="btn" onclick="showScreen('formInor')">
+            Formulación Inorgánica
+          </button>
+          <button class="btn" onclick="showScreen('formOr')">
+            Formulación Orgánica
+          </button>
+          <button class="btn" onclick="showScreen('react')">
+            Reactividad Química
+          </button>
+          <button class="btn" onclick="showScreen('lewis')">
+            ¿Quién es Quién?</button
+          ><br />
+          <button class="btn hide-mobile" onclick="goTo('tabla/tabla.html')">
+            Tabla Periódica
+          </button>
+        </div>
+        <button class="green-button" onclick="goTo('indexInicio.html')">
+          Inicio
         </button>
-        <button class="btn" onclick="goTo('formOr/formOr.html')">
-          Formulación Orgánica
+      </section>
+
+      <!-- ========== FORMULACIÓN INORGÁNICA ========== -->
+      <section class="screen" id="formInor">
+        <button
+          class="floating-edit-button"
+          onclick="goTo('formInor/visor.html')"
+        >
+          Editar
         </button>
-        <button class="btn" onclick="goTo('reactividad/reactQuimica.html')">
-          Reactividad Química
+        <h1>Opciones del Test</h1>
+        <div class="button-container">
+          <button class="btn" onclick="goTo('formInor/hidruros')">
+            Hidruros
+          </button>
+          <button class="btn" onclick="goTo('formInor/oxidos')">Óxidos</button>
+          <button class="btn" onclick="goTo('formInor/hidroxidos')">
+            Hidróxidos
+          </button>
+          <button class="btn" onclick="goTo('formInor/oxoacidos')">
+            Oxoácidos
+          </button>
+          <button class="btn" onclick="goTo('formInor/oxisales')">
+            Oxisales
+          </button>
+        </div>
+        <div class="button-wrapper">
+          <button class="red-button" onclick="goTo('formInor/general.html')">
+            General
+          </button>
+          <button class="green-button" onclick="showScreen('menu')">
+            Ir al Indice
+          </button>
+          <button
+            class="orange-button"
+            onclick="goTo('teoria/teoFormInor.html')"
+          >
+            Teoría
+          </button>
+        </div>
+      </section>
+
+      <!-- ========== FORMULACIÓN ORGÁNICA ========== -->
+      <section class="screen" id="formOr">
+        <button
+          class="floating-edit-button"
+          onclick="goTo('formOr/visor.html')"
+        >
+          Editar
         </button>
-        <button class="btn" onclick="goTo('lewis/lewis.html')">
-          ¿Quién es Quién?</button
-        ><br />
-        <button class="btn hide-mobile" onclick="goTo('tabla/tabla.html')">
-          Tabla Periódica
+        <h1>Opciones del Test</h1>
+        <div class="button-container">
+          <button class="btn" onclick="goTo('formOr/alcanos')">Alcanos</button>
+          <button class="btn" onclick="goTo('formOr/alquenosAlquinos')">
+            Alquenos y alquinos
+          </button>
+          <button class="btn" onclick="goTo('formOr/hidrocarburosRamificados')">
+            Hidrocarburos ramificados
+          </button>
+          <button class="btn" onclick="goTo('formOr/bencenos')">Bencenos</button
+          ><br />
+          <button class="btn" onclick="goTo('formOr/alcoholesEteres')">
+            Alcoholes y éteres
+          </button>
+          <button class="btn" onclick="goTo('formOr/aldehidosCetonas')">
+            Aldehídos y cetonas
+          </button>
+          <button class="btn" onclick="goTo('formOr/acidosEsteres')">
+            Ácidos y ésteres
+          </button>
+          <button
+            class="btn"
+            onclick="goTo('formOr/aminasAmidasNitrilosNitro')"
+          >
+            Aminas, amidas y grupos nitro
+          </button>
+        </div>
+        <div class="button-wrapper">
+          <button class="red-button" onclick="goTo('formOr/general.html')">
+            General
+          </button>
+          <button class="green-button" onclick="showScreen('menu')">
+            Ir al Indice
+          </button>
+          <button class="orange-button" onclick="goTo('teoria/teoFormOr.html')">
+            Teoría
+          </button>
+        </div>
+      </section>
+
+      <!-- ========== REACTIVIDAD QUÍMICA ========== -->
+      <section class="screen" id="react">
+        <button
+          class="floating-edit-button"
+          onclick="goTo('formulas/visor.html')"
+        >
+          Editar
         </button>
-      </div>
-      <button class="green-button" onclick="goTo('indexInicio.html')">
-        Inicio
-      </button>
+        <h1>Opciones</h1>
+        <div class="button-container">
+          <button
+            class="btn"
+            onclick="goTo('reactividad/ejerReactQuimica.html')"
+          >
+            Test
+          </button>
+          <button class="btn" onclick="goTo('teoria/teoReactQuimica.html')">
+            Teoría
+          </button>
+        </div>
+        <button class="green-button" onclick="showScreen('menu')">
+          Ir al Indice
+        </button>
+      </section>
+
+      <!-- ========== ¿QUIÉN ES QUIÉN? ========== -->
+      <section class="screen" id="lewis">
+        <button
+          class="floating-edit-button"
+          onclick="goTo('formulas/visor.html')"
+        >
+          Editar
+        </button>
+        <h1>Opciones</h1>
+        <div class="button-container">
+          <button class="btn" onclick="goTo('lewis/ejerLewis.html')">
+            Test
+          </button>
+          <button class="btn" onclick="goTo('teoria/teoLewis.html')">
+            Teoría
+          </button>
+        </div>
+        <button class="green-button" onclick="showScreen('menu')">
+          Ir al Indice
+        </button>
+      </section>
     </div>
+
     <script>
+      const DEFAULT_SCREEN = "menu";
+
+      // Cambia de menú (solo cambia el hash; render() hace el resto)
+      function showScreen(id) {
+        location.hash = id;
+      }
+
+      // Navega a una página real
       function goTo(page) {
         window.location.href = page;
       }
+
+      // Muestra la pantalla que indique el hash
+      function render() {
+        let id = location.hash.slice(1) || DEFAULT_SCREEN;
+        if (!document.getElementById(id)) id = DEFAULT_SCREEN;
+
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.toggle("active", s.id === id));
+      }
+
+      window.addEventListener("hashchange", render);
+      render();
     </script>
   </body>
 </html>

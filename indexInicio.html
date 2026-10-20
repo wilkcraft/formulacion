@@ -1094,6 +1094,23 @@
       window.addEventListener("load", () => {
         cargarNovedades();
       });
+
+      // Cerrar popups al hacer clic fuera de ellos
+      document.addEventListener("click", function (event) {
+        if (event.target.closest(".new-button, .left-button, .feed-button"))
+          return;
+
+        if (event.target.closest(".popup")) return;
+
+        const abierto = (id) =>
+          document.getElementById(id).style.display === "block";
+
+        if (abierto("messagePopup")) return closeMessagePopup();
+
+        if (abierto("popup")) closePopup();
+        if (abierto("autor")) closeAutor();
+        if (abierto("errorForm")) closeErrorForm();
+      });
     </script>
   </body>
 </html>

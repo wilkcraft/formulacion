@@ -362,7 +362,13 @@
       };
 
       const params = new URLSearchParams(window.location.search);
-      const tipo = params.get("tipo");
+      let tipo = params.get("tipo");
+
+      if (!tipo) {
+        const partes = window.location.pathname.split("/").filter(Boolean);
+        tipo = partes[partes.length - 1];
+      }
+
       const cfg = CONFIG[tipo];
 
       if (!cfg) {
